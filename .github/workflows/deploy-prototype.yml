@@ -3,9 +3,6 @@ name: Deploy Prototype to GitHub Pages
 on:
   push:
     branches: [main]
-    paths:
-      - 'prototype/**'
-      - '.github/workflows/deploy-prototype.yml'
 
 permissions:
   contents: read
