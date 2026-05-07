@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+prototype/node_modules/
+
+# Build output
+prototype/dist/
+
+# Env & secrets
+.env
+.env.*
+firebase-service-account.json
+google-services.json
+GoogleService-Info.plist
+
+# IDE / OS
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Playwright artifacts
+.playwright-mcp/
+
+# Screenshots (generated artifacts)
+*.png
+*.jpg
+
+# Claude internal
+.claude/settings.local.json
+.superpowers/
