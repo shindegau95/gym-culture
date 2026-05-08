@@ -204,6 +204,8 @@ Both Trainer App and Client App can update the same session simultaneously (set 
 
 ## Lessons Learned
 
+- **Prototype styling** Used inline `style={{}}` objects throughout all JSX components → Write all static styles in CSS modules (`.module.css`). Only use inline styles for truly dynamic computed values (percentage widths, SVG dashoffsets, data-driven color selection). Use CSS custom properties (`var(--gc-*)`) for all token values so the cascade does the work.
+
 - **Linear MCP** `save_cycle` does not exist — the MCP server only supports `save_milestone`. To create actual Cycles (sprints), the user must create them in the Linear web UI; then issues can be assigned via MCP. Do not promise cycle-based sprints without confirming the tool exists first.
 - **Linear issue list size** Fetching all team issues with `list_issues` at limit 250 can exceed token limits (~87K chars). Fetch by project or filter by specific criteria instead of pulling the full team backlog at once.
 - **Linear title consistency** When creating issues across phases, verify the separator convention (colon vs dash) matches all other issues in the same phase before saving. Inconsistencies require a second pass of `save_issue` calls to fix.
