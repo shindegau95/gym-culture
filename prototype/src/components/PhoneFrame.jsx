@@ -1,6 +1,6 @@
 export default function PhoneFrame({ children, darkMode }) {
   return (
-    <div style={{
+    <div data-theme={darkMode ? 'dark' : 'light'} style={{
       width: 375, height: 812, borderRadius: 48, flexShrink: 0,
       background: darkMode ? '#0B0B0D' : '#F7F5F3',
       boxShadow: '0 40px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.08), inset 0 0 0 2px rgba(255,255,255,0.05)',

@@ -1,3 +1,4 @@
+/* ─── Reset ───────────────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -21,7 +22,7 @@ body {
   flex-direction: column;
 }
 
-/* Hide scrollbars globally — content still scrolls */
+/* ─── Hide scrollbars ─────────────────────────────────────────────────────── */
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -30,18 +31,79 @@ body {
   display: none;
 }
 
+/* ─── Design tokens — light (default) ────────────────────────────────────── */
+:root, [data-theme="light"] {
+  --gc-bg:           #F7F5F3;
+  --gc-bg-elevated:  #FFFFFF;
+  --gc-bg-grouped:   #EFECE9;
+  --gc-bg-scrim:     rgba(247, 245, 243, 0.88);
+
+  --gc-ink:          #0E0E10;
+  --gc-ink2:         #3A3A3C;
+  --gc-ink3:         rgba(60, 60, 67, 0.6);
+  --gc-ink4:         rgba(60, 60, 67, 0.3);
+
+  --gc-sep:          rgba(60, 60, 67, 0.14);
+  --gc-sep-strong:   rgba(60, 60, 67, 0.24);
+
+  --gc-fill-tint:    rgba(120, 120, 128, 0.10);
+  --gc-fill-tint2:   rgba(120, 120, 128, 0.06);
+
+  --gc-accent:       #E11D48;
+  --gc-accent-soft:  #FF6B4A;
+  --gc-accent-ink:   #FFFFFF;
+  --gc-accent-tint:  rgba(225, 29, 72, 0.10);
+  --gc-accent-ring:  rgba(225, 29, 72, 0.30);
+  --gc-gradient:     linear-gradient(135deg, #FF6B4A 0%, #E11D48 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,107,74,0.12) 0%, rgba(225,29,72,0.12) 100%);
+
+  --gc-good:         #22A06B;
+  --gc-warn:         #E08600;
+  --gc-bad:          #D62A2A;
+
+  --gc-font-ui:      -apple-system, "SF Pro Text", "SF Pro", system-ui, sans-serif;
+  --gc-font-display: -apple-system, "SF Pro Display", "SF Pro", system-ui, sans-serif;
+  --gc-font-mono:    "Geist Mono", "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+/* ─── Design tokens — dark ───────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --gc-bg:           #0B0B0D;
+  --gc-bg-elevated:  #16161A;
+  --gc-bg-grouped:   #0F0F12;
+  --gc-bg-scrim:     rgba(11, 11, 13, 0.88);
+
+  --gc-ink:          #F5F4F2;
+  --gc-ink2:         #D8D6D2;
+  --gc-ink3:         rgba(235, 235, 245, 0.6);
+  --gc-ink4:         rgba(235, 235, 245, 0.3);
+
+  --gc-sep:          rgba(255, 255, 255, 0.08);
+  --gc-sep-strong:   rgba(255, 255, 255, 0.16);
+
+  --gc-fill-tint:    rgba(120, 120, 128, 0.24);
+  --gc-fill-tint2:   rgba(120, 120, 128, 0.14);
+
+  --gc-accent:       #FF4664;
+  --gc-accent-soft:  #FF7B5A;
+  --gc-accent-ink:   #0B0B0D;
+  --gc-accent-tint:  rgba(255, 70, 100, 0.14);
+  --gc-accent-ring:  rgba(255, 70, 100, 0.40);
+  --gc-gradient:     linear-gradient(135deg, #FF7B5A 0%, #FF2D55 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,123,90,0.14) 0%, rgba(255,45,85,0.14) 100%);
+
+  --gc-good:         #34D17C;
+  --gc-warn:         #FFB13D;
+  --gc-bad:          #FF5A55;
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
 @keyframes gcPulse {
-  0%   { opacity: 1; transform: scale(1); }
-  50%  { opacity: 0.5; transform: scale(0.92); }
-  100% { opacity: 1; transform: scale(1); }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.88); }
 }
 
-@keyframes gcFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes gcSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
+@keyframes gcFadeUp {
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }

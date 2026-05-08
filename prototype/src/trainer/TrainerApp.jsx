@@ -576,6 +576,128 @@ function TrainerSession({ t, onClose }) {
   );
 }
 
+// ─── Profile ─────────────────────────────────────────────────────────────────
+function TrainerProfile({ t }) {
+  const monthStats = [
+    { l: 'Sessions', v: '112', sub: '+8 vs last month' },
+    { l: 'Revenue',  v: '₹1.1L', sub: 'May 2026' },
+    { l: 'Avg Rating', v: '4.9★', sub: 'from 38 reviews' },
+  ];
+  const certs = ['NSCA-CSCS', 'Precision Nutrition L1', 'FMS Level 2'];
+  const specialties = ['Strength & Hypertrophy', 'Progressive Overload', 'Fat Loss', 'Powerlifting'];
+  const settings = [
+    { label: 'Session reminders', sub: '30 min before each session', toggle: true,  on: true  },
+    { label: 'Client progress alerts', sub: 'Notify on missed sessions', toggle: true,  on: true  },
+    { label: 'Payment notifications',  sub: 'When client fee is logged',  toggle: true,  on: false },
+    { label: 'Branch',       sub: 'Kandivali, Mumbai',   toggle: false },
+    { label: 'Contact',      sub: '+91 98001 12345',      toggle: false },
+    { label: 'Member since', sub: 'March 2020',           toggle: false },
+  ];
+
+  const topClients = CLIENTS.slice(0, 3);
+
+  return (
+    <div style={{ paddingBottom: 100 }}>
+      {/* Hero */}
+      <div style={{ padding: '32px 16px 20px', textAlign: 'center', position: 'relative' }}>
+        <div style={{
+          position: 'absolute', inset: 0, bottom: '40%',
+          background: `linear-gradient(180deg, ${t.accentTint} 0%, transparent 100%)`,
+          pointerEvents: 'none',
+        }}/>
+        <div style={{
+          width: 80, height: 80, borderRadius: 26, margin: '0 auto 12px',
+          background: t.gradient,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: FONT.display, fontSize: 30, fontWeight: 700, color: '#fff',
+          boxShadow: `0 8px 24px ${t.accentRing}`,
+          position: 'relative',
+        }}>V</div>
+        <div style={{ fontFamily: FONT.display, fontSize: 22, fontWeight: 700, color: t.ink, letterSpacing: -0.4 }}>Vikram Khanna</div>
+        <div style={{ fontFamily: FONT.ui, fontSize: 13, color: t.ink3, marginTop: 3 }}>Personal Trainer · Kandivali</div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+          {specialties.map(s => (
+            <span key={s} style={{ fontFamily: FONT.ui, fontSize: 11, fontWeight: 600, color: t.accent, background: t.accentTint, borderRadius: 6, padding: '3px 8px' }}>{s}</span>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ padding: '0 16px' }}>
+        {/* Month stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 20 }}>
+          {monthStats.map(s => (
+            <Card t={t} key={s.l} padding={14}>
+              <div style={{ fontFamily: FONT.display, fontSize: 20, fontWeight: 700, color: t.ink }}>{s.v}</div>
+              <div style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink3, marginTop: 2 }}>{s.l}</div>
+              <div style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4, marginTop: 3 }}>{s.sub}</div>
+            </Card>
+          ))}
+        </div>
+
+        {/* Client adherence summary */}
+        <SectionLabel t={t}>Client adherence</SectionLabel>
+        <Card t={t} padding={0}>
+          {topClients.map((c, i, arr) => (
+            <div key={c.name} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none' }}>
+              <Avatar initials={c.initials} size={36} t={t}/>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 600, color: t.ink }}>{c.name}</div>
+                <div style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink3, marginTop: 1 }}>{c.goal} · {c.plan}</div>
+                <div style={{ marginTop: 6, height: 3, borderRadius: 2, background: t.fillTint, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${c.adherence}%`, background: c.adherence >= 90 ? t.good : c.adherence >= 80 ? t.warn : t.bad, borderRadius: 2 }}/>
+                </div>
+              </div>
+              <span style={{ fontFamily: FONT.mono, fontSize: 13, fontWeight: 700, color: c.adherence >= 90 ? t.good : c.adherence >= 80 ? t.warn : t.bad }}>{c.adherence}%</span>
+            </div>
+          ))}
+          <div style={{ padding: '10px 14px', borderTop: `0.5px solid ${t.sep}` }}>
+            <span style={{ fontFamily: FONT.ui, fontSize: 13, color: t.accent, fontWeight: 600 }}>See all {CLIENTS.length} clients →</span>
+          </div>
+        </Card>
+
+        {/* Certifications */}
+        <SectionLabel t={t}>Certifications</SectionLabel>
+        <Card t={t} padding={0}>
+          {certs.map((c, i, arr) => (
+            <div key={c} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none' }}>
+              <div style={{ width: 30, height: 30, borderRadius: 9, background: t.accentTint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon name="star" size={14} color={t.accent} strokeWidth={2}/>
+              </div>
+              <span style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 500, color: t.ink }}>{c}</span>
+            </div>
+          ))}
+        </Card>
+
+        {/* Settings */}
+        <SectionLabel t={t}>Settings</SectionLabel>
+        <Card t={t} padding={0}>
+          {settings.map((s, i, arr) => (
+            <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '13px 14px', borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none' }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: FONT.ui, fontSize: 14, fontWeight: 500, color: t.ink }}>{s.label}</div>
+                <div style={{ fontFamily: FONT.ui, fontSize: 12, color: t.ink3, marginTop: 1 }}>{s.sub}</div>
+              </div>
+              {s.toggle ? (
+                <div style={{
+                  width: 42, height: 24, borderRadius: 12, padding: 3,
+                  background: s.on ? t.gradient : t.fillTint,
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: s.on ? 'flex-end' : 'flex-start',
+                  transition: 'all 0.2s', flexShrink: 0,
+                }}>
+                  <div style={{ width: 18, height: 18, borderRadius: '50%', background: '#fff' }}/>
+                </div>
+              ) : (
+                <Icon name="chevronR" size={14} color={t.ink4}/>
+              )}
+            </div>
+          ))}
+        </Card>
+      </div>
+    </div>
+  );
+}
+
 // ─── Trainer App Shell ────────────────────────────────────────────────────────
 export default function TrainerApp({ t }) {
   const [tab, setTab] = useState('home');
@@ -597,21 +719,7 @@ export default function TrainerApp({ t }) {
         {tab === 'home'    && <TrainerHome t={t} onSession={() => setInSession(true)}/>}
         {tab === 'clients' && <TrainerClients t={t}/>}
         {tab === 'plan'    && <TrainerPlan t={t}/>}
-        {tab === 'profile' && (
-          <div style={{ padding: '60px 16px', textAlign: 'center' }}>
-            <Avatar initials="VK" size={72} t={t}/>
-            <div style={{ fontFamily: FONT.display, fontSize: 24, fontWeight: 700, color: t.ink, marginTop: 16 }}>Vikram Khanna</div>
-            <div style={{ fontFamily: FONT.ui, fontSize: 14, color: t.ink3, marginTop: 4 }}>Personal Trainer · Kandivali</div>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 32, marginTop: 24 }}>
-              {[['24','Clients'],['6','Sessions/day'],['4.9','Rating']].map(([v,l]) => (
-                <div key={l} style={{ textAlign: 'center' }}>
-                  <div style={{ fontFamily: FONT.mono, fontSize: 24, fontWeight: 700, color: t.ink }}>{v}</div>
-                  <div style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink3, marginTop: 2 }}>{l}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+        {tab === 'profile' && <TrainerProfile t={t}/>}
       </div>
       <BottomTabBar t={t} tabs={tabs} active={tab} onSelect={setTab}/>
     </div>

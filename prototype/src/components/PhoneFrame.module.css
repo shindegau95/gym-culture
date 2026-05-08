@@ -1,0 +1,67 @@
+.frame {
+  width: 375px;
+  height: 812px;
+  border-radius: 48px;
+  flex-shrink: 0;
+  background: var(--gc-bg);
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.05);
+  border: 8px solid var(--gc-bg-grouped);
+  overflow: hidden;
+  position: relative;
+}
+
+.statusBar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: relative;
+  z-index: 10;
+  color: var(--gc-ink);
+}
+
+.statusTime {
+  font-family: var(--gc-font-ui);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.statusIsland {
+  width: 120px;
+  height: 30px;
+  background: var(--gc-bg-grouped);
+  border-radius: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 6px;
+}
+
+.statusIcons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.signalBars {
+  display: flex;
+  gap: 1px;
+}
+
+.signalBar {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--gc-ink);
+}
+
+.content {
+  position: absolute;
+  inset: 0;
+  top: 44px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

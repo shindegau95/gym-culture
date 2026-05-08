@@ -3,7 +3,7 @@ import { FONT } from '../tokens';
 import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, RingProgress, MuscleBar, BottomTabBar, ProgressBar } from '../components/Primitives';
 
 // ─── Home ────────────────────────────────────────────────────────────────────
-function ClientHome({ t, onStartWorkout }) {
+function ClientHome({ t, onStartWorkout, onViewCoach }) {
   const muscles = [
     { l: 'Chest',     v: 42 },
     { l: 'Back',      v: 88 },
@@ -22,8 +22,8 @@ function ClientHome({ t, onStartWorkout }) {
       {/* Hero */}
       <div style={{ padding: '4px 16px 16px' }}>
         <div style={{ background: t.gradient, borderRadius: 22, padding: 20, position: 'relative', overflow: 'hidden', color: '#fff' }}>
-          <div style={{ position: 'absolute', right: -40, top: -40, width: 180, height: 180, borderRadius: '50%', background: 'rgba(255,255,255,0.10)' }}/>
-          <div style={{ position: 'absolute', right: 30, bottom: -30, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }}/>
+          <div style={{ position: 'absolute', right: -40, top: -40, width: 180, height: 180, borderRadius: '50%', background: 'rgba(255,255,255,0.10)', pointerEvents: 'none' }}/>
+          <div style={{ position: 'absolute', right: 30, bottom: -30, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }}/>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
             <span style={{ width: 6, height: 6, borderRadius: 3, background: '#fff' }}/>
             <span style={{ fontFamily: FONT.ui, fontSize: 11, fontWeight: 700, letterSpacing: 0.6, textTransform: 'uppercase' }}>Today's session</span>
@@ -32,10 +32,10 @@ function ClientHome({ t, onStartWorkout }) {
           <div style={{ display: 'flex', gap: 16, marginTop: 10, alignItems: 'baseline' }}>
             <span style={{ fontFamily: FONT.mono, fontSize: 20, fontWeight: 600 }}>6 <span style={{ fontSize: 12, opacity: 0.85, fontFamily: FONT.ui }}>exercises</span></span>
             <span style={{ fontFamily: FONT.mono, fontSize: 20, fontWeight: 600 }}>55<span style={{ fontSize: 12, opacity: 0.85, fontFamily: FONT.ui }}>min</span></span>
-            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.18)' }}>
+            <button onClick={onViewCoach} style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', borderRadius: 999, background: 'rgba(255,255,255,0.18)', border: 0, cursor: 'pointer' }}>
               <Avatar initials="RK" size={18} t={t} color="rgba(255,255,255,0.3)"/>
-              <span style={{ fontFamily: FONT.ui, fontSize: 11, fontWeight: 600 }}>Coach Rohan</span>
-            </div>
+              <span style={{ fontFamily: FONT.ui, fontSize: 11, fontWeight: 600, color: '#fff' }}>Coach Rohan</span>
+            </button>
           </div>
           <button onClick={onStartWorkout} style={{
             marginTop: 14, width: '100%', height: 44, borderRadius: 12, border: 0, cursor: 'pointer',
@@ -233,6 +233,174 @@ function ClientSession({ t, onClose }) {
                 <div style={{ fontFamily: FONT.mono, fontSize: 11, color: t.ink3 }}>{e.d}</div>
               </div>
               <Icon name="chevronR" size={14} color={t.ink4}/>
+            </div>
+          ))}
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+// ─── Workout ─────────────────────────────────────────────────────────────────
+function ClientWorkout({ t, onStartWorkout }) {
+  const days = [
+    { d: 'Mon', label: 'Push',          done: true,  rest: false },
+    { d: 'Tue', label: 'Pull',          done: true,  rest: false },
+    { d: 'Wed', label: 'Rest',          done: true,  rest: true  },
+    { d: 'Thu', label: 'Legs',          done: true,  rest: false },
+    { d: 'Fri', label: 'Push',          done: false, rest: false, today: true },
+    { d: 'Sat', label: 'Pull',          done: false, rest: false },
+    { d: 'Sun', label: 'Rest',          done: false, rest: true  },
+  ];
+  const exercises = [
+    { name: 'Bench Press',       sets: 4, reps: '6–8', weight: '90 kg',   pr: false },
+    { name: 'Incline DB Press',  sets: 3, reps: '10',  weight: '24 kg',   pr: false },
+    { name: 'Cable Fly',         sets: 3, reps: '12',  weight: '14 kg',   pr: false },
+    { name: 'Close-Grip Bench',  sets: 3, reps: '8',   weight: '70 kg',   pr: false },
+    { name: 'Overhead Press',    sets: 3, reps: '8–10', weight: '50 kg',  pr: false },
+    { name: 'Tricep Pushdown',   sets: 3, reps: '12',  weight: '20 kg',   pr: false },
+  ];
+  return (
+    <div style={{ paddingBottom: 100 }}>
+      <TopBar t={t} subtitle="Week 6 · Hypertrophy block" title="Workout Plan"
+        trailing={<IconBtn name="calendar" t={t}/>}
+      />
+      {/* Week strip */}
+      <div style={{ padding: '0 16px 16px' }}>
+        <Card t={t} padding={16}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+            <span style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 600, color: t.ink }}>This week</span>
+            <span style={{ fontFamily: FONT.mono, fontSize: 12, color: t.ink3 }}>4 / 5 sessions</span>
+          </div>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {days.map((day, i) => (
+              <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}>
+                <div style={{
+                  width: '100%', aspectRatio: '1', borderRadius: 10,
+                  background: day.today ? t.gradient : day.done ? t.accentTint : t.fillTint,
+                  border: day.today ? 'none' : `1.5px solid ${day.done ? t.accentRing : t.sep}`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  {day.rest
+                    ? <span style={{ fontSize: 12 }}>—</span>
+                    : day.done
+                      ? <Icon name="check" size={13} color={day.today ? '#fff' : t.accent} strokeWidth={2.5}/>
+                      : <Icon name="dumbbell" size={12} color={t.ink4}/>
+                  }
+                </div>
+                <span style={{ fontFamily: FONT.ui, fontSize: 9, fontWeight: day.today ? 700 : 400, color: day.today ? t.accent : t.ink3, letterSpacing: 0.2 }}>{day.d}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+      {/* Today's session */}
+      <div style={{ padding: '0 16px' }}>
+        <SectionLabel t={t}>Today · Chest & Triceps</SectionLabel>
+        <Card t={t} padding={0}>
+          {/* header row */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 40px 48px 64px', gap: 6, padding: '10px 14px 8px', borderBottom: `0.5px solid ${t.sep}` }}>
+            {['Exercise','Sets','Reps','Target'].map(h => (
+              <span key={h} style={{ fontFamily: FONT.ui, fontSize: 10, fontWeight: 700, color: t.ink3, letterSpacing: 0.5, textTransform: 'uppercase' }}>{h}</span>
+            ))}
+          </div>
+          {exercises.map((ex, i, arr) => (
+            <div key={i} style={{
+              display: 'grid', gridTemplateColumns: '1fr 40px 48px 64px', gap: 6,
+              padding: '12px 14px',
+              borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none',
+              alignItems: 'center',
+            }}>
+              <div>
+                <div style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 600, color: t.ink }}>{ex.name}</div>
+              </div>
+              <div style={{ fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{ex.sets}</div>
+              <div style={{ fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{ex.reps}</div>
+              <div style={{ fontFamily: FONT.mono, fontSize: 12, color: t.ink3 }}>{ex.weight}</div>
+            </div>
+          ))}
+        </Card>
+        <button onClick={onStartWorkout} style={{
+          marginTop: 16, width: '100%', height: 48, borderRadius: 14, border: 0, cursor: 'pointer',
+          background: t.gradient, color: '#fff',
+          fontFamily: FONT.ui, fontSize: 15, fontWeight: 700,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        }}>
+          <Icon name="play" size={14} color="#fff"/> Start Today's Session
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Coach Profile ─────────────────────────────────────────────────────────────
+function CoachProfile({ t, onBack }) {
+  const stats = [
+    { l: 'Clients', v: '14' },
+    { l: 'Exp', v: '6 yrs' },
+    { l: 'Rating', v: '4.9★' },
+  ];
+  const certs = ['NSCA-CSCS', 'Precision Nutrition L1', 'FMS Level 2'];
+  const schedule = [
+    { day: 'Mon–Fri', time: '06:00 – 20:00' },
+    { day: 'Sat',     time: '07:00 – 14:00' },
+    { day: 'Sun',     time: 'Off' },
+  ];
+  return (
+    <div style={{ paddingBottom: 100 }}>
+      <div style={{ padding: '12px 16px 0', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <button onClick={onBack} style={{ background: 'transparent', border: 0, cursor: 'pointer', color: t.accent, fontFamily: FONT.ui, fontSize: 15, fontWeight: 590, padding: 0 }}>← Back</button>
+      </div>
+      {/* Hero */}
+      <div style={{ padding: '16px 16px 20px', textAlign: 'center' }}>
+        <div style={{
+          width: 80, height: 80, borderRadius: 26, margin: '0 auto 12px',
+          background: t.gradient,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: FONT.display, fontSize: 30, fontWeight: 700, color: '#fff',
+        }}>R</div>
+        <div style={{ fontFamily: FONT.display, fontSize: 22, fontWeight: 700, color: t.ink, letterSpacing: -0.4 }}>Coach Rohan</div>
+        <div style={{ fontFamily: FONT.ui, fontSize: 13, color: t.ink3, marginTop: 4 }}>Strength & Hypertrophy · Kandivali</div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 20 }}>
+          {stats.map(s => (
+            <div key={s.l} style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: FONT.display, fontSize: 20, fontWeight: 700, color: t.ink }}>{s.v}</div>
+              <div style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink3, marginTop: 2 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ padding: '0 16px' }}>
+        {/* Your programme */}
+        <SectionLabel t={t}>Your programme</SectionLabel>
+        <Card t={t} padding={16}>
+          <div style={{ fontFamily: FONT.ui, fontSize: 14, fontWeight: 700, color: t.ink, marginBottom: 4 }}>Hypertrophy Block — 12 weeks</div>
+          <div style={{ fontFamily: FONT.ui, fontSize: 13, color: t.ink3, lineHeight: 1.5 }}>5-day PPL split focusing on progressive overload. Primary goal: lean mass gain with gradual body recomposition. Currently in week 6.</div>
+          <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+            {['PPL Split', '5 days/wk', 'Progressive Overload', 'Hypertrophy'].map(tag => (
+              <span key={tag} style={{ fontFamily: FONT.ui, fontSize: 11, fontWeight: 600, color: t.accent, background: t.accentTint, borderRadius: 6, padding: '3px 8px' }}>{tag}</span>
+            ))}
+          </div>
+        </Card>
+        {/* Certifications */}
+        <SectionLabel t={t}>Certifications</SectionLabel>
+        <Card t={t} padding={0}>
+          {certs.map((c, i, arr) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none' }}>
+              <div style={{ width: 28, height: 28, borderRadius: 8, background: t.accentTint, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon name="star" size={13} color={t.accent} strokeWidth={2}/>
+              </div>
+              <span style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 500, color: t.ink }}>{c}</span>
+            </div>
+          ))}
+        </Card>
+        {/* Availability */}
+        <SectionLabel t={t}>Availability</SectionLabel>
+        <Card t={t} padding={0}>
+          {schedule.map((s, i, arr) => (
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 14px', borderBottom: i < arr.length - 1 ? `0.5px solid ${t.sep}` : 'none' }}>
+              <span style={{ fontFamily: FONT.ui, fontSize: 13, fontWeight: 600, color: t.ink }}>{s.day}</span>
+              <span style={{ fontFamily: FONT.mono, fontSize: 12, color: s.time === 'Off' ? t.ink4 : t.ink3 }}>{s.time}</span>
             </div>
           ))}
         </Card>
@@ -446,6 +614,7 @@ function ClientNutrition({ t }) {
 export default function ClientApp({ t }) {
   const [tab, setTab] = useState('home');
   const [inSession, setInSession] = useState(false);
+  const [viewCoach, setViewCoach] = useState(false);
 
   const tabs = [
     { key: 'home',      label: 'Home',      icon: 'home' },
@@ -460,11 +629,17 @@ export default function ClientApp({ t }) {
     </div>
   );
 
+  if (viewCoach) return (
+    <div style={{ height: '100%', overflowY: 'auto', background: t.bg }}>
+      <CoachProfile t={t} onBack={() => setViewCoach(false)}/>
+    </div>
+  );
+
   return (
     <div style={{ height: '100%', position: 'relative', background: t.bg }}>
       <div style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}>
-        {tab === 'home'      && <ClientHome t={t} onStartWorkout={() => setInSession(true)}/>}
-        {tab === 'workout'   && <ClientProgress t={t}/>}
+        {tab === 'home'      && <ClientHome t={t} onStartWorkout={() => setInSession(true)} onViewCoach={() => setViewCoach(true)}/>}
+        {tab === 'workout'   && <ClientWorkout t={t} onStartWorkout={() => setInSession(true)}/>}
         {tab === 'progress'  && <ClientProgress t={t}/>}
         {tab === 'nutrition' && <ClientNutrition t={t}/>}
       </div>

@@ -6,18 +6,18 @@ import TrainerApp from './trainer/TrainerApp';
 import AdminWeb from './admin/AdminWeb';
 
 const APPS = [
-  { id: 'client', label: 'Client App', sub: 'Member experience', dark: true },
-  { id: 'trainer', label: 'Trainer App', sub: 'PT workflow', dark: false },
-  { id: 'admin', label: 'Admin Web', sub: 'Branch management', dark: false },
+  { id: 'client', label: 'Client App', sub: 'Member experience' },
+  { id: 'trainer', label: 'Trainer App', sub: 'PT workflow' },
+  { id: 'admin', label: 'Admin Web', sub: 'Branch management' },
 ];
 
 export default function App() {
   const [active, setActive] = useState('client');
+  const [isDark, setIsDark] = useState(true);
 
   const cur = APPS.find(a => a.id === active);
   const isAdmin = active === 'admin';
-  const isDark = cur.dark;
-  const t = isAdmin ? TOKENS.light : (isDark ? TOKENS.dark : TOKENS.light);
+  const t = isDark ? TOKENS.dark : TOKENS.light;
 
   return (
     <div style={{
@@ -88,9 +88,28 @@ export default function App() {
           ))}
         </div>
 
-        {/* Right label */}
-        <div style={{ color: 'rgba(235,235,245,0.3)', fontFamily: FONT.ui, fontSize: 12 }}>
-          {cur.sub}
+        {/* Right: theme toggle + label */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button
+            onClick={() => setIsDark(d => !d)}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '5px 12px', borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(255,255,255,0.06)', cursor: 'pointer',
+              color: 'rgba(235,235,245,0.6)', fontFamily: FONT.ui, fontSize: 12,
+              transition: 'all 0.15s',
+            }}
+          >
+            {isDark
+              ? <svg width={14} height={14} viewBox="0 0 16 16" fill="none"><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41M8 5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              : <svg width={14} height={14} viewBox="0 0 16 16" fill="none"><path d="M13.5 10A5.5 5.5 0 0 1 6 2.5a.5.5 0 0 0-.6.6A6 6 0 1 0 13.4 10.6a.5.5 0 0 0-.6-.6h.7z" fill="currentColor"/></svg>
+            }
+            {isDark ? 'Light' : 'Dark'}
+          </button>
+          <div style={{ color: 'rgba(235,235,245,0.3)', fontFamily: FONT.ui, fontSize: 12 }}>
+            {cur.sub}
+          </div>
         </div>
       </div>
 
@@ -99,7 +118,7 @@ export default function App() {
         /* Admin — full browser layout */
         <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, display: 'flex', height: 'calc(100vh - 56px)' }}>
-            <AdminWeb />
+            <AdminWeb t={t} />
           </div>
         </div>
       ) : (

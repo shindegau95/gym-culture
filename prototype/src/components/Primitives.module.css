@@ -1,0 +1,256 @@
+/* ─── Icon ───────────────────────────────────────────────────────────────── */
+.icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* ─── Avatar ─────────────────────────────────────────────────────────────── */
+.avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--gc-fill-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--gc-font-ui);
+  font-weight: 700;
+  color: var(--gc-ink2);
+  border: none;
+}
+
+.avatar--ring {
+  border: 2px solid var(--gc-accent);
+}
+
+/* ─── TopBar ─────────────────────────────────────────────────────────────── */
+.topBar {
+  padding: 12px 16px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topBarLeading {
+  flex-shrink: 0;
+}
+
+.topBarBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.topBarSubtitle {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.topBarTitle {
+  font-family: var(--gc-font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--gc-ink);
+  letter-spacing: -0.8px;
+  line-height: 1.05;
+}
+
+.topBarTrailing {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ─── IconBtn ────────────────────────────────────────────────────────────── */
+.iconBtn {
+  border-radius: 50%;
+  background: var(--gc-fill-tint);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gc-ink2);
+}
+
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--gc-bg-elevated);
+  border-radius: 18px;
+  border: 0.5px solid var(--gc-sep);
+  margin-bottom: 8px;
+}
+
+.card--clickable {
+  cursor: pointer;
+}
+
+/* ─── SectionLabel ───────────────────────────────────────────────────────── */
+.sectionLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 14px 0 2px;
+}
+
+.sectionLabelText {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gc-ink);
+  letter-spacing: -0.1px;
+}
+
+.sectionLabelAction {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-accent);
+  cursor: pointer;
+}
+
+/* ─── Chip ───────────────────────────────────────────────────────────────── */
+.chip {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-ink3);
+  background: var(--gc-fill-tint);
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+}
+
+.chip--accent {
+  color: var(--gc-accent);
+  background: var(--gc-accent-tint);
+}
+
+/* ─── Numeric ────────────────────────────────────────────────────────────── */
+.numeric {
+  font-family: var(--gc-font-mono);
+  font-weight: 600;
+  color: var(--gc-ink);
+  letter-spacing: -0.5px;
+}
+
+.numericUnit {
+  font-weight: 500;
+  color: var(--gc-ink3);
+  margin-left: 2px;
+}
+
+/* ─── RingProgress ───────────────────────────────────────────────────────── */
+.ring {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ringSvg {
+  transform: rotate(-90deg);
+  display: block;
+}
+
+.ringContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ─── ProgressBar ────────────────────────────────────────────────────────── */
+.progressTrack {
+  border-radius: 999px;
+  background: var(--gc-fill-tint);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--gc-gradient);
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+
+/* ─── MuscleBar ──────────────────────────────────────────────────────────── */
+.muscleBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.muscleBarLabel {
+  width: 70px;
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.muscleBarTrack {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--gc-fill-tint);
+  overflow: hidden;
+}
+
+.muscleBarFill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.muscleBarValue {
+  width: 40px;
+  text-align: right;
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+/* ─── BottomTabBar ───────────────────────────────────────────────────────── */
+.tabBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--gc-bg-scrim);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 0.5px solid var(--gc-sep);
+  display: flex;
+  padding-bottom: 20px;
+  padding-top: 8px;
+}
+
+.tabBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.tabBtnLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gc-ink3);
+  letter-spacing: 0.3px;
+}
+
+.tabBtnLabel--active {
+  font-weight: 700;
+  color: var(--gc-accent);
+}
