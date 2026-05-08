@@ -338,7 +338,34 @@ Each trainer card displays:
 
 ---
 
-## 17. Key Open Questions (Deferred)
+## 17. UI Prototype (GC-61)
+
+A static Vite + React demo app in `prototype/` for showcasing the design to gym stakeholders before full implementation. No backend, no auth, all mock data.
+
+**Design style:** Dark gradient — deep dark backgrounds (`linear-gradient(135deg, #1a0a0a, #0d0d1a)`), red-orange gradient accents (`#E53935 → #ff6b35`), glassmorphism cards (`rgba(255,255,255,0.07)` with `rgba(255,255,255,0.08)` border).
+
+**Structure:** Top tab bar switches between the three apps. Client and Trainer apps render inside a 375×812 phone frame. Admin Web fills the full browser viewport.
+
+**Screens to prototype** (subset of the full spec — all content from sections above):
+
+| App | Screens |
+|---|---|
+| Client App | Home, Workout, Active Session, Progress, Nutrition |
+| Trainer App | Today, Clients, Client Detail, Plan Builder, Nutrition Builder, Profile |
+| Admin Web | Owner Dashboard, Staff Dashboard, Members List, Member Detail, Trainers |
+
+Admin Web shows both Staff view (single branch) and Owner view (cross-branch) via a role toggle in the header.
+
+**Mock data profiles:**
+- Clients: Arjun Mehta (Kandivali, Muscle Gain), Priya Shah (Borivali, Weight Loss), Rahul Desai (Mira Road, Body Recomposition)
+- Trainers: Vikram Nair (Kandivali, Strength & Hypertrophy), Sneha Kulkarni (Borivali, Weight Loss & Endurance)
+- All monetary amounts in ₹ (membership ₹2,500/mo, PT ₹8,000/mo)
+
+**Clickable flows:** Home → Active Session, Workout → Active Session, Trainer Today → Client Detail, Trainer Clients → Client Detail, Admin Members list → Member Detail.
+
+---
+
+## 18. Key Open Questions (Deferred)
 
 - Which specific AI provider (OpenAI, Gemini, Claude) for exercise suggestions and macro generation? Requires evaluation of cost per call vs. quality at scale.
 - Client feedback / rating submission flow — when and how does a client rate their trainer? (Post-session prompt, or any time from Profile?)
