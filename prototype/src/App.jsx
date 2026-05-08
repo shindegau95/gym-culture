@@ -48,11 +48,20 @@ export default function App() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
             width: 28, height: 28, borderRadius: 8,
-            background: 'linear-gradient(135deg,#FF6B4A,#E11D48)',
+            background: '#0A0A0A',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 0 1px rgba(255,255,255,0.08)',
           }}>
-            <svg width={14} height={14} viewBox="0 0 16 16" fill="none">
-              <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white" fillOpacity={0.9}/>
+            <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+              <defs>
+                <linearGradient id="db-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FF6B4A"/>
+                  <stop offset="100%" stopColor="#E11D48"/>
+                </linearGradient>
+              </defs>
+              <rect x="0.5" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-nav)"/>
+              <rect x="4" y="6" width="8" height="4" rx="1" fill="url(#db-nav)"/>
+              <rect x="12" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-nav)"/>
             </svg>
           </div>
           <span style={{ color: 'rgba(235,235,245,0.5)', fontFamily: FONT.ui, fontSize: 13, fontWeight: 500 }}>Gym Culture</span>

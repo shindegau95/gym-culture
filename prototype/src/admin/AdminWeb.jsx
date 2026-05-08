@@ -4,10 +4,14 @@ import { TOKENS, FONT } from '../tokens';
 const ThemeCtx = createContext(TOKENS.dark);
 const useT = () => useContext(ThemeCtx);
 
+const RoleCtx = createContext({ role: 'staff', setRole: () => {} });
+const useRole = () => useContext(RoleCtx);
+
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 function Sidebar({ active, onNav }) {
   const t = useT();
+  const { role, setRole } = useRole();
   const items = [
     { id: 'dashboard', label: 'Dashboard', icon: DashIcon },
     { id: 'members',   label: 'Members',   icon: MembersIcon },
@@ -23,11 +27,20 @@ function Sidebar({ active, onNav }) {
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <div style={{
             width: 32, height: 32, borderRadius: 10,
-            background: 'linear-gradient(135deg,#FF6B4A,#E11D48)',
+            background: '#0A0A0A',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 0 0 1px rgba(255,255,255,0.08)',
           }}>
-            <svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-              <path d="M8 2L14 5.5V10.5L8 14L2 10.5V5.5L8 2Z" fill="white" fillOpacity={0.9}/>
+            <svg width={18} height={18} viewBox="0 0 16 16" fill="none">
+              <defs>
+                <linearGradient id="db-sidebar" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FF6B4A"/>
+                  <stop offset="100%" stopColor="#E11D48"/>
+                </linearGradient>
+              </defs>
+              <rect x="0.5" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-sidebar)"/>
+              <rect x="4" y="6" width="8" height="4" rx="1" fill="url(#db-sidebar)"/>
+              <rect x="12" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-sidebar)"/>
             </svg>
           </div>
           <div>
@@ -54,11 +67,35 @@ function Sidebar({ active, onNav }) {
           );
         })}
       </nav>
-      <div style={{ padding: '16px 12px 24px', borderTop: `1px solid ${t.sep}` }}>
+      <div style={{ padding: '16px 12px 24px', borderTop: `1px solid ${t.sep}`, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* Role switcher */}
+        <div style={{ display: 'flex', background: t.fillTint, borderRadius: 10, padding: 3 }}>
+          {[{ id: 'staff', label: 'Staff' }, { id: 'owner', label: 'Owner' }].map(r => (
+            <button key={r.id} onClick={() => setRole(r.id)} style={{
+              flex: 1, padding: '6px 0', borderRadius: 8, border: 'none', cursor: 'pointer',
+              background: role === r.id ? t.gradient : 'transparent',
+              color: role === r.id ? '#fff' : t.ink3,
+              fontFamily: FONT.ui, fontSize: 12, fontWeight: role === r.id ? 700 : 400,
+              transition: 'all 0.15s',
+            }}>{r.label}</button>
+          ))}
+        </div>
+        {/* Branch badge */}
         <div style={{ padding: '10px 12px', borderRadius: 10, background: t.fillTint2 }}>
-          <div style={{ color: t.ink4, fontFamily: FONT.ui, fontSize: 11, marginBottom: 4 }}>CURRENT BRANCH</div>
-          <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>Kandivali</div>
-          <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 11, marginTop: 2 }}>Mumbai · Active</div>
+          <div style={{ color: t.ink4, fontFamily: FONT.ui, fontSize: 11, marginBottom: 4 }}>
+            {role === 'owner' ? 'LOGGED IN AS' : 'CURRENT BRANCH'}
+          </div>
+          {role === 'owner' ? (
+            <>
+              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>Gaurav Shinde</div>
+              <div style={{ color: t.accent, fontFamily: FONT.ui, fontSize: 11, marginTop: 2, fontWeight: 600 }}>Owner · All branches</div>
+            </>
+          ) : (
+            <>
+              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>Kandivali</div>
+              <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 11, marginTop: 2 }}>Mumbai · Active</div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -214,7 +251,257 @@ function RecentActivity() {
   );
 }
 
+const BRANCH_COLORS = ['#FF4664', '#FF8042', '#22A06B', '#A78BFA'];
+const MONTHS = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+
+const BRANCHES = [
+  { name: 'Kandivali', members: 247, ptMembers: 89,  trainers: 12, revenue: 6.1, status: 'active',   history: [4.8, 5.1, 5.4, 5.6, 5.9, 6.1] },
+  { name: 'Borivali',  members: 198, ptMembers: 71,  trainers: 9,  revenue: 4.8, status: 'active',   history: [3.8, 3.9, 4.1, 4.3, 4.6, 4.8] },
+  { name: 'Mira Road', members: 143, ptMembers: 52,  trainers: 7,  revenue: 3.4, status: 'active',   history: [2.8, 2.9, 3.0, 3.1, 3.2, 3.4] },
+  { name: 'Malad',     members: 89,  ptMembers: 28,  trainers: 4,  revenue: 1.9, status: 'new',      history: [0.0, 0.0, 0.5, 0.9, 1.4, 1.9] },
+  { name: 'Goregaon',  members: 0,   ptMembers: 0,   trainers: 0,  revenue: 0,   status: 'upcoming', history: [0, 0, 0, 0, 0, 0] },
+];
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function BranchHeatGrid({ t }) {
+  const allVals = BRANCHES.flatMap(b => b.history).filter(v => v > 0);
+  const globalMax = Math.max(...allVals);
+
+  return (
+    <Card style={{ padding: 24, marginBottom: 16 }}>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600 }}>Branch Performance — 6 Months</div>
+        <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13, marginTop: 2 }}>Cell intensity = revenue magnitude · darker = higher · ₹ lakhs</div>
+      </div>
+
+      {/* Month headers */}
+      <div style={{ display: 'grid', gridTemplateColumns: '90px repeat(6, 1fr) 80px 64px', gap: 6, marginBottom: 8, paddingRight: 2 }}>
+        <div/>
+        {MONTHS.map(m => (
+          <div key={m} style={{ textAlign: 'center', fontFamily: FONT.mono, fontSize: 11, color: t.ink3, letterSpacing: '0.04em' }}>{m}</div>
+        ))}
+        <div style={{ textAlign: 'center', fontFamily: FONT.ui, fontSize: 10, color: t.ink4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>MoM trend</div>
+        <div style={{ textAlign: 'right', fontFamily: FONT.ui, fontSize: 10, color: t.ink4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>6M growth</div>
+      </div>
+
+      {/* Branch rows */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {BRANCHES.map((b, bi) => {
+          const color = bi < BRANCH_COLORS.length ? BRANCH_COLORS[bi] : t.ink4;
+          const firstNonZero = b.history.find(v => v > 0);
+          const last = b.history[5];
+          const growth = firstNonZero
+            ? Math.round(((last - firstNonZero) / firstNonZero) * 100)
+            : null;
+
+          // MoM changes for sparkline
+          const momChanges = b.history.map((v, i) => i === 0 ? 0 : v - b.history[i - 1]);
+          const momMax = Math.max(...momChanges.map(Math.abs), 0.1);
+          const spW = 80, spH = 28;
+          const spPts = momChanges.slice(1).map((v, i) => {
+            const x = 4 + (i / (momChanges.length - 2)) * (spW - 8);
+            const y = spH / 2 - (v / momMax) * (spH / 2 - 4);
+            return [x, y];
+          });
+          const spPath = spPts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+
+          return (
+            <div key={b.name} style={{ display: 'grid', gridTemplateColumns: '90px repeat(6, 1fr) 80px 64px', gap: 6, alignItems: 'center' }}>
+              {/* Branch name */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 2, background: color, flexShrink: 0, opacity: b.status === 'upcoming' ? 0.3 : 1 }}/>
+                <span style={{ fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, color: b.status === 'upcoming' ? t.ink4 : t.ink, whiteSpace: 'nowrap' }}>{b.name}</span>
+              </div>
+
+              {/* Heat cells */}
+              {b.history.map((v, mi) => {
+                const intensity = v > 0 ? 0.18 + (v / globalMax) * 0.78 : 0;
+                const isLaunch = mi > 0 && b.history[mi - 1] === 0 && v > 0;
+                const momDelta = mi > 0 ? v - b.history[mi - 1] : 0;
+                return (
+                  <div key={mi} style={{
+                    height: 46, borderRadius: 10,
+                    background: v > 0 ? hexToRgba(color, intensity) : t.fillTint,
+                    border: isLaunch ? `1.5px solid ${color}` : `1px solid ${v > 0 ? hexToRgba(color, 0.15) : t.sep}`,
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1,
+                    position: 'relative',
+                  }}>
+                    {v > 0 ? (
+                      <>
+                        <span style={{ fontFamily: FONT.mono, fontSize: 13, fontWeight: 700, color: '#fff' }}>{v}</span>
+                        {mi > 0 && momDelta !== 0 && (
+                          <span style={{ fontFamily: FONT.mono, fontSize: 9, color: momDelta > 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,120,120,0.9)' }}>
+                            {momDelta > 0 ? '+' : ''}{momDelta.toFixed(1)}
+                          </span>
+                        )}
+                        {isLaunch && (
+                          <div style={{ position: 'absolute', top: -7, right: -4, fontSize: 11, lineHeight: 1 }}>🚀</div>
+                        )}
+                      </>
+                    ) : (
+                      <span style={{ fontFamily: FONT.mono, fontSize: 12, color: t.ink4 }}>—</span>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* MoM sparkline */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {firstNonZero ? (
+                  <svg width={spW} height={spH} style={{ display: 'block' }}>
+                    <line x1={4} y1={spH/2} x2={spW-4} y2={spH/2} stroke={t.sep} strokeWidth={0.5} strokeDasharray="2 3"/>
+                    <path d={spPath} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+                    {spPts.length > 0 && (
+                      <circle cx={spPts[spPts.length-1][0]} cy={spPts[spPts.length-1][1]} r={2.5} fill={color}/>
+                    )}
+                  </svg>
+                ) : (
+                  <span style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink4 }}>—</span>
+                )}
+              </div>
+
+              {/* 6M growth badge */}
+              <div style={{ textAlign: 'right' }}>
+                {growth !== null ? (
+                  <span style={{
+                    fontFamily: FONT.mono, fontSize: 12, fontWeight: 700,
+                    color: growth > 50 ? t.accent : t.good,
+                    background: growth > 50 ? t.accentTint : 'rgba(34,160,107,0.1)',
+                    borderRadius: 6, padding: '3px 8px',
+                  }}>+{growth}%</span>
+                ) : (
+                  <span style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink4 }}>Soon</span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Scale legend */}
+      <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4 }}>Low</span>
+        <div style={{ display: 'flex', gap: 3 }}>
+          {[0.18, 0.35, 0.52, 0.69, 0.86, 1.0].map((a, i) => (
+            <div key={i} style={{ width: 20, height: 12, borderRadius: 3, background: hexToRgba(BRANCH_COLORS[0], a) }}/>
+          ))}
+        </div>
+        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4 }}>High</span>
+        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4, marginLeft: 8 }}>· MoM trend = month-over-month change in ₹ lakhs · 🚀 = branch launch</span>
+      </div>
+    </Card>
+  );
+}
+
+function BranchSparkline({ data, color }) {
+  const w = 72, h = 24;
+  const valid = data.filter(v => v > 0);
+  if (valid.length < 2) return <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#666' }}>—</span>;
+  const min = Math.min(...valid), max = Math.max(...valid);
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * (w - 4) + 2;
+    const y = v === 0 ? h : h - 4 - ((v - min) / (max - min || 1)) * (h - 8);
+    return [x, y];
+  });
+  const d = pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
+  const growth = Math.round(((data[5] - data[0]) / (data[0] || data.find(v => v > 0) || 1)) * 100);
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <svg width={w} height={h} style={{ display: 'block', flexShrink: 0 }}>
+        <path d={d} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r={2.5} fill={color}/>
+      </svg>
+      <span style={{ fontFamily: 'monospace', fontSize: 11, color, fontWeight: 700 }}>+{growth}%</span>
+    </div>
+  );
+}
+
+function OwnerDashboard() {
+  const t = useT();
+  const active = BRANCHES.filter(b => b.status !== 'upcoming');
+  const totalMembers  = active.reduce((s, b) => s + b.members, 0);
+  const totalPT       = active.reduce((s, b) => s + b.ptMembers, 0);
+  const totalRevenue  = active.reduce((s, b) => s + b.revenue, 0).toFixed(1);
+  const totalTrainers = active.reduce((s, b) => s + b.trainers, 0);
+
+  const maxRev = Math.max(...BRANCHES.map(b => b.revenue), 1);
+
+  return (
+    <div style={{ padding: '32px 40px' }}>
+      <div style={{ marginBottom: 28 }}>
+        <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>All Branches</h1>
+        <p style={{ margin: '4px 0 0', fontFamily: FONT.ui, fontSize: 14, color: t.ink3 }}>Friday, 9 May 2026 · Owner view · {active.length} active branches</p>
+      </div>
+
+      {/* Aggregate KPIs */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+        <KPICard label="Total Members"    value={totalMembers}          sub="across all branches" trend={9.4} />
+        <KPICard label="Active PT Members" value={totalPT}             sub="across all branches" trend={13.1} />
+        <KPICard label="Monthly Revenue"  value={`₹${totalRevenue}L`}  sub="combined"            trend={15.8} />
+        <KPICard label="Trainers"         value={totalTrainers}         sub="across all branches" trend={0} />
+      </div>
+
+      {/* Heat grid */}
+      <BranchHeatGrid t={t} />
+
+      {/* Branch breakdown */}
+      <Card style={{ marginBottom: 16, overflow: 'hidden' }}>
+        <div style={{ padding: '20px 24px 16px', borderBottom: `1px solid ${t.sep}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600 }}>Branch Breakdown</div>
+          <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13 }}>May 2026</div>
+        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: t.bgGrouped }}>
+              {['Branch', 'Members', 'PT Members', 'Trainers', 'Revenue', 'Status', '6-mo trend'].map(h => (
+                <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontFamily: FONT.ui, fontSize: 11, fontWeight: 600, color: t.ink3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {BRANCHES.map((b, i) => {
+              const statusColor = b.status === 'active' ? t.good : b.status === 'new' ? t.accent : t.ink4;
+              const statusBg = b.status === 'active' ? 'rgba(34,160,107,0.12)' : b.status === 'new' ? t.accentTint : t.fillTint;
+              const color = i < BRANCH_COLORS.length ? BRANCH_COLORS[i] : t.ink4;
+              return (
+                <tr key={b.name} style={{ borderTop: `1px solid ${t.sep}` }}>
+                  <td style={{ padding: '14px 16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <div style={{ width: 10, height: 10, borderRadius: 3, background: color, flexShrink: 0, opacity: b.status === 'upcoming' ? 0.3 : 1 }}/>
+                      <span style={{ fontFamily: FONT.ui, fontSize: 14, fontWeight: 600, color: b.status === 'upcoming' ? t.ink3 : t.ink }}>{b.name}</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.members || '—'}</td>
+                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.ptMembers || '—'}</td>
+                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.trainers || '—'}</td>
+                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 14, fontWeight: 700, color: b.revenue ? t.ink : t.ink4 }}>{b.revenue ? `₹${b.revenue}L` : '—'}</td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', background: statusBg, color: statusColor, borderRadius: 6, padding: '2px 8px', fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, textTransform: 'capitalize' }}>{b.status}</span>
+                  </td>
+                  <td style={{ padding: '14px 16px' }}>
+                    <BranchSparkline data={b.history} color={color} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+
+      <RecentActivity />
+    </div>
+  );
+}
+
 function Dashboard() {
+  const { role } = useRole();
+  if (role === 'owner') return <OwnerDashboard />;
   const t = useT();
   return (
     <div style={{ padding: '32px 40px' }}>
@@ -696,17 +983,20 @@ function TrainerIcon({ active }) {
 
 export default function AdminWeb({ t = TOKENS.dark }) {
   const [page, setPage] = useState('dashboard');
+  const [role, setRole] = useState('staff');
   const pages = { dashboard: Dashboard, members: Members, payments: Payments, trainers: Trainers };
   const Page = pages[page] || Dashboard;
 
   return (
     <ThemeCtx.Provider value={t}>
-      <div style={{ display: 'flex', width: '100%', height: '100%', background: t.bgGrouped, fontFamily: FONT.ui }}>
-        <Sidebar active={page} onNav={setPage} />
-        <div style={{ flex: 1, overflowY: 'auto' }}>
-          <Page />
+      <RoleCtx.Provider value={{ role, setRole }}>
+        <div style={{ display: 'flex', width: '100%', height: '100%', background: t.bgGrouped, fontFamily: FONT.ui }}>
+          <Sidebar active={page} onNav={setPage} />
+          <div style={{ flex: 1, overflowY: 'auto' }}>
+            <Page />
+          </div>
         </div>
-      </div>
+      </RoleCtx.Provider>
     </ThemeCtx.Provider>
   );
 }
