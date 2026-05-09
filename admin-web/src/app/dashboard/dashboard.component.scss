@@ -1,0 +1,87 @@
+.dashboard {
+  min-height: 100vh;
+  background: #0e0e10;
+  color: #f5f4f2;
+  font-family: -apple-system, "SF Pro Text", system-ui, sans-serif;
+  padding: 32px 40px;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+
+    .subtitle {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: rgba(235, 235, 245, 0.5);
+    }
+
+    .signout {
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: transparent;
+      color: rgba(235, 235, 245, 0.7);
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.06);
+      }
+    }
+  }
+
+  main {
+    background: #16161a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 32px;
+  }
+
+  .state {
+    text-align: center;
+    color: rgba(235, 235, 245, 0.6);
+  }
+
+  .profile h2 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+  }
+
+  .role {
+    margin: 0 0 18px;
+    font-size: 13px;
+    color: #ff7b5a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  pre {
+    background: #0b0b0d;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 16px;
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 12px;
+    overflow-x: auto;
+    color: #d8d6d2;
+  }
+
+  .pending h2 {
+    color: #ffb13d;
+  }
+
+  .error h2 {
+    color: #ff5a55;
+  }
+}
