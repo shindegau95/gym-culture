@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Required Skills
+
+Always invoke these skills before any frontend or coding work — no exceptions:
+
+- **`/frontend-design:frontend-design`** — invoke before building or modifying any UI component, screen, or layout. Establishes aesthetic direction, design quality bar, and animation/typography standards.
+- **`/karpathy-guidelines`** — invoke before any implementation task. Enforces simplicity-first thinking, surgical edits, and goal-driven execution to avoid common LLM coding mistakes.
+
+Both skills must be invoked at the start of the task, not after. If a task touches both design and code (which most tasks in this project do), invoke both.
+
+---
+
 ## Linear Issue Workflow
 
 Whenever the user asks to work on any issue:
