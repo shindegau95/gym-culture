@@ -1,0 +1,1292 @@
+/* ─── Page wrappers ──────────────────────────────────────────────────────── */
+.page {
+  padding-bottom: 100px;
+}
+
+.shell {
+  height: 100%;
+  position: relative;
+  background: var(--gc-bg);
+}
+
+.scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sessionWrap {
+  height: 100%;
+  position: relative;
+}
+
+.coachWrap {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--gc-bg);
+}
+
+/* ─── Home: Hero ─────────────────────────────────────────────────────────── */
+.heroPad {
+  padding: 4px 16px 16px;
+}
+
+.hero {
+  background: var(--gc-gradient);
+  border-radius: 22px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+
+.heroBlob1 {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.10);
+  pointer-events: none;
+}
+
+.heroBlob2 {
+  position: absolute;
+  right: 30px;
+  bottom: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  pointer-events: none;
+}
+
+.heroEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.heroDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: #fff;
+}
+
+.heroEyebrowText {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-family: var(--gc-font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+}
+
+.heroMetaRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+  align-items: baseline;
+}
+
+.heroNumber {
+  font-family: var(--gc-font-mono);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.heroNumberUnit {
+  font-size: 12px;
+  opacity: 0.85;
+  font-family: var(--gc-font-ui);
+}
+
+.heroCoachBtn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 0;
+  cursor: pointer;
+}
+
+.heroCoachLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.heroStartBtn {
+  margin-top: 14px;
+  width: 100%;
+  height: 44px;
+  border-radius: 12px;
+  border: 0;
+  cursor: pointer;
+  background: #fff;
+  color: var(--gc-accent);
+  font-family: var(--gc-font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ─── Home: Muscle recovery ─────────────────────────────────────────────── */
+.section {
+  padding: 0 16px;
+}
+
+.muscleStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.muscleNote {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--gc-sep);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.muscleNoteDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--gc-accent);
+  flex-shrink: 0;
+}
+
+.muscleNoteText {
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  color: var(--gc-ink2);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.muscleNoteText strong {
+  color: var(--gc-ink);
+}
+
+/* ─── Up next list ──────────────────────────────────────────────────────── */
+.scheduleRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.scheduleRow:last-child {
+  border-bottom: none;
+}
+
+.scheduleDate {
+  width: 44px;
+}
+
+.scheduleNum {
+  font-family: var(--gc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.scheduleDay {
+  font-family: var(--gc-font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gc-ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.scheduleRail {
+  width: 1px;
+  align-self: stretch;
+  background: var(--gc-sep);
+  position: relative;
+}
+
+.scheduleRailDot {
+  position: absolute;
+  left: -3px;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gc-accent);
+}
+
+.scheduleRailDot--rest {
+  background: var(--gc-ink3);
+}
+
+.scheduleBody {
+  flex: 1;
+}
+
+.scheduleTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scheduleTitle {
+  font-family: var(--gc-font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  letter-spacing: -0.2px;
+}
+
+.scheduleRestPill {
+  font-family: var(--gc-font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--gc-ink3);
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--gc-fill-tint);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.scheduleSub {
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  color: var(--gc-ink3);
+  margin-top: 1px;
+}
+
+/* ─── Session: header ───────────────────────────────────────────────────── */
+.sessionPage {
+  padding-bottom: 100px;
+  background: var(--gc-bg);
+  min-height: 100%;
+}
+
+.sessionHead {
+  padding: 8px 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.endBtn {
+  background: transparent;
+  border: 0;
+  color: var(--gc-accent);
+  font-family: var(--gc-font-ui);
+  font-size: 15px;
+  font-weight: 590;
+  cursor: pointer;
+}
+
+.sessionHeadCenter {
+  text-align: center;
+}
+
+.sessionLive {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gc-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sessionLiveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gc-accent);
+  animation: gcPulse 1.4s ease-in-out infinite;
+}
+
+.sessionExName {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  margin-top: 1px;
+}
+
+/* ─── Session: rest timer ───────────────────────────────────────────────── */
+.restPad {
+  padding: 0 16px 14px;
+}
+
+.restCard {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: none;
+}
+
+.restCard--resting {
+  background: var(--gc-gradient);
+  color: #fff;
+}
+
+.restRingWrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.restSvg {
+  transform: rotate(-90deg);
+  display: block;
+}
+
+.restCircleBg {
+  stroke: var(--gc-fill-tint);
+  fill: none;
+}
+
+.restCircleBg--resting {
+  stroke: rgba(255, 255, 255, 0.25);
+}
+
+.restCircleFg {
+  stroke: var(--gc-accent);
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.restCircleFg--resting {
+  stroke: #fff;
+}
+
+.restRingCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.restRingNumber {
+  font-family: var(--gc-font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.restRingNumber--resting {
+  color: #fff;
+}
+
+.restBody {
+  flex: 1;
+}
+
+.restEyebrow {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.restTitle {
+  font-family: var(--gc-font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-top: 3px;
+}
+
+.restMeta {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  margin-top: 3px;
+  opacity: 0.8;
+}
+
+.restButtons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.restSkipBtn {
+  background: var(--gc-gradient);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.restSkipBtn--resting {
+  background: #fff;
+  color: var(--gc-accent);
+}
+
+.restPlusBtn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 0;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--gc-ink2);
+}
+
+.restPlusBtn--resting {
+  color: #fff;
+}
+
+/* ─── Session: set rows ─────────────────────────────────────────────────── */
+.setHeader {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr 60px 26px;
+  gap: 6px;
+  padding: 6px 0 8px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.setHeaderCell {
+  font-family: var(--gc-font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--gc-ink3);
+  letter-spacing: 0.6px;
+}
+
+.setRow {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr 60px 26px;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 0;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.setRow--active {
+  background: var(--gc-gradient-soft);
+  border-radius: 10px;
+  margin-left: -8px;
+  margin-right: -8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.setIdx {
+  font-family: var(--gc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.setIdx--done {
+  color: var(--gc-ink3);
+}
+
+.setWeight {
+  font-family: var(--gc-font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  letter-spacing: -0.3px;
+}
+
+.setWeight--done {
+  color: var(--gc-ink2);
+}
+
+.setUnit {
+  font-size: 10px;
+  color: var(--gc-ink3);
+  margin-left: 2px;
+}
+
+.setReps {
+  font-family: var(--gc-font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.setReps--empty {
+  color: var(--gc-ink4);
+}
+
+.setReps--done {
+  color: var(--gc-ink2);
+}
+
+.setRpe {
+  text-align: right;
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  color: var(--gc-ink2);
+}
+
+.setRpe--empty {
+  color: var(--gc-ink4);
+}
+
+.setStatus {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.setCheck {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--gc-good);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.setCircle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--gc-ink4);
+  background: transparent;
+}
+
+.setCircle--active {
+  border-color: var(--gc-accent);
+  background: var(--gc-accent-tint);
+}
+
+.addSetBtn {
+  margin-top: 8px;
+  width: 100%;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--gc-fill-tint2);
+  border: 0;
+  cursor: pointer;
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+/* ─── Up next exercises ─────────────────────────────────────────────────── */
+.exerciseRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.exerciseRow:last-child {
+  border-bottom: none;
+}
+
+.exerciseIcon {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--gc-fill-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exerciseBody {
+  flex: 1;
+}
+
+.exerciseName {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 590;
+  color: var(--gc-ink);
+}
+
+.exerciseMeta {
+  font-family: var(--gc-font-mono);
+  font-size: 11px;
+  color: var(--gc-ink3);
+}
+
+/* ─── Workout: week strip ───────────────────────────────────────────────── */
+.weekPad {
+  padding: 0 16px 16px;
+}
+
+.weekHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.weekHeaderTitle {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.weekHeaderSub {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  color: var(--gc-ink3);
+}
+
+.weekStrip {
+  display: flex;
+  gap: 6px;
+}
+
+.weekDay {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.weekTile {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--gc-fill-tint);
+  border: 1.5px solid var(--gc-sep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weekTile--done {
+  background: var(--gc-accent-tint);
+  border-color: var(--gc-accent-ring);
+}
+
+.weekTile--today {
+  background: var(--gc-gradient);
+  border: none;
+}
+
+.weekTileRest {
+  font-size: 12px;
+}
+
+.weekDayLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--gc-ink3);
+  letter-spacing: 0.2px;
+}
+
+.weekDayLabel--today {
+  font-weight: 700;
+  color: var(--gc-accent);
+}
+
+/* ─── Workout: exercise table ───────────────────────────────────────────── */
+.tableHead {
+  display: grid;
+  grid-template-columns: 1fr 40px 48px 64px;
+  gap: 6px;
+  padding: 10px 14px 8px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.tableHeadCell {
+  font-family: var(--gc-font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gc-ink3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 1fr 40px 48px 64px;
+  gap: 6px;
+  padding: 12px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+  align-items: center;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableExName {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.tableNum {
+  font-family: var(--gc-font-mono);
+  font-size: 13px;
+  color: var(--gc-ink2);
+}
+
+.tableTarget {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  color: var(--gc-ink3);
+}
+
+.startBtn {
+  margin-top: 16px;
+  width: 100%;
+  height: 48px;
+  border-radius: 14px;
+  border: 0;
+  cursor: pointer;
+  background: var(--gc-gradient);
+  color: #fff;
+  font-family: var(--gc-font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ─── Coach Profile ─────────────────────────────────────────────────────── */
+.backRow {
+  padding: 12px 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.backBtn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--gc-accent);
+  font-family: var(--gc-font-ui);
+  font-size: 15px;
+  font-weight: 590;
+  padding: 0;
+}
+
+.coachHero {
+  padding: 16px 16px 20px;
+  text-align: center;
+}
+
+.coachAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 26px;
+  margin: 0 auto 12px;
+  background: var(--gc-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--gc-font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.coachName {
+  font-family: var(--gc-font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gc-ink);
+  letter-spacing: -0.4px;
+}
+
+.coachSub {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  color: var(--gc-ink3);
+  margin-top: 4px;
+}
+
+.coachStats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.coachStat {
+  text-align: center;
+}
+
+.coachStatValue {
+  font-family: var(--gc-font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--gc-ink);
+}
+
+.coachStatLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  color: var(--gc-ink3);
+  margin-top: 2px;
+}
+
+.programmeTitle {
+  font-family: var(--gc-font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gc-ink);
+  margin-bottom: 4px;
+}
+
+.programmeBody {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  color: var(--gc-ink3);
+  line-height: 1.5;
+}
+
+.programmeTags {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.programmeTag {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-accent);
+  background: var(--gc-accent-tint);
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+.certRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.certRow:last-child {
+  border-bottom: none;
+}
+
+.certIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--gc-accent-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.certText {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gc-ink);
+}
+
+.scheduleListRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.scheduleListRow:last-child {
+  border-bottom: none;
+}
+
+.scheduleListDay {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.scheduleListTime {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  color: var(--gc-ink3);
+}
+
+.scheduleListTime--off {
+  color: var(--gc-ink4);
+}
+
+/* ─── Progress charts ───────────────────────────────────────────────────── */
+.progChart {
+  width: 100%;
+  display: block;
+}
+
+.progHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.progDelta {
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  color: var(--gc-good);
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.progAxis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.progAxisLabel {
+  font-family: var(--gc-font-mono);
+  font-size: 10px;
+  color: var(--gc-ink3);
+}
+
+.prRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.prRow:last-child {
+  border-bottom: none;
+}
+
+.prIcon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--gc-accent-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prBody {
+  flex: 1;
+}
+
+.prName {
+  font-family: var(--gc-font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+.prWeek {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  color: var(--gc-ink3);
+  margin-top: 1px;
+}
+
+.prValue {
+  font-family: var(--gc-font-mono);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gc-accent);
+}
+
+.measureStack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.measureRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.measureLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  width: 54px;
+}
+
+.measureBody {
+  flex: 1;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.measureBefore {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  color: var(--gc-ink3);
+}
+
+.measureAfter {
+  font-family: var(--gc-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gc-good);
+}
+
+/* ─── Nutrition ─────────────────────────────────────────────────────────── */
+.macroSummary {
+  padding: 0 16px 16px;
+}
+
+.macroHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.macroEyebrow {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.macroTargetRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.macroUnit {
+  font-family: var(--gc-font-ui);
+  font-size: 13px;
+  color: var(--gc-ink3);
+  font-weight: 500;
+}
+
+.macroConsumedHead {
+  text-align: right;
+}
+
+.macroConsumedLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  color: var(--gc-ink3);
+  font-weight: 500;
+}
+
+.macroConsumed {
+  font-family: var(--gc-font-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gc-good);
+  margin-top: 2px;
+}
+
+.macroRingsRow {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 18px;
+}
+
+.macroRing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.macroRingWrap {
+  position: relative;
+  width: 66px;
+  height: 66px;
+}
+
+.macroRingSvg {
+  transform: rotate(-90deg);
+  display: block;
+}
+
+.macroRingTrack {
+  fill: none;
+  stroke: var(--gc-fill-tint);
+}
+
+.macroRingFg {
+  fill: none;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.macroRingCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.macroRingValue {
+  font-family: var(--gc-font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gc-ink);
+}
+
+.macroRingValueUnit {
+  font-size: 9px;
+  color: var(--gc-ink3);
+}
+
+.macroRingLabel {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-ink3);
+}
+
+.coachNote {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--gc-gradient-soft);
+  border: 0.5px solid var(--gc-accent-ring);
+}
+
+.coachNoteTitle {
+  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gc-accent);
+  margin-bottom: 3px;
+}
+
+.coachNoteBody {
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  color: var(--gc-ink2);
+  line-height: 1.4;
+}
+
+.mealRow {
+  padding: 14px;
+  border-bottom: 0.5px solid var(--gc-sep);
+}
+
+.mealRow:last-child {
+  border-bottom: none;
+}
+
+.mealHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.mealTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mealName {
+  font-family: var(--gc-font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gc-ink);
+}
+
+.mealTime {
+  font-family: var(--gc-font-mono);
+  font-size: 11px;
+  color: var(--gc-ink3);
+}
+
+.mealKcal {
+  font-family: var(--gc-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gc-ink2);
+}
+
+.mealItems {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mealItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mealItemDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gc-ink4);
+  flex-shrink: 0;
+}
+
+.mealItemText {
+  font-family: var(--gc-font-ui);
+  font-size: 12px;
+  color: var(--gc-ink2);
+  font-weight: 500;
+}

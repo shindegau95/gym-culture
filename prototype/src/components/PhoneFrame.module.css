@@ -58,6 +58,28 @@
   background: var(--gc-ink);
 }
 
+.signalBar--dim {
+  opacity: 0.3;
+}
+
+.iconStroke {
+  stroke: var(--gc-ink);
+}
+
+.batteryStroke {
+  stroke: var(--gc-ink);
+  opacity: 0.35;
+}
+
+.batteryFill {
+  fill: var(--gc-ink);
+}
+
+.batteryNub {
+  fill: var(--gc-ink);
+  opacity: 0.4;
+}
+
 .content {
   position: absolute;
   inset: 0;

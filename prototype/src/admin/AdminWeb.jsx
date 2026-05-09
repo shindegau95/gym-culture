@@ -1,5 +1,6 @@
 import { useState, createContext, useContext } from 'react';
-import { TOKENS, FONT } from '../tokens';
+import { TOKENS } from '../tokens';
+import s from './AdminWeb.module.css';
 
 const ThemeCtx = createContext(TOKENS.dark);
 const useT = () => useContext(ThemeCtx);
@@ -8,9 +9,7 @@ const RoleCtx = createContext({ role: 'staff', setRole: () => {} });
 const useRole = () => useContext(RoleCtx);
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-
 function Sidebar({ active, onNav }) {
-  const t = useT();
   const { role, setRole } = useRole();
   const items = [
     { id: 'dashboard', label: 'Dashboard', icon: DashIcon },
@@ -19,18 +18,10 @@ function Sidebar({ active, onNav }) {
     { id: 'trainers',  label: 'Trainers',  icon: TrainerIcon },
   ];
   return (
-    <div style={{
-      width: 220, background: t.bg, display: 'flex', flexDirection: 'column',
-      borderRight: `1px solid ${t.sep}`, flexShrink: 0,
-    }}>
-      <div style={{ padding: '28px 24px 32px', borderBottom: `1px solid ${t.sep}` }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 10,
-            background: '#0A0A0A',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 0 1px rgba(255,255,255,0.08)',
-          }}>
+    <div className={s.sidebar}>
+      <div className={s.sidebarBrand}>
+        <div className={s.sidebarBrandRow}>
+          <div className={s.sidebarMark}>
             <svg width={18} height={18} viewBox="0 0 16 16" fill="none">
               <defs>
                 <linearGradient id="db-sidebar" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -44,56 +35,43 @@ function Sidebar({ active, onNav }) {
             </svg>
           </div>
           <div>
-            <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 13, fontWeight: 700, letterSpacing: '0.02em' }}>GYM CULTURE</div>
-            <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 11, marginTop: 1 }}>Admin Portal</div>
+            <div className={s.sidebarTitle}>GYM CULTURE</div>
+            <div className={s.sidebarSubtitle}>Admin Portal</div>
           </div>
         </div>
       </div>
-      <nav style={{ padding: '16px 12px', flex: 1 }}>
+      <nav className={s.sidebarNav}>
         {items.map(({ id, label, icon: Icon }) => {
           const isActive = active === id;
           return (
-            <button key={id} onClick={() => onNav(id)} style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 10,
-              padding: '10px 12px', borderRadius: 10, border: 'none', cursor: 'pointer',
-              background: isActive ? t.accentTint : 'transparent',
-              color: isActive ? t.accent : t.ink3,
-              fontFamily: FONT.ui, fontSize: 14, fontWeight: isActive ? 600 : 400,
-              marginBottom: 2, transition: 'all 0.15s', textAlign: 'left',
-            }}>
+            <button key={id} onClick={() => onNav(id)}
+              className={`${s.sidebarItem} ${isActive ? s['sidebarItem--active'] : ''}`}>
               <Icon active={isActive} />
               {label}
             </button>
           );
         })}
       </nav>
-      <div style={{ padding: '16px 12px 24px', borderTop: `1px solid ${t.sep}`, display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {/* Role switcher */}
-        <div style={{ display: 'flex', background: t.fillTint, borderRadius: 10, padding: 3 }}>
+      <div className={s.sidebarFoot}>
+        <div className={s.roleSwitcher}>
           {[{ id: 'staff', label: 'Staff' }, { id: 'owner', label: 'Owner' }].map(r => (
-            <button key={r.id} onClick={() => setRole(r.id)} style={{
-              flex: 1, padding: '6px 0', borderRadius: 8, border: 'none', cursor: 'pointer',
-              background: role === r.id ? t.gradient : 'transparent',
-              color: role === r.id ? '#fff' : t.ink3,
-              fontFamily: FONT.ui, fontSize: 12, fontWeight: role === r.id ? 700 : 400,
-              transition: 'all 0.15s',
-            }}>{r.label}</button>
+            <button key={r.id} onClick={() => setRole(r.id)}
+              className={`${s.roleBtn} ${role === r.id ? s['roleBtn--active'] : ''}`}>
+              {r.label}
+            </button>
           ))}
         </div>
-        {/* Branch badge */}
-        <div style={{ padding: '10px 12px', borderRadius: 10, background: t.fillTint2 }}>
-          <div style={{ color: t.ink4, fontFamily: FONT.ui, fontSize: 11, marginBottom: 4 }}>
-            {role === 'owner' ? 'LOGGED IN AS' : 'CURRENT BRANCH'}
-          </div>
+        <div className={s.branchBadge}>
+          <div className={s.branchEyebrow}>{role === 'owner' ? 'LOGGED IN AS' : 'CURRENT BRANCH'}</div>
           {role === 'owner' ? (
             <>
-              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>Gaurav Shinde</div>
-              <div style={{ color: t.accent, fontFamily: FONT.ui, fontSize: 11, marginTop: 2, fontWeight: 600 }}>Owner · All branches</div>
+              <div className={s.branchName}>Gaurav Shinde</div>
+              <div className={`${s.branchSub} ${s.ownerSub}`}>Owner · All branches</div>
             </>
           ) : (
             <>
-              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>Kandivali</div>
-              <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 11, marginTop: 2 }}>Mumbai · Active</div>
+              <div className={s.branchName}>Kandivali</div>
+              <div className={s.branchSub}>Mumbai · Active</div>
             </>
           )}
         </div>
@@ -103,88 +81,61 @@ function Sidebar({ active, onNav }) {
 }
 
 // ─── Shared mini-components ───────────────────────────────────────────────────
-
 function Badge({ label, color, bg }) {
   return (
-    <span style={{
-      display: 'inline-flex', alignItems: 'center',
-      background: bg, color, borderRadius: 6, padding: '2px 8px',
-      fontFamily: FONT.ui, fontSize: 12, fontWeight: 600,
-    }}>{label}</span>
+    <span className={s.badge} style={{ background: bg, color }}>{label}</span>
   );
 }
 
-function Card({ children, style }) {
-  const t = useT();
+function Card({ children, className, style }) {
   return (
-    <div style={{
-      background: t.bgElevated,
-      borderRadius: 16,
-      border: `1px solid ${t.sep}`,
-      ...style,
-    }}>
+    <div className={`${s.card} ${className || ''}`} style={style}>
       {children}
     </div>
   );
 }
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
-
 function KPICard({ label, value, sub, trend }) {
-  const t = useT();
   const up = trend >= 0;
   return (
-    <Card style={{ padding: '20px 24px' }}>
-      <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 8 }}>{label}</div>
-      <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 32, fontWeight: 700, letterSpacing: '-1px' }}>{value}</div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+    <Card className={s.kpiCard}>
+      <div className={s.kpiLabel}>{label}</div>
+      <div className={s.kpiValue}>{value}</div>
+      <div className={s.kpiTrendRow}>
         {trend !== 0 && (
-          <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 2,
-            background: up ? 'rgba(34,160,107,0.12)' : 'rgba(214,42,42,0.12)',
-            color: up ? t.good : t.bad,
-            borderRadius: 6, padding: '2px 6px',
-            fontFamily: FONT.ui, fontSize: 12, fontWeight: 600,
-          }}>
+          <span className={`${s.trendPill} ${up ? s['trendPill--up'] : s['trendPill--down']}`}>
             {up ? '↑' : '↓'} {Math.abs(trend)}%
           </span>
         )}
-        <span style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 12 }}>{sub}</span>
+        <span className={s.kpiSub}>{sub}</span>
       </div>
     </Card>
   );
 }
 
 function RevenueChart() {
-  const t = useT();
   const months = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
   const values = [3.2, 4.1, 3.8, 4.9, 5.2, 6.1];
   const max = 7;
   return (
-    <Card style={{ padding: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+    <Card className={s.chartCard}>
+      <div className={s.chartHeader}>
         <div>
-          <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600 }}>Revenue</div>
-          <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13, marginTop: 2 }}>Monthly collection (₹ lakhs)</div>
+          <div className={s.chartTitle}>Revenue</div>
+          <div className={s.chartSub}>Monthly collection (₹ lakhs)</div>
         </div>
-        <div style={{ background: t.accentTint, color: t.accent, borderRadius: 8, padding: '4px 10px', fontFamily: FONT.ui, fontSize: 12, fontWeight: 600 }}>+17.3% YoY</div>
+        <div className={s.chartBadge}>+17.3% YoY</div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, height: 140 }}>
+      <div className={s.barRow}>
         {values.map((v, i) => {
           const barH = Math.round((v / max) * 100);
+          const isLast = i === values.length - 1;
           return (
-            <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-              <div style={{ color: t.ink3, fontFamily: FONT.mono, fontSize: 10, opacity: i === values.length - 1 ? 1 : 0.6 }}>
-                {v}L
-              </div>
-              <div style={{
-                width: '100%', borderRadius: '6px 6px 0 0',
-                height: barH,
-                background: i === values.length - 1 ? t.gradient : t.fillTint,
-                transition: 'height 0.3s',
-                minHeight: 4,
-              }} />
-              <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 11 }}>{months[i]}</div>
+            <div key={i} className={s.barCol}>
+              <div className={`${s.barNum} ${isLast ? s['barNum--last'] : ''}`}>{v}L</div>
+              <div className={`${s.bar} ${isLast ? s['bar--last'] : ''}`} style={{ height: barH }} />
+              <div className={s.barLabel}>{months[i]}</div>
             </div>
           );
         })}
@@ -194,7 +145,6 @@ function RevenueChart() {
 }
 
 function TopTrainers() {
-  const t = useT();
   const trainers = [
     { name: 'Priya Sharma',   clients: 14, revenue: '₹1,12,000', rating: 4.9 },
     { name: 'Rohit Malhotra', clients: 11, revenue: '₹88,000',   rating: 4.8 },
@@ -202,23 +152,17 @@ function TopTrainers() {
     { name: 'Karan Mehta',    clients: 8,  revenue: '₹64,000',   rating: 4.6 },
   ];
   return (
-    <Card style={{ padding: 24 }}>
-      <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Top Trainers</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <Card className={s.chartCard}>
+      <div className={s.simpleHead}>Top Trainers</div>
+      <div className={s.trainerStack}>
         {trainers.map((tr, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: 12, flexShrink: 0,
-              background: t.gradient,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: FONT.ui, fontSize: 13, fontWeight: 700, color: '#fff',
-              opacity: 1 - i * 0.15,
-            }}>{tr.name[0]}</div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 13, fontWeight: 600 }}>{tr.name}</div>
-              <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 12 }}>{tr.clients} clients · ★ {tr.rating}</div>
+          <div key={i} className={s.trainerRow}>
+            <div className={s.trainerAvatar} style={{ opacity: 1 - i * 0.15 }}>{tr.name[0]}</div>
+            <div className={s.trainerBody}>
+              <div className={s.trainerName}>{tr.name}</div>
+              <div className={s.trainerMeta}>{tr.clients} clients · ★ {tr.rating}</div>
             </div>
-            <div style={{ color: t.ink2, fontFamily: FONT.mono, fontSize: 13, fontWeight: 600 }}>{tr.revenue}</div>
+            <div className={s.trainerRevenue}>{tr.revenue}</div>
           </div>
         ))}
       </div>
@@ -236,14 +180,14 @@ function RecentActivity() {
     { text: 'Membership renewed for Divya Rao',              time: '5h ago',  dot: t.accent },
   ];
   return (
-    <Card style={{ padding: 24 }}>
-      <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Recent Activity</div>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <Card className={s.chartCard}>
+      <div className={s.simpleHead}>Recent Activity</div>
+      <div>
         {items.map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '10px 0', borderBottom: i < items.length - 1 ? `1px solid ${t.sep}` : 'none' }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: item.dot, flexShrink: 0, marginTop: 5 }} />
-            <div style={{ flex: 1, color: t.ink2, fontFamily: FONT.ui, fontSize: 13 }}>{item.text}</div>
-            <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 12, flexShrink: 0 }}>{item.time}</div>
+          <div key={i} className={s.activityRow}>
+            <div className={s.activityDot} style={{ background: item.dot }} />
+            <div className={s.activityText}>{item.text}</div>
+            <div className={s.activityTime}>{item.time}</div>
           </div>
         ))}
       </div>
@@ -269,38 +213,32 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function BranchHeatGrid({ t }) {
+function BranchHeatGrid() {
+  const t = useT();
   const allVals = BRANCHES.flatMap(b => b.history).filter(v => v > 0);
   const globalMax = Math.max(...allVals);
 
   return (
-    <Card style={{ padding: 24, marginBottom: 16 }}>
-      <div style={{ marginBottom: 20 }}>
-        <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600 }}>Branch Performance — 6 Months</div>
-        <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13, marginTop: 2 }}>Cell intensity = revenue magnitude · darker = higher · ₹ lakhs</div>
+    <Card className={s.heatCard}>
+      <div className={s.heatHead}>
+        <div className={s.chartTitle}>Branch Performance — 6 Months</div>
+        <div className={s.chartSub}>Cell intensity = revenue magnitude · darker = higher · ₹ lakhs</div>
       </div>
 
-      {/* Month headers */}
-      <div style={{ display: 'grid', gridTemplateColumns: '90px repeat(6, 1fr) 80px 64px', gap: 6, marginBottom: 8, paddingRight: 2 }}>
+      <div className={s.heatGrid}>
         <div/>
-        {MONTHS.map(m => (
-          <div key={m} style={{ textAlign: 'center', fontFamily: FONT.mono, fontSize: 11, color: t.ink3, letterSpacing: '0.04em' }}>{m}</div>
-        ))}
-        <div style={{ textAlign: 'center', fontFamily: FONT.ui, fontSize: 10, color: t.ink4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>MoM trend</div>
-        <div style={{ textAlign: 'right', fontFamily: FONT.ui, fontSize: 10, color: t.ink4, textTransform: 'uppercase', letterSpacing: '0.06em' }}>6M growth</div>
+        {MONTHS.map(m => <div key={m} className={s.heatMonth}>{m}</div>)}
+        <div className={s.heatColLabelMid}>MoM trend</div>
+        <div className={s.heatColLabelEnd}>6M growth</div>
       </div>
 
-      {/* Branch rows */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div className={s.heatRows}>
         {BRANCHES.map((b, bi) => {
           const color = bi < BRANCH_COLORS.length ? BRANCH_COLORS[bi] : t.ink4;
           const firstNonZero = b.history.find(v => v > 0);
           const last = b.history[5];
-          const growth = firstNonZero
-            ? Math.round(((last - firstNonZero) / firstNonZero) * 100)
-            : null;
+          const growth = firstNonZero ? Math.round(((last - firstNonZero) / firstNonZero) * 100) : null;
 
-          // MoM changes for sparkline
           const momChanges = b.history.map((v, i) => i === 0 ? 0 : v - b.history[i - 1]);
           const momMax = Math.max(...momChanges.map(Math.abs), 0.1);
           const spW = 80, spH = 28;
@@ -312,49 +250,45 @@ function BranchHeatGrid({ t }) {
           const spPath = spPts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
 
           return (
-            <div key={b.name} style={{ display: 'grid', gridTemplateColumns: '90px repeat(6, 1fr) 80px 64px', gap: 6, alignItems: 'center' }}>
-              {/* Branch name */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                <div style={{ width: 8, height: 8, borderRadius: 2, background: color, flexShrink: 0, opacity: b.status === 'upcoming' ? 0.3 : 1 }}/>
-                <span style={{ fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, color: b.status === 'upcoming' ? t.ink4 : t.ink, whiteSpace: 'nowrap' }}>{b.name}</span>
+            <div key={b.name} className={s.heatRow}>
+              <div className={s.heatBranchCell}>
+                <div className={`${s.heatBranchSwatch} ${b.status === 'upcoming' ? s['heatBranchSwatch--upcoming'] : ''}`}
+                  style={{ background: color }} />
+                <span className={`${s.heatBranchName} ${b.status === 'upcoming' ? s['heatBranchName--upcoming'] : ''}`}>{b.name}</span>
               </div>
 
-              {/* Heat cells */}
               {b.history.map((v, mi) => {
                 const intensity = v > 0 ? 0.18 + (v / globalMax) * 0.78 : 0;
                 const isLaunch = mi > 0 && b.history[mi - 1] === 0 && v > 0;
                 const momDelta = mi > 0 ? v - b.history[mi - 1] : 0;
+                const cellStyle = v > 0
+                  ? {
+                      background: hexToRgba(color, intensity),
+                      border: isLaunch ? `1.5px solid ${color}` : `1px solid ${hexToRgba(color, 0.15)}`,
+                    }
+                  : undefined;
                 return (
-                  <div key={mi} style={{
-                    height: 46, borderRadius: 10,
-                    background: v > 0 ? hexToRgba(color, intensity) : t.fillTint,
-                    border: isLaunch ? `1.5px solid ${color}` : `1px solid ${v > 0 ? hexToRgba(color, 0.15) : t.sep}`,
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1,
-                    position: 'relative',
-                  }}>
+                  <div key={mi} className={`${s.heatCell} ${v > 0 ? '' : s['heatCell--empty']}`} style={cellStyle}>
                     {v > 0 ? (
                       <>
-                        <span style={{ fontFamily: FONT.mono, fontSize: 13, fontWeight: 700, color: '#fff' }}>{v}</span>
+                        <span className={s.heatCellVal}>{v}</span>
                         {mi > 0 && momDelta !== 0 && (
-                          <span style={{ fontFamily: FONT.mono, fontSize: 9, color: momDelta > 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,120,120,0.9)' }}>
+                          <span className={`${s.heatCellDelta} ${momDelta < 0 ? s['heatCellDelta--neg'] : ''}`}>
                             {momDelta > 0 ? '+' : ''}{momDelta.toFixed(1)}
                           </span>
                         )}
-                        {isLaunch && (
-                          <div style={{ position: 'absolute', top: -7, right: -4, fontSize: 11, lineHeight: 1 }}>🚀</div>
-                        )}
+                        {isLaunch && <div className={s.launchEmoji}>🚀</div>}
                       </>
                     ) : (
-                      <span style={{ fontFamily: FONT.mono, fontSize: 12, color: t.ink4 }}>—</span>
+                      <span className={s.heatCellEmpty}>—</span>
                     )}
                   </div>
                 );
               })}
 
-              {/* MoM sparkline */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className={s.spkWrap}>
                 {firstNonZero ? (
-                  <svg width={spW} height={spH} style={{ display: 'block' }}>
+                  <svg width={spW} height={spH} className={s.spkSvg}>
                     <line x1={4} y1={spH/2} x2={spW-4} y2={spH/2} stroke={t.sep} strokeWidth={0.5} strokeDasharray="2 3"/>
                     <path d={spPath} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
                     {spPts.length > 0 && (
@@ -362,21 +296,15 @@ function BranchHeatGrid({ t }) {
                     )}
                   </svg>
                 ) : (
-                  <span style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink4 }}>—</span>
+                  <span className={s.spkEmpty}>—</span>
                 )}
               </div>
 
-              {/* 6M growth badge */}
-              <div style={{ textAlign: 'right' }}>
+              <div className={s.heatGrowth}>
                 {growth !== null ? (
-                  <span style={{
-                    fontFamily: FONT.mono, fontSize: 12, fontWeight: 700,
-                    color: growth > 50 ? t.accent : t.good,
-                    background: growth > 50 ? t.accentTint : 'rgba(34,160,107,0.1)',
-                    borderRadius: 6, padding: '3px 8px',
-                  }}>+{growth}%</span>
+                  <span className={`${s.heatGrowthBadge} ${growth > 50 ? s['heatGrowthBadge--high'] : s['heatGrowthBadge--low']}`}>+{growth}%</span>
                 ) : (
-                  <span style={{ fontFamily: FONT.ui, fontSize: 11, color: t.ink4 }}>Soon</span>
+                  <span className={s.spkEmpty}>Soon</span>
                 )}
               </div>
             </div>
@@ -384,16 +312,15 @@ function BranchHeatGrid({ t }) {
         })}
       </div>
 
-      {/* Scale legend */}
-      <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4 }}>Low</span>
-        <div style={{ display: 'flex', gap: 3 }}>
+      <div className={s.heatLegend}>
+        <span className={s.heatLegendLabel}>Low</span>
+        <div className={s.heatLegendCells}>
           {[0.18, 0.35, 0.52, 0.69, 0.86, 1.0].map((a, i) => (
-            <div key={i} style={{ width: 20, height: 12, borderRadius: 3, background: hexToRgba(BRANCH_COLORS[0], a) }}/>
+            <div key={i} className={s.heatLegendCell} style={{ background: hexToRgba(BRANCH_COLORS[0], a) }}/>
           ))}
         </div>
-        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4 }}>High</span>
-        <span style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink4, marginLeft: 8 }}>· MoM trend = month-over-month change in ₹ lakhs · 🚀 = branch launch</span>
+        <span className={s.heatLegendLabel}>High</span>
+        <span className={`${s.heatLegendLabel} ${s.heatLegendNote}`}>· MoM trend = month-over-month change in ₹ lakhs · 🚀 = branch launch</span>
       </div>
     </Card>
   );
@@ -402,7 +329,7 @@ function BranchHeatGrid({ t }) {
 function BranchSparkline({ data, color }) {
   const w = 72, h = 24;
   const valid = data.filter(v => v > 0);
-  if (valid.length < 2) return <span style={{ fontFamily: 'monospace', fontSize: 11, color: '#666' }}>—</span>;
+  if (valid.length < 2) return <span className={s.spkEmpty}>—</span>;
   const min = Math.min(...valid), max = Math.max(...valid);
   const pts = data.map((v, i) => {
     const x = (i / (data.length - 1)) * (w - 4) + 2;
@@ -412,12 +339,12 @@ function BranchSparkline({ data, color }) {
   const d = pts.map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`).join(' ');
   const growth = Math.round(((data[5] - data[0]) / (data[0] || data.find(v => v > 0) || 1)) * 100);
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <svg width={w} height={h} style={{ display: 'block', flexShrink: 0 }}>
+    <div className={s.sparklineRow}>
+      <svg width={w} height={h} className={s.spkInline}>
         <path d={d} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"/>
         <circle cx={pts[pts.length-1][0]} cy={pts[pts.length-1][1]} r={2.5} fill={color}/>
       </svg>
-      <span style={{ fontFamily: 'monospace', fontSize: 11, color, fontWeight: 700 }}>+{growth}%</span>
+      <span className={s.spkText} style={{ color }}>+{growth}%</span>
     </div>
   );
 }
@@ -430,37 +357,32 @@ function OwnerDashboard() {
   const totalRevenue  = active.reduce((s, b) => s + b.revenue, 0).toFixed(1);
   const totalTrainers = active.reduce((s, b) => s + b.trainers, 0);
 
-  const maxRev = Math.max(...BRANCHES.map(b => b.revenue), 1);
-
   return (
-    <div style={{ padding: '32px 40px' }}>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>All Branches</h1>
-        <p style={{ margin: '4px 0 0', fontFamily: FONT.ui, fontSize: 14, color: t.ink3 }}>Friday, 9 May 2026 · Owner view · {active.length} active branches</p>
+    <div className={s.page}>
+      <div className={s.pageHeader}>
+        <h1 className={s.pageTitle}>All Branches</h1>
+        <p className={s.pageSub}>Friday, 9 May 2026 · Owner view · {active.length} active branches</p>
       </div>
 
-      {/* Aggregate KPIs */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
-        <KPICard label="Total Members"    value={totalMembers}          sub="across all branches" trend={9.4} />
-        <KPICard label="Active PT Members" value={totalPT}             sub="across all branches" trend={13.1} />
-        <KPICard label="Monthly Revenue"  value={`₹${totalRevenue}L`}  sub="combined"            trend={15.8} />
-        <KPICard label="Trainers"         value={totalTrainers}         sub="across all branches" trend={0} />
+      <div className={s.kpiGrid}>
+        <KPICard label="Total Members"     value={totalMembers}          sub="across all branches" trend={9.4} />
+        <KPICard label="Active PT Members" value={totalPT}               sub="across all branches" trend={13.1} />
+        <KPICard label="Monthly Revenue"   value={`₹${totalRevenue}L`}   sub="combined"            trend={15.8} />
+        <KPICard label="Trainers"          value={totalTrainers}         sub="across all branches" trend={0} />
       </div>
 
-      {/* Heat grid */}
-      <BranchHeatGrid t={t} />
+      <BranchHeatGrid />
 
-      {/* Branch breakdown */}
-      <Card style={{ marginBottom: 16, overflow: 'hidden' }}>
-        <div style={{ padding: '20px 24px 16px', borderBottom: `1px solid ${t.sep}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600 }}>Branch Breakdown</div>
-          <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13 }}>May 2026</div>
+      <Card className={s.tableCard}>
+        <div className={s.tableHead}>
+          <div className={s.tableHeadTitle}>Branch Breakdown</div>
+          <div className={s.tableHeadSub}>May 2026</div>
         </div>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <table className={s.dataTable}>
           <thead>
-            <tr style={{ background: t.bgGrouped }}>
+            <tr>
               {['Branch', 'Members', 'PT Members', 'Trainers', 'Revenue', 'Status', '6-mo trend'].map(h => (
-                <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontFamily: FONT.ui, fontSize: 11, fontWeight: 600, color: t.ink3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                <th key={h}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -470,21 +392,22 @@ function OwnerDashboard() {
               const statusBg = b.status === 'active' ? 'rgba(34,160,107,0.12)' : b.status === 'new' ? t.accentTint : t.fillTint;
               const color = i < BRANCH_COLORS.length ? BRANCH_COLORS[i] : t.ink4;
               return (
-                <tr key={b.name} style={{ borderTop: `1px solid ${t.sep}` }}>
-                  <td style={{ padding: '14px 16px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{ width: 10, height: 10, borderRadius: 3, background: color, flexShrink: 0, opacity: b.status === 'upcoming' ? 0.3 : 1 }}/>
-                      <span style={{ fontFamily: FONT.ui, fontSize: 14, fontWeight: 600, color: b.status === 'upcoming' ? t.ink3 : t.ink }}>{b.name}</span>
+                <tr key={b.name}>
+                  <td>
+                    <div className={s.branchCell}>
+                      <div className={s.branchCellSwatch}
+                        style={{ background: color, opacity: b.status === 'upcoming' ? 0.3 : 1 }} />
+                      <span className={`${s.branchCellName} ${b.status === 'upcoming' ? s['branchCellName--upcoming'] : ''}`}>{b.name}</span>
                     </div>
                   </td>
-                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.members || '—'}</td>
-                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.ptMembers || '—'}</td>
-                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{b.trainers || '—'}</td>
-                  <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 14, fontWeight: 700, color: b.revenue ? t.ink : t.ink4 }}>{b.revenue ? `₹${b.revenue}L` : '—'}</td>
-                  <td style={{ padding: '14px 16px' }}>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', background: statusBg, color: statusColor, borderRadius: 6, padding: '2px 8px', fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, textTransform: 'capitalize' }}>{b.status}</span>
+                  <td className={s.tdMono}>{b.members || '—'}</td>
+                  <td className={s.tdMono}>{b.ptMembers || '—'}</td>
+                  <td className={s.tdMono}>{b.trainers || '—'}</td>
+                  <td className={`${s.tdRevenue} ${!b.revenue ? s['tdMono--mute'] : ''}`}>{b.revenue ? `₹${b.revenue}L` : '—'}</td>
+                  <td>
+                    <Badge label={b.status} color={statusColor} bg={statusBg} />
                   </td>
-                  <td style={{ padding: '14px 16px' }}>
+                  <td>
                     <BranchSparkline data={b.history} color={color} />
                   </td>
                 </tr>
@@ -502,20 +425,19 @@ function OwnerDashboard() {
 function Dashboard() {
   const { role } = useRole();
   if (role === 'owner') return <OwnerDashboard />;
-  const t = useT();
   return (
-    <div style={{ padding: '32px 40px' }}>
-      <div style={{ marginBottom: 28 }}>
-        <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>Kandivali Branch</h1>
-        <p style={{ margin: '4px 0 0', fontFamily: FONT.ui, fontSize: 14, color: t.ink3 }}>Friday, 9 May 2026 · All figures for current month</p>
+    <div className={s.page}>
+      <div className={s.pageHeader}>
+        <h1 className={s.pageTitle}>Kandivali Branch</h1>
+        <p className={s.pageSub}>Friday, 9 May 2026 · All figures for current month</p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+      <div className={s.kpiGrid}>
         <KPICard label="Total Members" value="247" sub="vs last month" trend={8.2} />
         <KPICard label="Active PT Members" value="89" sub="vs last month" trend={12.4} />
         <KPICard label="Monthly Revenue" value="₹6.1L" sub="vs last month" trend={17.3} />
         <KPICard label="Trainers" value="12" sub="2 on leave" trend={0} />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 16, marginBottom: 16 }}>
+      <div className={s.dashCols}>
         <RevenueChart />
         <TopTrainers />
       </div>
@@ -525,7 +447,6 @@ function Dashboard() {
 }
 
 // ─── Members ──────────────────────────────────────────────────────────────────
-
 const MEMBERS = [
   { id: 1, name: 'Sneha Kapoor',  type: 'PT',  trainer: 'Priya Sharma',   since: '2025-11-01', status: 'active',   phone: '+91 98765 43210', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 48 },
   { id: 2, name: 'Arjun Singh',   type: 'PT',  trainer: 'Rohit Malhotra', since: '2025-09-15', status: 'active',   phone: '+91 87654 32109', fee: '₹8,500/mo', nextPayment: '2026-05-15', sessions: 72 },
@@ -537,42 +458,25 @@ const MEMBERS = [
   { id: 8, name: 'Amit Joshi',    type: 'PT',  trainer: 'Karan Mehta',    since: '2026-03-01', status: 'active',   phone: '+91 21098 76543', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 24 },
 ];
 
-function inputStyle(t) {
-  return {
-    width: '100%', padding: '10px 12px', borderRadius: 10,
-    border: `1px solid ${t.sep}`, fontFamily: FONT.ui, fontSize: 14,
-    color: t.ink, background: t.bgGrouped, outline: 'none',
-    boxSizing: 'border-box',
-  };
-}
-
 function MemberDetail({ member, onBack, onLogPayment }) {
   const t = useT();
   const [activating, setActivating] = useState(false);
   return (
     <div>
-      <button onClick={onBack} style={{
-        display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none',
-        cursor: 'pointer', color: t.accent, fontFamily: FONT.ui, fontSize: 14, fontWeight: 500,
-        padding: '0 0 20px',
-      }}>← Back to Members</button>
-      <Card style={{ padding: 28, marginBottom: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: 20, background: t.gradient,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: FONT.display, fontSize: 24, fontWeight: 700, color: '#fff', flexShrink: 0,
-          }}>{member.name[0]}</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-              <h2 style={{ margin: 0, fontFamily: FONT.display, fontSize: 22, fontWeight: 700, color: t.ink }}>{member.name}</h2>
+      <button onClick={onBack} className={s.backBtn}>← Back to Members</button>
+      <Card className={s.detailCard}>
+        <div className={s.detailRow}>
+          <div className={s.detailAvatar}>{member.name[0]}</div>
+          <div className={s.detailHeadInfo}>
+            <div className={s.detailNameRow}>
+              <h2 className={s.detailName}>{member.name}</h2>
               <Badge label={member.type === 'PT' ? 'PT Member' : 'Gym Member'} color={member.type === 'PT' ? t.accent : t.ink3} bg={member.type === 'PT' ? t.accentTint : t.fillTint} />
               <Badge label={member.status === 'active' ? 'Active' : 'Inactive'} color={member.status === 'active' ? t.good : t.bad} bg={member.status === 'active' ? 'rgba(34,160,107,0.12)' : 'rgba(214,42,42,0.12)'} />
             </div>
-            <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 14 }}>{member.phone} · Member since {member.since}</div>
+            <div className={s.detailMeta}>{member.phone} · Member since {member.since}</div>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginTop: 24, paddingTop: 24, borderTop: `1px solid ${t.sep}` }}>
+        <div className={s.detailFacts}>
           {[
             { label: 'Trainer',             value: member.trainer },
             { label: 'Fee',                 value: member.fee },
@@ -580,54 +484,39 @@ function MemberDetail({ member, onBack, onLogPayment }) {
             { label: 'Sessions Completed',  value: member.sessions > 0 ? member.sessions : '—' },
           ].map(({ label, value }) => (
             <div key={label}>
-              <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</div>
-              <div style={{ color: t.ink, fontFamily: FONT.ui, fontSize: 15, fontWeight: 600 }}>{value}</div>
+              <div className={s.factLabel}>{label}</div>
+              <div className={s.factValue}>{value}</div>
             </div>
           ))}
         </div>
       </Card>
-      <div style={{ display: 'flex', gap: 12 }}>
-        <button onClick={() => onLogPayment(member)} style={{
-          padding: '12px 20px', borderRadius: 12, border: 'none', cursor: 'pointer',
-          background: t.gradient, color: '#fff', fontFamily: FONT.ui, fontSize: 14, fontWeight: 600,
-        }}>Log Payment</button>
+      <div className={s.detailActionRow}>
+        <button onClick={() => onLogPayment(member)} className={s.actionBtnPrimary}>Log Payment</button>
         {member.type === 'Gym' && (
-          <button onClick={() => setActivating(v => !v)} style={{
-            padding: '12px 20px', borderRadius: 12, border: `1px solid ${t.sep}`, cursor: 'pointer',
-            background: 'none', color: t.ink, fontFamily: FONT.ui, fontSize: 14, fontWeight: 500,
-          }}>Activate PT Membership</button>
+          <button onClick={() => setActivating(v => !v)} className={s.actionBtn}>Activate PT Membership</button>
         )}
         {member.status === 'inactive' && (
-          <button style={{
-            padding: '12px 20px', borderRadius: 12, border: `1px solid ${t.sep}`, cursor: 'pointer',
-            background: 'none', color: t.good, fontFamily: FONT.ui, fontSize: 14, fontWeight: 500,
-          }}>Reactivate Membership</button>
+          <button className={`${s.actionBtn} ${s['actionBtn--good']}`}>Reactivate Membership</button>
         )}
       </div>
       {activating && (
-        <Card style={{ marginTop: 16, padding: 24, border: `1px solid ${t.accentRing}` }}>
-          <div style={{ color: t.ink, fontFamily: FONT.display, fontSize: 16, fontWeight: 600, marginBottom: 16 }}>Activate PT Membership</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 16 }}>
+        <Card className={s.activatePanel}>
+          <div className={s.activateTitle}>Activate PT Membership</div>
+          <div className={s.activateGrid}>
             <div>
-              <label style={{ display: 'block', color: t.ink3, fontFamily: FONT.ui, fontSize: 12, marginBottom: 6 }}>Assign Trainer</label>
-              <select style={inputStyle(t)}>
+              <label className={s.fieldLabel}>Assign Trainer</label>
+              <select className={s.input}>
                 <option>Priya Sharma</option><option>Rohit Malhotra</option><option>Ananya Iyer</option><option>Karan Mehta</option>
               </select>
             </div>
             <div>
-              <label style={{ display: 'block', color: t.ink3, fontFamily: FONT.ui, fontSize: 12, marginBottom: 6 }}>Start Date</label>
-              <input type="date" defaultValue="2026-05-09" style={inputStyle(t)} />
+              <label className={s.fieldLabel}>Start Date</label>
+              <input type="date" defaultValue="2026-05-09" className={s.input} />
             </div>
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <button onClick={() => setActivating(false)} style={{
-              padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
-              background: t.gradient, color: '#fff', fontFamily: FONT.ui, fontSize: 14, fontWeight: 600,
-            }}>Confirm Activation</button>
-            <button onClick={() => setActivating(false)} style={{
-              padding: '10px 20px', borderRadius: 10, border: `1px solid ${t.sep}`, cursor: 'pointer',
-              background: 'none', color: t.ink3, fontFamily: FONT.ui, fontSize: 14,
-            }}>Cancel</button>
+          <div className={s.activateBtnRow}>
+            <button onClick={() => setActivating(false)} className={s.smallPrimary}>Confirm Activation</button>
+            <button onClick={() => setActivating(false)} className={s.smallSecondary}>Cancel</button>
           </div>
         </Card>
       )}
@@ -636,49 +525,37 @@ function MemberDetail({ member, onBack, onLogPayment }) {
 }
 
 function LogPaymentModal({ member, onClose }) {
-  const t = useT();
   if (!member) return null;
   return (
-    <div style={{
-      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 100,
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }} onClick={onClose}>
-      <div style={{
-        background: t.bgElevated, borderRadius: 20, padding: 32, width: 420,
-        border: `1px solid ${t.sep}`, boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
-      }} onClick={e => e.stopPropagation()}>
-        <div style={{ fontFamily: FONT.display, fontSize: 20, fontWeight: 700, color: t.ink, marginBottom: 4 }}>Log Payment</div>
-        <div style={{ fontFamily: FONT.ui, fontSize: 14, color: t.ink3, marginBottom: 24 }}>{member.name}</div>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div className={s.modalScrim} onClick={onClose}>
+      <div className={s.modalCard} onClick={e => e.stopPropagation()}>
+        <div className={s.modalTitle}>Log Payment</div>
+        <div className={s.modalSub}>{member.name}</div>
+        <div className={s.modalBody}>
           {[
             { label: 'Amount (₹)', type: 'number', defaultValue: member.type === 'PT' ? 8500 : 2500 },
             { label: 'Payment Date', type: 'date',   defaultValue: '2026-05-09' },
           ].map(({ label, type, defaultValue }) => (
             <div key={label}>
-              <label style={{ display: 'block', color: t.ink3, fontFamily: FONT.ui, fontSize: 12, marginBottom: 6 }}>{label}</label>
-              <input type={type} defaultValue={defaultValue} style={{ ...inputStyle(t), padding: '12px 14px', borderRadius: 12, fontSize: type === 'number' ? 16 : 14, fontFamily: type === 'number' ? FONT.mono : FONT.ui }} />
+              <label className={s.fieldLabel}>{label}</label>
+              <input type={type} defaultValue={defaultValue}
+                className={`${s.input} ${s.inputModal} ${type === 'number' ? s.inputNum : ''}`} />
             </div>
           ))}
           <div>
-            <label style={{ display: 'block', color: t.ink3, fontFamily: FONT.ui, fontSize: 12, marginBottom: 6 }}>Mode</label>
-            <select style={{ ...inputStyle(t), padding: '12px 14px', borderRadius: 12 }}>
+            <label className={s.fieldLabel}>Mode</label>
+            <select className={`${s.input} ${s.inputModal}`}>
               <option>Cash</option><option>UPI</option><option>Card</option><option>Bank Transfer</option>
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', color: t.ink3, fontFamily: FONT.ui, fontSize: 12, marginBottom: 6 }}>Notes (optional)</label>
-            <input type="text" placeholder="e.g. May monthly fee" style={{ ...inputStyle(t), padding: '12px 14px', borderRadius: 12 }} />
+            <label className={s.fieldLabel}>Notes (optional)</label>
+            <input type="text" placeholder="e.g. May monthly fee" className={`${s.input} ${s.inputModal}`} />
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 10, marginTop: 24 }}>
-          <button onClick={onClose} style={{
-            flex: 1, padding: 12, borderRadius: 12, border: 'none', cursor: 'pointer',
-            background: t.gradient, color: '#fff', fontFamily: FONT.ui, fontSize: 15, fontWeight: 600,
-          }}>Confirm Payment</button>
-          <button onClick={onClose} style={{
-            padding: '12px 16px', borderRadius: 12, border: `1px solid ${t.sep}`, cursor: 'pointer',
-            background: 'none', color: t.ink3, fontFamily: FONT.ui, fontSize: 15,
-          }}>Cancel</button>
+        <div className={s.modalActions}>
+          <button onClick={onClose} className={s.modalConfirm}>Confirm Payment</button>
+          <button onClick={onClose} className={s.modalCancel}>Cancel</button>
         </div>
       </div>
     </div>
@@ -703,77 +580,64 @@ function Members() {
   });
 
   if (selectedMember) return (
-    <div style={{ padding: '32px 40px' }}>
+    <div className={s.page}>
       <MemberDetail member={selectedMember} onBack={() => setSelected(null)} onLogPayment={setPayTarget} />
       <LogPaymentModal member={paymentTarget} onClose={() => setPayTarget(null)} />
     </div>
   );
 
   return (
-    <div style={{ padding: '32px 40px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>Members</h1>
-        <button style={{
-          padding: '10px 18px', borderRadius: 12, border: 'none', cursor: 'pointer',
-          background: t.gradient, color: '#fff', fontFamily: FONT.ui, fontSize: 14, fontWeight: 600,
-        }}>+ Add Member</button>
+    <div className={s.page}>
+      <div className={s.pageHeaderRow}>
+        <h1 className={s.pageTitle}>Members</h1>
+        <button className={s.gradBtn}>+ Add Member</button>
       </div>
-      <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
+      <div className={s.searchRow}>
         <input
           placeholder="Search members..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          style={{ flex: 1, ...inputStyle(t) }}
+          className={s.input}
         />
         {['all', 'pt', 'gym', 'inactive'].map(f => (
-          <button key={f} onClick={() => setFilter(f)} style={{
-            padding: '10px 16px', borderRadius: 12, border: 'none', cursor: 'pointer',
-            background: filter === f ? t.gradient : t.fillTint,
-            color: filter === f ? '#fff' : t.ink3,
-            fontFamily: FONT.ui, fontSize: 13, fontWeight: 500, textTransform: 'capitalize',
-          }}>{f === 'all' ? 'All' : f === 'pt' ? 'PT Members' : f === 'gym' ? 'Gym Only' : 'Inactive'}</button>
+          <button key={f} onClick={() => setFilter(f)}
+            className={`${s.filterChip} ${filter === f ? s['filterChip--active'] : ''}`}>
+            {f === 'all' ? 'All' : f === 'pt' ? 'PT Members' : f === 'gym' ? 'Gym Only' : 'Inactive'}
+          </button>
         ))}
       </div>
-      <Card style={{ overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <Card className={s.tableCard}>
+        <table className={s.dataTable}>
           <thead>
-            <tr style={{ background: t.bgGrouped }}>
+            <tr>
               {['Name', 'Type', 'Trainer', 'Fee', 'Next Payment', 'Status', ''].map(h => (
-                <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, color: t.ink3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                <th key={h} className={s.thMembers}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {filtered.map((m, i) => (
-              <tr key={m.id} style={{ borderTop: `1px solid ${t.sep}`, cursor: 'pointer' }} onClick={() => setSelected(m)}>
-                <td style={{ padding: '14px 16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{
-                      width: 32, height: 32, borderRadius: 10, flexShrink: 0,
-                      background: t.gradient, opacity: 0.8 + (i % 3) * 0.07,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontFamily: FONT.ui, fontSize: 13, fontWeight: 700, color: '#fff',
-                    }}>{m.name[0]}</div>
+              <tr key={m.id} className={s.tableRowClick} onClick={() => setSelected(m)}>
+                <td>
+                  <div className={s.memberCell}>
+                    <div className={s.memberAvatar} style={{ opacity: 0.8 + (i % 3) * 0.07 }}>{m.name[0]}</div>
                     <div>
-                      <div style={{ fontFamily: FONT.ui, fontSize: 14, fontWeight: 600, color: t.ink }}>{m.name}</div>
-                      <div style={{ fontFamily: FONT.ui, fontSize: 12, color: t.ink3 }}>{m.phone}</div>
+                      <div className={s.memberName}>{m.name}</div>
+                      <div className={s.memberPhone}>{m.phone}</div>
                     </div>
                   </div>
                 </td>
-                <td style={{ padding: '14px 16px' }}>
+                <td>
                   <Badge label={m.type} color={m.type === 'PT' ? t.accent : t.ink3} bg={m.type === 'PT' ? t.accentTint : t.fillTint} />
                 </td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.ui, fontSize: 14, color: t.ink2 }}>{m.trainer}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 13, color: t.ink2 }}>{m.fee}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.ui, fontSize: 13, color: t.ink3 }}>{m.nextPayment}</td>
-                <td style={{ padding: '14px 16px' }}>
+                <td className={s.memberTrainer}>{m.trainer}</td>
+                <td className={s.memberFee}>{m.fee}</td>
+                <td className={s.memberDate}>{m.nextPayment}</td>
+                <td>
                   <Badge label={m.status === 'active' ? 'Active' : 'Inactive'} color={m.status === 'active' ? t.good : t.bad} bg={m.status === 'active' ? 'rgba(34,160,107,0.12)' : 'rgba(214,42,42,0.12)'} />
                 </td>
-                <td style={{ padding: '14px 16px' }}>
-                  <button onClick={e => { e.stopPropagation(); setPayTarget(m); }} style={{
-                    padding: '6px 12px', borderRadius: 8, border: 'none', cursor: 'pointer',
-                    background: t.accentTint, color: t.accent, fontFamily: FONT.ui, fontSize: 12, fontWeight: 600,
-                  }}>Log Payment</button>
+                <td>
+                  <button onClick={e => { e.stopPropagation(); setPayTarget(m); }} className={s.logBtn}>Log Payment</button>
                 </td>
               </tr>
             ))}
@@ -786,7 +650,6 @@ function Members() {
 }
 
 // ─── Payments ─────────────────────────────────────────────────────────────────
-
 const PAYMENTS = [
   { id: 'P001', member: 'Arjun Singh',  type: 'PT Monthly',   amount: 8500, date: '2026-05-08', mode: 'UPI',           status: 'confirmed' },
   { id: 'P002', member: 'Sneha Kapoor', type: 'PT Monthly',   amount: 8500, date: '2026-05-07', mode: 'Cash',          status: 'confirmed' },
@@ -804,35 +667,35 @@ function Payments() {
   const total = PAYMENTS.filter(p => p.status === 'confirmed').reduce((s, p) => s + p.amount, 0);
 
   return (
-    <div style={{ padding: '32px 40px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+    <div className={s.page}>
+      <div className={s.pageHeaderRow}>
         <div>
-          <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>Payment Log</h1>
-          <p style={{ margin: '4px 0 0', fontFamily: FONT.ui, fontSize: 14, color: t.ink3 }}>Collected this month: <span style={{ color: t.good, fontWeight: 700 }}>₹{total.toLocaleString('en-IN')}</span></p>
+          <h1 className={s.pageTitle}>Payment Log</h1>
+          <p className={s.pageSub}>Collected this month: <span className={s.totalGood}>₹{total.toLocaleString('en-IN')}</span></p>
         </div>
-        <select value={month} onChange={e => setMonth(e.target.value)} style={{ ...inputStyle(t), width: 'auto', padding: '10px 16px', borderRadius: 12, cursor: 'pointer' }}>
+        <select value={month} onChange={e => setMonth(e.target.value)} className={`${s.input} ${s.monthSelect}`}>
           <option>May 2026</option><option>April 2026</option><option>March 2026</option>
         </select>
       </div>
-      <Card style={{ overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <Card className={s.tableCard}>
+        <table className={s.dataTable}>
           <thead>
-            <tr style={{ background: t.bgGrouped }}>
+            <tr>
               {['Ref', 'Member', 'Type', 'Amount', 'Date', 'Mode', 'Status'].map(h => (
-                <th key={h} style={{ padding: '12px 16px', textAlign: 'left', fontFamily: FONT.ui, fontSize: 12, fontWeight: 600, color: t.ink3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{h}</th>
+                <th key={h} className={s.thMembers}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {PAYMENTS.map((p) => (
-              <tr key={p.id} style={{ borderTop: `1px solid ${t.sep}` }}>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 12, color: t.ink3 }}>{p.id}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.ui, fontSize: 14, fontWeight: 500, color: t.ink }}>{p.member}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.ui, fontSize: 13, color: t.ink2 }}>{p.type}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.mono, fontSize: 14, fontWeight: 700, color: t.ink }}>₹{p.amount.toLocaleString('en-IN')}</td>
-                <td style={{ padding: '14px 16px', fontFamily: FONT.ui, fontSize: 13, color: t.ink3 }}>{p.date}</td>
-                <td style={{ padding: '14px 16px' }}><Badge label={p.mode} color={t.ink2} bg={t.fillTint} /></td>
-                <td style={{ padding: '14px 16px' }}>
+              <tr key={p.id}>
+                <td className={s.tdRef}>{p.id}</td>
+                <td className={s.tdMember}>{p.member}</td>
+                <td className={s.tdType}>{p.type}</td>
+                <td className={s.tdAmount}>₹{p.amount.toLocaleString('en-IN')}</td>
+                <td className={s.tdDate}>{p.date}</td>
+                <td><Badge label={p.mode} color={t.ink2} bg={t.fillTint} /></td>
+                <td>
                   <Badge
                     label={p.status === 'confirmed' ? 'Confirmed' : 'Pending'}
                     color={p.status === 'confirmed' ? t.good : t.warn}
@@ -849,7 +712,6 @@ function Payments() {
 }
 
 // ─── Trainers ─────────────────────────────────────────────────────────────────
-
 const TRAINERS = [
   { name: 'Priya Sharma',   clients: 14, active: true,  speciality: 'Strength & Hypertrophy',  exp: '6 yrs', phone: '+91 98001 12345', expRating: 4.9, feedbackRating: 4.8, progressRating: 4.7 },
   { name: 'Rohit Malhotra', clients: 11, active: true,  speciality: 'Fat Loss & Conditioning', exp: '4 yrs', phone: '+91 97002 23456', expRating: 4.6, feedbackRating: 4.8, progressRating: 4.5 },
@@ -858,20 +720,19 @@ const TRAINERS = [
   { name: 'Divya Bose',     clients: 6,  active: false, speciality: 'Yoga & Mobility',         exp: '2 yrs', phone: '+91 94005 56789', expRating: 4.1, feedbackRating: 4.5, progressRating: 4.2 },
 ];
 
-function ScoreRing({ label, value, t }) {
+function ScoreRing({ label, value }) {
   const size = 60;
   const r = 22;
   const circ = 2 * Math.PI * r;
   const fill = circ * (1 - (value / 5));
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-      <div style={{ position: 'relative', width: size, height: size }}>
-        <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
-          <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={t.fillTint} strokeWidth={4} />
-          <circle cx={size/2} cy={size/2} r={r} fill="none"
+    <div className={s.scoreRing}>
+      <div className={s.scoreRingWrap}>
+        <svg width={size} height={size} className={s.scoreSvg}>
+          <circle cx={size/2} cy={size/2} r={r} className={s.scoreTrack} strokeWidth={4} />
+          <circle cx={size/2} cy={size/2} r={r} className={s.scoreFill}
             stroke="url(#rg)" strokeWidth={4}
             strokeDasharray={circ} strokeDashoffset={fill}
-            strokeLinecap="round"
           />
           <defs>
             <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -880,62 +741,46 @@ function ScoreRing({ label, value, t }) {
             </linearGradient>
           </defs>
         </svg>
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: FONT.mono, fontSize: 13, fontWeight: 700, color: t.ink,
-        }}>{value}</div>
+        <div className={s.scoreCenter}>{value}</div>
       </div>
-      <div style={{ fontFamily: FONT.ui, fontSize: 10, color: t.ink3, textAlign: 'center', lineHeight: 1.2 }}>{label}</div>
+      <div className={s.scoreLabel}>{label}</div>
     </div>
   );
 }
 
 function Trainers() {
-  const t = useT();
   return (
-    <div style={{ padding: '32px 40px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-        <h1 style={{ margin: 0, fontFamily: FONT.display, fontSize: 28, fontWeight: 700, color: t.ink, letterSpacing: '-0.5px' }}>Trainers</h1>
-        <button style={{
-          padding: '10px 18px', borderRadius: 12, border: 'none', cursor: 'pointer',
-          background: t.gradient, color: '#fff', fontFamily: FONT.ui, fontSize: 14, fontWeight: 600,
-        }}>+ Add Trainer</button>
+    <div className={s.page}>
+      <div className={s.pageHeaderRow}>
+        <h1 className={s.pageTitle}>Trainers</h1>
+        <button className={s.gradBtn}>+ Add Trainer</button>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+      <div className={s.trainerGrid}>
         {TRAINERS.map((tr, i) => (
-          <Card key={i} style={{ padding: 24 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: 16, flexShrink: 0,
-                background: t.gradient, opacity: 0.85 + i * 0.03,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontFamily: FONT.display, fontSize: 18, fontWeight: 700, color: '#fff',
-              }}>{tr.name[0]}</div>
+          <Card key={i} className={s.trainerCard}>
+            <div className={s.trainerHead}>
+              <div className={s.trainerCardAvatar} style={{ opacity: 0.85 + i * 0.03 }}>{tr.name[0]}</div>
               <div>
-                <div style={{ fontFamily: FONT.ui, fontSize: 15, fontWeight: 700, color: t.ink }}>{tr.name}</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 3 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: tr.active ? t.good : t.ink4 }} />
-                  <span style={{ fontFamily: FONT.ui, fontSize: 12, color: tr.active ? t.good : t.ink3 }}>{tr.active ? 'Active' : 'On Leave'}</span>
+                <div className={s.trainerCardName}>{tr.name}</div>
+                <div className={s.trainerStatusRow}>
+                  <div className={`${s.statusDot} ${!tr.active ? s['statusDot--inactive'] : ''}`} />
+                  <span className={`${s.statusLabel} ${!tr.active ? s['statusLabel--inactive'] : ''}`}>{tr.active ? 'Active' : 'On Leave'}</span>
                 </div>
               </div>
             </div>
-            <div style={{ color: t.ink3, fontFamily: FONT.ui, fontSize: 13, marginBottom: 2 }}>{tr.speciality}</div>
-            <div style={{ color: t.ink4, fontFamily: FONT.ui, fontSize: 12, marginBottom: 16 }}>{tr.exp} · {tr.phone}</div>
-            <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: 4 }}>
-              <ScoreRing label="Experience"  value={tr.expRating}      t={t} />
-              <ScoreRing label="Feedback"    value={tr.feedbackRating} t={t} />
-              <ScoreRing label="Progress"    value={tr.progressRating} t={t} />
+            <div className={s.trainerSpec}>{tr.speciality}</div>
+            <div className={s.trainerExp}>{tr.exp} · {tr.phone}</div>
+            <div className={s.scoreRow}>
+              <ScoreRing label="Experience"  value={tr.expRating} />
+              <ScoreRing label="Feedback"    value={tr.feedbackRating} />
+              <ScoreRing label="Progress"    value={tr.progressRating} />
             </div>
-            <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${t.sep}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div className={s.trainerFooter}>
               <div>
-                <div style={{ fontFamily: FONT.display, fontSize: 22, fontWeight: 700, color: t.ink }}>{tr.clients}</div>
-                <div style={{ fontFamily: FONT.ui, fontSize: 12, color: t.ink3 }}>active clients</div>
+                <div className={s.trainerCount}>{tr.clients}</div>
+                <div className={s.trainerCountLabel}>active clients</div>
               </div>
-              <button style={{
-                padding: '8px 14px', borderRadius: 10, border: `1px solid ${t.sep}`, cursor: 'pointer',
-                background: 'none', color: t.ink3, fontFamily: FONT.ui, fontSize: 13,
-              }}>View Profile</button>
+              <button className={s.viewProfileBtn}>View Profile</button>
             </div>
           </Card>
         ))}
@@ -945,7 +790,6 @@ function Trainers() {
 }
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
-
 function DashIcon({ active }) {
   const c = active ? '#FF4664' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
@@ -980,19 +824,19 @@ function TrainerIcon({ active }) {
 }
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
-
 export default function AdminWeb({ t = TOKENS.dark }) {
   const [page, setPage] = useState('dashboard');
   const [role, setRole] = useState('staff');
   const pages = { dashboard: Dashboard, members: Members, payments: Payments, trainers: Trainers };
   const Page = pages[page] || Dashboard;
+  const themeAttr = t === TOKENS.light ? 'light' : 'dark';
 
   return (
     <ThemeCtx.Provider value={t}>
       <RoleCtx.Provider value={{ role, setRole }}>
-        <div style={{ display: 'flex', width: '100%', height: '100%', background: t.bgGrouped, fontFamily: FONT.ui }}>
+        <div data-theme={themeAttr} className={s.shell}>
           <Sidebar active={page} onNav={setPage} />
-          <div style={{ flex: 1, overflowY: 'auto' }}>
+          <div className={s.main}>
             <Page />
           </div>
         </div>
