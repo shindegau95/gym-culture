@@ -11,6 +11,8 @@ Always invoke these skills before any frontend or coding work — no exceptions:
 
 Both skills must be invoked at the start of the task, not after. If a task touches both design and code (which most tasks in this project do), invoke both.
 
+- **`/caveman`** — invoke at the start of every session, no exceptions. Reduces token usage by ~75% by dropping filler words while preserving full technical accuracy.
+
 ---
 
 ## Linear Issue Workflow
