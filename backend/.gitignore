@@ -1,0 +1,20 @@
+target/
+*.class
+*.jar
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+
+# Secrets — never commit
+.env
+.env.local
+firebase-service-account.json
+*-service-account.json
