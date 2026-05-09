@@ -1,0 +1,2 @@
+ALTER TABLE branches ADD COLUMN address VARCHAR(255);
+ALTER TABLE users    ADD COLUMN phone   VARCHAR(32);
