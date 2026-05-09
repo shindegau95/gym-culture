@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: gymculture-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gymculture
+      POSTGRES_USER: gymculture
+      POSTGRES_PASSWORD: gymculture
+    ports:
+      - "5432:5432"
+    volumes:
+      - gymculture-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gymculture -d gymculture"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  gymculture-pg:
