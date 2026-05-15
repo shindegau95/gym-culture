@@ -17,7 +17,7 @@
 
 ### Backend additions
 ```
-backend/src/main/java/in/gymculture/
+backend/src/main/java/in/vis/
   model/
     Exercise.java               # Master exercise list
     WorkoutPlan.java            # is_template=true doubles as template — no separate entity needed
@@ -302,7 +302,7 @@ CREATE INDEX idx_nutrition_plans_client_id ON nutrition_plans(client_id);
 - [ ] **Step 2: Write `Exercise.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -348,7 +348,7 @@ public class Exercise {
 - [ ] **Step 3: Write `WorkoutPlan.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -419,7 +419,7 @@ public class WorkoutPlan {
 - [ ] **Step 4: Write `WorkoutDay.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.util.*;
@@ -468,7 +468,7 @@ public class WorkoutDay {
 - [ ] **Step 5: Write `PlanExercise.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -519,7 +519,7 @@ public class PlanExercise {
 
 ```java
 // WorkoutSession.java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -598,7 +598,7 @@ public class WorkoutSession {
 // resolves the Exercise entity via exerciseRepository.findById() before setting the relationship.
 // This ensures the DB column remains exercise_id (confirmed in V10 migration) while the DTO
 // stays flat. RecoveryService (Phase 3) can join session_logs to exercises via this FK.
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -666,7 +666,7 @@ public class SessionLog {
 
 ```java
 // NutritionPlan.java
-package in.gymculture.model;
+package in.vis.model;
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -698,7 +698,7 @@ public class NutritionPlan {
 }
 
 // NutritionMeal.java — abbreviated for space
-package in.gymculture.model;
+package in.vis.model;
 import jakarta.persistence.*;
 import java.util.*;
 
@@ -719,7 +719,7 @@ public class NutritionMeal {
 }
 
 // NutritionItem.java
-package in.gymculture.model;
+package in.vis.model;
 import jakarta.persistence.*;
 import java.util.UUID;
 
@@ -757,7 +757,7 @@ Expected: `BUILD SUCCESS`
 - [ ] **Step 9: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/model/ \
+git add backend/src/main/java/in/vis/model/ \
          backend/src/main/resources/db/migration/V11__create_nutrition.sql
 git commit -m "feat: Exercise, WorkoutPlan, Session, Nutrition JPA entities"
 ```
@@ -773,8 +773,8 @@ git commit -m "feat: Exercise, WorkoutPlan, Session, Nutrition JPA entities"
 
 ```java
 // ExerciseRepository.java
-package in.gymculture.repository;
-import in.gymculture.model.Exercise;
+package in.vis.repository;
+import in.vis.model.Exercise;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.*;
@@ -786,8 +786,8 @@ public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
 }
 
 // WorkoutPlanRepository.java
-package in.gymculture.repository;
-import in.gymculture.model.WorkoutPlan;
+package in.vis.repository;
+import in.vis.model.WorkoutPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.*;
 
@@ -798,8 +798,8 @@ public interface WorkoutPlanRepository extends JpaRepository<WorkoutPlan, UUID> 
 }
 
 // WorkoutSessionRepository.java
-package in.gymculture.repository;
-import in.gymculture.model.WorkoutSession;
+package in.vis.repository;
+import in.vis.model.WorkoutSession;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.time.*;
@@ -818,8 +818,8 @@ public interface WorkoutSessionRepository extends JpaRepository<WorkoutSession, 
 }
 
 // SessionLogRepository.java
-package in.gymculture.repository;
-import in.gymculture.model.SessionLog;
+package in.vis.repository;
+import in.vis.model.SessionLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.*;
 
@@ -834,10 +834,10 @@ public interface SessionLogRepository extends JpaRepository<SessionLog, UUID> {
 - [ ] **Step 2: Write `ExerciseController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.model.Exercise;
-import in.gymculture.repository.ExerciseRepository;
+import in.vis.model.Exercise;
+import in.vis.repository.ExerciseRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -871,11 +871,11 @@ public class ExerciseController {
 - [ ] **Step 3: Write `SessionController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.model.*;
-import in.gymculture.repository.*;
-import in.gymculture.util.BranchContext;
+import in.vis.model.*;
+import in.vis.repository.*;
+import in.vis.util.BranchContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -912,7 +912,7 @@ public class SessionController {
     @PostMapping("/{id}/start")
     public ResponseEntity<WorkoutSession> startSession(@PathVariable UUID id, Authentication auth) {
         WorkoutSession session = sessionRepository.findById(id)
-                .orElseThrow(() -> new in.gymculture.exception.NotFoundException("Session not found"));
+                .orElseThrow(() -> new in.vis.exception.NotFoundException("Session not found"));
         session.setStatus(WorkoutSession.Status.ACTIVE);
         session.setStartedAt(OffsetDateTime.now());
         return ResponseEntity.ok(sessionRepository.save(session));
@@ -921,7 +921,7 @@ public class SessionController {
     @PostMapping("/{id}/end")
     public ResponseEntity<WorkoutSession> endSession(@PathVariable UUID id, Authentication auth) {
         WorkoutSession session = sessionRepository.findById(id)
-                .orElseThrow(() -> new in.gymculture.exception.NotFoundException("Session not found"));
+                .orElseThrow(() -> new in.vis.exception.NotFoundException("Session not found"));
         session.setStatus(WorkoutSession.Status.COMPLETED);
         session.setEndedAt(OffsetDateTime.now());
         return ResponseEntity.ok(sessionRepository.save(session));
@@ -942,9 +942,9 @@ public class SessionController {
 
         User user = branchContext.resolveUser(auth);
         WorkoutSession session = sessionRepository.findById(id)
-                .orElseThrow(() -> new in.gymculture.exception.NotFoundException("Session not found"));
+                .orElseThrow(() -> new in.vis.exception.NotFoundException("Session not found"));
         Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new in.gymculture.exception.NotFoundException("Exercise not found"));
+                .orElseThrow(() -> new in.vis.exception.NotFoundException("Exercise not found"));
 
         // Delete existing log for this set (upsert via delete+insert)
         sessionLogRepository.deleteBySessionIdAndExerciseIdAndSetNumber(id, exerciseId, setNumber);
@@ -966,11 +966,11 @@ public class SessionController {
 - [ ] **Step 4: Write `PlanController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.model.*;
-import in.gymculture.repository.*;
-import in.gymculture.util.BranchContext;
+import in.vis.model.*;
+import in.vis.repository.*;
+import in.vis.util.BranchContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -1013,7 +1013,7 @@ public class PlanController {
     @PostMapping("/{id}/save-as-template")
     public ResponseEntity<WorkoutPlan> saveAsTemplate(@PathVariable UUID id) {
         WorkoutPlan original = planRepository.findById(id)
-                .orElseThrow(() -> new in.gymculture.exception.NotFoundException("Plan not found"));
+                .orElseThrow(() -> new in.vis.exception.NotFoundException("Plan not found"));
         WorkoutPlan template = new WorkoutPlan();
         template.setTrainer(original.getTrainer());
         template.setName(original.getName() + " (Template)");
@@ -1029,10 +1029,10 @@ public class PlanController {
 - [ ] **Step 5: Write `AiController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.*;
-import in.gymculture.service.AiService;
+import in.vis.dto.*;
+import in.vis.service.AiService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -1064,7 +1064,7 @@ public class AiController {
 
 ```java
 // SessionLogDto.java
-package in.gymculture.dto;
+package in.vis.dto;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -1082,7 +1082,7 @@ public record SessionLogDto(
 ) {}
 
 // AiSuggestionRequest.java
-package in.gymculture.dto;
+package in.vis.dto;
 import java.util.List;
 public record AiSuggestionRequest(
     String goal,                    // e.g. "Hypertrophy"
@@ -1091,27 +1091,27 @@ public record AiSuggestionRequest(
 ) {}
 
 // AiSuggestionResponse.java
-package in.gymculture.dto;
+package in.vis.dto;
 import java.util.List;
 public record AiSuggestionResponse(List<SuggestedExercise> suggestions) {
     public record SuggestedExercise(String exerciseName, String rationale) {}
 }
 
 // AiMacroRequest.java
-package in.gymculture.dto;
+package in.vis.dto;
 public record AiMacroRequest(double weightKg, String goal, String activityLevel) {}
 
 // AiMacroResponse.java
-package in.gymculture.dto;
+package in.vis.dto;
 public record AiMacroResponse(int calories, int proteinG, int carbsG, int fatG, String reasoning) {}
 ```
 
 - [ ] **Step 7: Write `AiService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.*;
+import in.vis.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

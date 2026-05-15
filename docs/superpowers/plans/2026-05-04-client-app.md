@@ -17,7 +17,7 @@
 
 ### Backend additions
 ```
-backend/src/main/java/in/gymculture/
+backend/src/main/java/in/vis/
   model/
     BodyMeasurement.java          # Client body stats snapshots over time
     GymSchedule.java              # Client default visit time + per-day overrides
@@ -194,16 +194,16 @@ git commit -m "feat: add body measurements, gym schedule migrations; alter train
 ## Task 2: Backend — BodyMeasurement model, repo, service, controller
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/model/BodyMeasurement.java`
-- Create: `backend/src/main/java/in/gymculture/repository/BodyMeasurementRepository.java`
-- Create: `backend/src/main/java/in/gymculture/dto/BodyMeasurementDto.java`
-- Create: `backend/src/main/java/in/gymculture/service/BodyMeasurementService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/BodyMeasurementController.java`
+- Create: `backend/src/main/java/in/vis/model/BodyMeasurement.java`
+- Create: `backend/src/main/java/in/vis/repository/BodyMeasurementRepository.java`
+- Create: `backend/src/main/java/in/vis/dto/BodyMeasurementDto.java`
+- Create: `backend/src/main/java/in/vis/service/BodyMeasurementService.java`
+- Create: `backend/src/main/java/in/vis/controller/BodyMeasurementController.java`
 
 - [ ] **Step 1: Write `BodyMeasurement.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -234,9 +234,9 @@ public class BodyMeasurement {
 - [ ] **Step 2: Write `BodyMeasurementRepository.java`**
 
 ```java
-package in.gymculture.repository;
+package in.vis.repository;
 
-import in.gymculture.model.BodyMeasurement;
+import in.vis.model.BodyMeasurement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
@@ -249,7 +249,7 @@ public interface BodyMeasurementRepository extends JpaRepository<BodyMeasurement
 - [ ] **Step 3: Write `BodyMeasurementDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.math.BigDecimal;
@@ -277,12 +277,12 @@ public class BodyMeasurementDto {
 - [ ] **Step 4: Write `BodyMeasurementService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.BodyMeasurementDto;
-import in.gymculture.model.BodyMeasurement;
-import in.gymculture.model.User;
-import in.gymculture.repository.BodyMeasurementRepository;
+import in.vis.dto.BodyMeasurementDto;
+import in.vis.model.BodyMeasurement;
+import in.vis.model.User;
+import in.vis.repository.BodyMeasurementRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -330,11 +330,11 @@ public class BodyMeasurementService {
 - [ ] **Step 5: Write `BodyMeasurementController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.BodyMeasurementDto;
-import in.gymculture.model.User;
-import in.gymculture.service.BodyMeasurementService;
+import in.vis.dto.BodyMeasurementDto;
+import in.vis.model.User;
+import in.vis.service.BodyMeasurementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -365,7 +365,7 @@ public class BodyMeasurementController {
 - [ ] **Step 6: Write test**
 
 ```java
-// backend/src/test/java/in/gymculture/controller/BodyMeasurementControllerTest.java
+// backend/src/test/java/in/vis/controller/BodyMeasurementControllerTest.java
 @SpringBootTest @AutoConfigureMockMvc
 class BodyMeasurementControllerTest {
     @Test void logAndRetrieve() throws Exception {
@@ -385,12 +385,12 @@ Expected: BUILD SUCCESS
 - [ ] **Step 8: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/model/BodyMeasurement.java \
-        backend/src/main/java/in/gymculture/repository/BodyMeasurementRepository.java \
-        backend/src/main/java/in/gymculture/dto/BodyMeasurementDto.java \
-        backend/src/main/java/in/gymculture/service/BodyMeasurementService.java \
-        backend/src/main/java/in/gymculture/controller/BodyMeasurementController.java \
-        backend/src/test/java/in/gymculture/controller/BodyMeasurementControllerTest.java
+git add backend/src/main/java/in/vis/model/BodyMeasurement.java \
+        backend/src/main/java/in/vis/repository/BodyMeasurementRepository.java \
+        backend/src/main/java/in/vis/dto/BodyMeasurementDto.java \
+        backend/src/main/java/in/vis/service/BodyMeasurementService.java \
+        backend/src/main/java/in/vis/controller/BodyMeasurementController.java \
+        backend/src/test/java/in/vis/controller/BodyMeasurementControllerTest.java
 git commit -m "feat: body measurement log + history endpoint"
 ```
 
@@ -399,16 +399,16 @@ git commit -m "feat: body measurement log + history endpoint"
 ## Task 3: Backend — Muscle recovery computation endpoint
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/dto/RecoveryStatusDto.java`
-- Create: `backend/src/main/java/in/gymculture/service/RecoveryService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/RecoveryController.java`
+- Create: `backend/src/main/java/in/vis/dto/RecoveryStatusDto.java`
+- Create: `backend/src/main/java/in/vis/service/RecoveryService.java`
+- Create: `backend/src/main/java/in/vis/controller/RecoveryController.java`
 
 Recovery is computed from `session_logs` (Phase 2). For each muscle group, find the last `session_log` entry where that muscle group appears (via the exercise's `muscle_groups` array). Compare `logged_at` to `now()`. Recovery thresholds (hours): CHEST 48, UPPER_BACK 48, LATS 48, LOWER_BACK 48, FRONT_DELT 48, SIDE_DELT 48, REAR_DELT 48, BICEPS 36, TRICEPS 36, FOREARMS 24, QUADS 72, HAMSTRINGS 72, GLUTES 72, CALVES 48, CORE 24.
 
 - [ ] **Step 1: Write `RecoveryStatusDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.util.Map;
@@ -423,9 +423,9 @@ public class RecoveryStatusDto {
 - [ ] **Step 2: Write `RecoveryService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.RecoveryStatusDto;
+import in.vis.dto.RecoveryStatusDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -486,10 +486,10 @@ public class RecoveryService {
 - [ ] **Step 3: Write `RecoveryController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.RecoveryStatusDto;
-import in.gymculture.service.RecoveryService;
+import in.vis.dto.RecoveryStatusDto;
+import in.vis.service.RecoveryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -512,7 +512,7 @@ public class RecoveryController {
 - [ ] **Step 4: Write test**
 
 ```java
-// backend/src/test/java/in/gymculture/service/RecoveryServiceTest.java
+// backend/src/test/java/in/vis/service/RecoveryServiceTest.java
 @SpringBootTest
 class RecoveryServiceTest {
     @Autowired RecoveryService service;
@@ -541,10 +541,10 @@ Expected: BUILD SUCCESS
 - [ ] **Step 6: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/dto/RecoveryStatusDto.java \
-        backend/src/main/java/in/gymculture/service/RecoveryService.java \
-        backend/src/main/java/in/gymculture/controller/RecoveryController.java \
-        backend/src/test/java/in/gymculture/service/RecoveryServiceTest.java
+git add backend/src/main/java/in/vis/dto/RecoveryStatusDto.java \
+        backend/src/main/java/in/vis/service/RecoveryService.java \
+        backend/src/main/java/in/vis/controller/RecoveryController.java \
+        backend/src/test/java/in/vis/service/RecoveryServiceTest.java
 git commit -m "feat: muscle recovery computation endpoint"
 ```
 
@@ -553,16 +553,16 @@ git commit -m "feat: muscle recovery computation endpoint"
 ## Task 4: Backend — Client home endpoint
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/dto/ClientHomeDto.java`
-- Create: `backend/src/main/java/in/gymculture/service/ClientHomeService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/ClientHomeController.java`
+- Create: `backend/src/main/java/in/vis/dto/ClientHomeDto.java`
+- Create: `backend/src/main/java/in/vis/service/ClientHomeService.java`
+- Create: `backend/src/main/java/in/vis/controller/ClientHomeController.java`
 
 The home endpoint returns: today's assigned workout (from active workout plan), current week's attendance (Mon–Sun), streak count, and "up next" workout day.
 
 - [ ] **Step 1: Write `ClientHomeDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
@@ -602,11 +602,11 @@ public class ClientHomeDto {
 - [ ] **Step 2: Write `ClientHomeService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.ClientHomeDto;
-import in.gymculture.model.WorkoutSession;
-import in.gymculture.repository.*;
+import in.vis.dto.ClientHomeDto;
+import in.vis.model.WorkoutSession;
+import in.vis.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.*;
@@ -683,11 +683,11 @@ public class ClientHomeService {
 - [ ] **Step 3: Write `ClientHomeController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.ClientHomeDto;
-import in.gymculture.model.User;
-import in.gymculture.service.ClientHomeService;
+import in.vis.dto.ClientHomeDto;
+import in.vis.model.User;
+import in.vis.service.ClientHomeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -708,7 +708,7 @@ public class ClientHomeController {
 - [ ] **Step 4: Write test**
 
 ```java
-// backend/src/test/java/in/gymculture/controller/ClientHomeControllerTest.java
+// backend/src/test/java/in/vis/controller/ClientHomeControllerTest.java
 @SpringBootTest @AutoConfigureMockMvc
 class ClientHomeControllerTest {
     @Test void returnsHomeForClientWithActivePlan() throws Exception {
@@ -733,10 +733,10 @@ Expected: BUILD SUCCESS
 - [ ] **Step 6: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/dto/ClientHomeDto.java \
-        backend/src/main/java/in/gymculture/service/ClientHomeService.java \
-        backend/src/main/java/in/gymculture/controller/ClientHomeController.java \
-        backend/src/test/java/in/gymculture/controller/ClientHomeControllerTest.java
+git add backend/src/main/java/in/vis/dto/ClientHomeDto.java \
+        backend/src/main/java/in/vis/service/ClientHomeService.java \
+        backend/src/main/java/in/vis/controller/ClientHomeController.java \
+        backend/src/test/java/in/vis/controller/ClientHomeControllerTest.java
 git commit -m "feat: client home endpoint (today's workout, streak, up next)"
 ```
 
@@ -745,17 +745,17 @@ git commit -m "feat: client home endpoint (today's workout, streak, up next)"
 ## Task 5: Backend — Gym schedule endpoint
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/model/GymSchedule.java`
-- Create: `backend/src/main/java/in/gymculture/model/GymScheduleOverride.java`
-- Create: `backend/src/main/java/in/gymculture/repository/GymScheduleRepository.java`
-- Create: `backend/src/main/java/in/gymculture/dto/GymScheduleDto.java`
-- Create: `backend/src/main/java/in/gymculture/service/GymScheduleService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/GymScheduleController.java`
+- Create: `backend/src/main/java/in/vis/model/GymSchedule.java`
+- Create: `backend/src/main/java/in/vis/model/GymScheduleOverride.java`
+- Create: `backend/src/main/java/in/vis/repository/GymScheduleRepository.java`
+- Create: `backend/src/main/java/in/vis/dto/GymScheduleDto.java`
+- Create: `backend/src/main/java/in/vis/service/GymScheduleService.java`
+- Create: `backend/src/main/java/in/vis/controller/GymScheduleController.java`
 
 - [ ] **Step 1: Write `GymSchedule.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -779,7 +779,7 @@ public class GymSchedule {
 - [ ] **Step 2: Write `GymScheduleOverride.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -800,9 +800,9 @@ public class GymScheduleOverride {
 - [ ] **Step 3: Write `GymScheduleRepository.java`**
 
 ```java
-package in.gymculture.repository;
+package in.vis.repository;
 
-import in.gymculture.model.GymSchedule;
+import in.vis.model.GymSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
@@ -815,7 +815,7 @@ public interface GymScheduleRepository extends JpaRepository<GymSchedule, UUID> 
 - [ ] **Step 4: Write `GymScheduleDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.time.LocalDate;
@@ -838,12 +838,12 @@ public class GymScheduleDto {
 - [ ] **Step 5: Write `GymScheduleService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.GymScheduleDto;
-import in.gymculture.model.GymSchedule;
-import in.gymculture.model.GymScheduleOverride;
-import in.gymculture.repository.GymScheduleRepository;
+import in.vis.dto.GymScheduleDto;
+import in.vis.model.GymSchedule;
+import in.vis.model.GymScheduleOverride;
+import in.vis.repository.GymScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -896,11 +896,11 @@ public class GymScheduleService {
 - [ ] **Step 6: Write `GymScheduleController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.GymScheduleDto;
-import in.gymculture.model.User;
-import in.gymculture.service.GymScheduleService;
+import in.vis.dto.GymScheduleDto;
+import in.vis.model.User;
+import in.vis.service.GymScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -928,12 +928,12 @@ public class GymScheduleController {
 - [ ] **Step 7: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/model/GymSchedule.java \
-        backend/src/main/java/in/gymculture/model/GymScheduleOverride.java \
-        backend/src/main/java/in/gymculture/repository/GymScheduleRepository.java \
-        backend/src/main/java/in/gymculture/dto/GymScheduleDto.java \
-        backend/src/main/java/in/gymculture/service/GymScheduleService.java \
-        backend/src/main/java/in/gymculture/controller/GymScheduleController.java
+git add backend/src/main/java/in/vis/model/GymSchedule.java \
+        backend/src/main/java/in/vis/model/GymScheduleOverride.java \
+        backend/src/main/java/in/vis/repository/GymScheduleRepository.java \
+        backend/src/main/java/in/vis/dto/GymScheduleDto.java \
+        backend/src/main/java/in/vis/service/GymScheduleService.java \
+        backend/src/main/java/in/vis/controller/GymScheduleController.java
 git commit -m "feat: gym visit schedule endpoint (default time + per-day overrides + rest days)"
 ```
 
@@ -942,18 +942,18 @@ git commit -m "feat: gym visit schedule endpoint (default time + per-day overrid
 ## Task 6: Backend — Trainer leaderboard + rating submission
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/dto/TrainerLeaderboardDto.java`
-- Create: `backend/src/main/java/in/gymculture/dto/TrainerRatingDto.java`
-- Create: `backend/src/main/java/in/gymculture/model/TrainerRating.java`
-- Create: `backend/src/main/java/in/gymculture/repository/TrainerRatingRepository.java`
-- Create: `backend/src/main/java/in/gymculture/service/TrainerRatingService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/TrainerLeaderboardController.java`
-- Create: `backend/src/main/java/in/gymculture/controller/TrainerRatingController.java`
+- Create: `backend/src/main/java/in/vis/dto/TrainerLeaderboardDto.java`
+- Create: `backend/src/main/java/in/vis/dto/TrainerRatingDto.java`
+- Create: `backend/src/main/java/in/vis/model/TrainerRating.java`
+- Create: `backend/src/main/java/in/vis/repository/TrainerRatingRepository.java`
+- Create: `backend/src/main/java/in/vis/service/TrainerRatingService.java`
+- Create: `backend/src/main/java/in/vis/controller/TrainerLeaderboardController.java`
+- Create: `backend/src/main/java/in/vis/controller/TrainerRatingController.java`
 
 - [ ] **Step 1: Write `TrainerLeaderboardDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.util.List;
@@ -976,7 +976,7 @@ public class TrainerLeaderboardDto {
 - [ ] **Step 2: Write `TrainerRating.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -998,9 +998,9 @@ public class TrainerRating {
 - [ ] **Step 3: Write `TrainerRatingRepository.java`**
 
 ```java
-package in.gymculture.repository;
+package in.vis.repository;
 
-import in.gymculture.model.TrainerRating;
+import in.vis.model.TrainerRating;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
@@ -1017,7 +1017,7 @@ public interface TrainerRatingRepository extends JpaRepository<TrainerRating, UU
 - [ ] **Step 4: Write `TrainerRatingDto.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import lombok.Data;
 import java.math.BigDecimal;
@@ -1033,13 +1033,13 @@ public class TrainerRatingDto {
 - [ ] **Step 5: Write `TrainerRatingService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.TrainerLeaderboardDto;
-import in.gymculture.dto.TrainerRatingDto;
-import in.gymculture.model.TrainerRating;
-import in.gymculture.model.User;
-import in.gymculture.repository.*;
+import in.vis.dto.TrainerLeaderboardDto;
+import in.vis.dto.TrainerRatingDto;
+import in.vis.model.TrainerRating;
+import in.vis.model.User;
+import in.vis.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -1052,7 +1052,7 @@ public class TrainerRatingService {
     private final WorkoutPlanRepository planRepo;
 
     public List<TrainerLeaderboardDto> getLeaderboard(UUID branchId) {
-        List<User> trainers = userRepo.findByBranchIdAndRole(branchId, in.gymculture.model.Role.TRAINER);
+        List<User> trainers = userRepo.findByBranchIdAndRole(branchId, in.vis.model.Role.TRAINER);
         return trainers.stream().map(t -> {
             TrainerLeaderboardDto dto = new TrainerLeaderboardDto();
             dto.setId(t.getId()); dto.setName(t.getName()); dto.setPhotoUrl(t.getPhotoUrl());
@@ -1077,12 +1077,12 @@ public class TrainerRatingService {
 - [ ] **Step 6: Write `TrainerLeaderboardController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.TrainerLeaderboardDto;
-import in.gymculture.dto.TrainerRatingDto;
-import in.gymculture.model.User;
-import in.gymculture.service.TrainerRatingService;
+import in.vis.dto.TrainerLeaderboardDto;
+import in.vis.dto.TrainerRatingDto;
+import in.vis.model.User;
+import in.vis.service.TrainerRatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -1127,7 +1127,7 @@ public class TrainerLeaderboardController {
 - [ ] **Step 7: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/
+git add backend/src/main/java/in/vis/
 git commit -m "feat: trainer leaderboard + client rating submission endpoint"
 ```
 
@@ -1707,7 +1707,7 @@ npx pod-install ios
 Add to `Info.plist` (iOS):
 ```xml
 <key>NSHealthShareUsageDescription</key>
-<string>GymCulture reads your health data to show today's stats.</string>
+<string>Vis reads your health data to show today's stats.</string>
 ```
 
 - [ ] **Step 2: Write `healthService.js`**
@@ -2429,7 +2429,7 @@ git commit -m "feat: nutrition tab (read-only) + profile tab with gym schedule e
 ## Task 15: Push notification wiring (FCM)
 
 **Files:**
-- Modify: `backend/src/main/java/in/gymculture/service/NotificationService.java` (already exists from Phase 1 — add client triggers)
+- Modify: `backend/src/main/java/in/vis/service/NotificationService.java` (already exists from Phase 1 — add client triggers)
 - Create: `client-app/src/services/notificationService.js`
 
 - [ ] **Step 1: Register FCM token on client app startup**
@@ -2616,20 +2616,20 @@ public void sendPush(String fcmToken, String title, String body) {
 public void sendMembershipActivated(UUID userId) {
     userRepository.findById(userId).ifPresent(user ->
         sendPush(user.getFcmToken(), "Membership Activated",
-            "Your gym membership at GymCulture is now active!")
+            "Your gym membership at Vis is now active!")
     );
 }
 
 public void sendPtActivated(UUID userId) {
     userRepository.findById(userId).ifPresent(user ->
         sendPush(user.getFcmToken(), "PT Membership Activated",
-            "Your Personal Training membership is active. Download the GymCulture app to get started!")
+            "Your Personal Training membership is active. Download the Vis app to get started!")
     );
 }
 
 public void sendReminder(UUID userId, String messageText) {
     userRepository.findById(userId).ifPresent(user ->
-        sendPush(user.getFcmToken(), "GymCulture Reminder", messageText)
+        sendPush(user.getFcmToken(), "Vis Reminder", messageText)
     );
 }
 ```
@@ -2654,7 +2654,7 @@ Install: `npm install @react-native-firebase/messaging` + `npx pod-install`
 
 ```bash
 git add backend/src/main/resources/db/migration/V15__add_fcm_token_to_users.sql \
-        backend/src/main/java/in/gymculture/
+        backend/src/main/java/in/vis/
 git commit -m "feat: FCM push notifications — token storage + real sends"
 ```
 

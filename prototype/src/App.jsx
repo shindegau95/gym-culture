@@ -37,7 +37,7 @@ export default function App() {
               <rect x="12" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-nav)"/>
             </svg>
           </div>
-          <span className={s.brandTitle}>Gym Culture</span>
+          <span className={s.brandTitle}>Vis</span>
           <span className={s.brandDot}>·</span>
           <span className={s.brandSub}>Design Prototype</span>
         </div>

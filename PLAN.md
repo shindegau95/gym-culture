@@ -1,6 +1,6 @@
-# GymCulture Pro — Master Plan & Progress Tracker
+# Vis — Master Plan & Progress Tracker
 
-> **Resume instructions:** If context is lost, read this file first, then read the spec at `docs/superpowers/specs/2026-05-04-gym-culture-design.md`, then open the plan file for the current phase. Pick up from the first unchecked task.
+> **Resume instructions:** If context is lost, read this file first, then read the spec at `docs/superpowers/specs/2026-05-04-vis-design.md`, then open the plan file for the current phase. Pick up from the first unchecked task.
 
 ---
 
@@ -8,9 +8,9 @@
 
 | Item | Value |
 |---|---|
-| Owner constant | `thegymculture.in` (OWNER_NAME — change in one place) |
+| Owner constant | `vis` (OWNER_NAME — change in one place) |
 | Branches | 7 currently (Kandivali, Borivali, Mira Road, Malad East, Orlem, Haridwar, Sundar Nagar) |
-| Spec | `docs/superpowers/specs/2026-05-04-gym-culture-design.md` |
+| Spec | `docs/superpowers/specs/2026-05-04-vis-design.md` |
 | Stack | Java 21 + Spring Boot 3, PostgreSQL (Neon), Firebase Auth + FCM, React Native (Client + Trainer), Angular (Admin), Google Cloud Run, Cloudflare R2 |
 | Auth | Firebase Auth — Google Sign-In, Apple Sign-In, Phone OTP. Spring Boot validates Firebase JWT on every request. |
 | Payments | In-person only — no gateway. Staff log amounts when activating memberships. |

@@ -8,10 +8,16 @@ Always invoke these skills before any frontend or coding work — no exceptions:
 
 - **`/frontend-design:frontend-design`** — invoke before building or modifying any UI component, screen, or layout. Establishes aesthetic direction, design quality bar, and animation/typography standards.
 - **`/karpathy-guidelines`** — invoke before any implementation task. Enforces simplicity-first thinking, surgical edits, and goal-driven execution to avoid common LLM coding mistakes.
+- **`/react-native-best-practices`** (callstack plugin) — invoke before any React Native work in `trainer-app/` or `client-app/`. Covers JS thread, Hermes, memory leaks, animation performance.
+- **`/react-native-skills`** (gigs plugin) — invoke alongside react-native-best-practices for comprehensive React + RN + Expo pattern coverage (130+ rules).
 
-Both skills must be invoked at the start of the task, not after. If a task touches both design and code (which most tasks in this project do), invoke both.
+All skills must be invoked at the start of the task, not after. If a task touches both design and code (which most tasks in this project do), invoke all relevant skills.
 
 - **`/caveman`** — invoke at the start of every session, no exceptions. Reduces token usage by ~75% by dropping filler words while preserving full technical accuracy.
+
+## Context7 (Library Docs)
+
+Always use the `context7` MCP tool when working with any library, framework, SDK, or API — even well-known ones (React Native, Expo, Spring Boot, Angular, Tailwind, etc.). Training data may be stale. Fetch current docs before writing library-specific code.
 
 ---
 
@@ -30,9 +36,9 @@ Never start coding without first fetching and reading the Linear issue.
 
 ## Commit Convention
 
-Every commit message **must** be prefixed with the Linear story number in the format `GC-<story-number>: <message>`. Ask the user for the story number if it is not known. Always push after committing.
+Every commit message **must** be prefixed with the Linear story number in the format `VIS-<story-number>: <message>`. Ask the user for the story number if it is not known. Always push after committing.
 
-Example: `GC-42: add user authentication filter`
+Example: `VIS-42: add user authentication filter`
 
 ---
 
@@ -50,7 +56,7 @@ Do this before moving on. The goal is that future sessions never repeat the same
 
 ## Resume Instructions
 
-If context is lost mid-session, read `PLAN.md` first, then the spec at `docs/superpowers/specs/2026-05-04-gym-culture-design.md`, then the plan file for the current phase. Pick up from the first unchecked task.
+If context is lost mid-session, read `PLAN.md` first, then the spec at `docs/superpowers/specs/2026-05-04-vis-design.md`, then the plan file for the current phase. Pick up from the first unchecked task.
 
 Phase plans are in `docs/superpowers/plans/`:
 - `2026-05-04-phase-0-foundation.md` — auth + DB schema + all three app shells
@@ -82,9 +88,9 @@ admin-web/        Angular — Branch Staff and Owner web app
 docker-compose up -d
 
 # Run the backend
-export DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture
-export DATABASE_USER=gymculture
-export DATABASE_PASSWORD=gymculture
+export DATABASE_URL=jdbc:postgresql://localhost:5432/vis
+export DATABASE_USER=vis
+export DATABASE_PASSWORD=vis
 export FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
 export FIREBASE_PROJECT_ID=your-firebase-project-id
 mvn spring-boot:run
@@ -100,7 +106,7 @@ mvn test -Dtest=UserServiceTest#getByFirebaseUid_existingUser_returnsResponse
 
 # Build Docker image
 mvn package -DskipTests
-docker build -t gymculture-backend .
+docker build -t vis-backend .
 
 # Run Flyway migrations manually
 mvn flyway:migrate
@@ -167,7 +173,7 @@ Branch enforcement is applied at the service layer, not controller layer.
 ### Backend Package Structure
 
 ```
-in.gymculture/
+in.vis/
   config/       FirebaseConfig, SecurityConfig, CorsConfig
   filter/       FirebaseAuthFilter (validates JWT, sets SecurityContext)
   model/        JPA entities (Branch, User, ...)
@@ -183,7 +189,7 @@ in.gymculture/
 
 - Unit tests: Mockito for services and filter logic
 - Controller tests: `@WebMvcTest` slice tests with `MockBean` — Firebase filter is mocked to skip JWT validation
-- Integration tests: Testcontainers PostgreSQL (configured via `spring.datasource.url=jdbc:tc:postgresql:16:///gymculture` in `application-test.properties`)
+- Integration tests: Testcontainers PostgreSQL (configured via `spring.datasource.url=jdbc:tc:postgresql:16:///vis` in `application-test.properties`)
 
 ### Firebase Config Files
 
@@ -194,7 +200,7 @@ Firebase config is not stored in code:
 
 ### Key Constants
 
-- `app.owner-name=thegymculture.in` in `application.properties` — change in one place for a different gym chain
+- `app.owner-name=vis` in `application.properties` — change in one place for a different gym chain
 - Backend API base URL in React Native apps is `http://localhost:8080` in dev, Cloud Run URL in production
 - Angular environments are in `admin-web/src/environments/`
 

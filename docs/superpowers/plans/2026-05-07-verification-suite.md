@@ -56,7 +56,7 @@ mvn test -Dgroups=integration
 Integration tests use a real PostgreSQL 16 container. Ensure Docker is running before executing integration tests. The `application-test.properties` datasource URL uses the Testcontainers JDBC URL format:
 
 ```
-spring.datasource.url=jdbc:tc:postgresql:16:///gymculture
+spring.datasource.url=jdbc:tc:postgresql:16:///vis
 ```
 
 No manual database setup is required. Flyway migrations run automatically on the test container.
@@ -242,7 +242,7 @@ A phase is complete and the next phase may begin only when ALL of the following 
 
 ### Phase 0 — Foundation Gate
 
-- [ ] All 14 Phase 0 issues (GC-17–GC-30) are Done in Linear
+- [ ] All 14 Phase 0 issues (VIS-17–VIS-30) are Done in Linear
 - [ ] `mvn test` passes with zero failures on a fresh clone
 - [ ] All three apps can sign in with Firebase and reach the backend
 - [ ] `GET /auth/me` returns the correct role and branch for each role type
@@ -252,7 +252,7 @@ A phase is complete and the next phase may begin only when ALL of the following 
 
 ### Phase 1 — Admin Web Gate
 
-- [ ] All 9 Phase 1 issues (GC-31–GC-39) are Done
+- [ ] All 9 Phase 1 issues (VIS-31–VIS-39) are Done
 - [ ] Playwright E2E suite (`e2e/admin/`) passes with zero failures
 - [ ] Staff can activate a membership → client receives push notification
 - [ ] Owner can view cross-branch revenue overview
@@ -260,7 +260,7 @@ A phase is complete and the next phase may begin only when ALL of the following 
 
 ### Phase 2 — Trainer App Gate
 
-- [ ] All 6 Phase 2 issues (GC-40–GC-45) are Done
+- [ ] All 6 Phase 2 issues (VIS-40–VIS-45) are Done
 - [ ] Trainer can build a workout plan and assign it to a client
 - [ ] Trainer can start a session and log sets
 - [ ] `POST /ai/exercise-suggestions` returns a ranked list (live OpenAI call)
@@ -269,7 +269,7 @@ A phase is complete and the next phase may begin only when ALL of the following 
 
 ### Phase 3 — Client App Gate
 
-- [ ] All 15 Phase 3 issues (GC-46–GC-60) are Done
+- [ ] All 15 Phase 3 issues (VIS-46–VIS-60) are Done
 - [ ] Full onboarding flow: new Firebase user → body profile → trainer selection → Home tab
 - [ ] Session sync verified manually (see §5.5)
 - [ ] All 5 tabs render on seeded account without crash on iOS and Android

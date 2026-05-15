@@ -1,4 +1,4 @@
-# GymCulture Pro — Backend
+# Vis — Backend
 
 Spring Boot 3.3 (Java 21) REST API. Multi-branch, role-based, Firebase-auth. PostgreSQL 16 via Flyway-managed schema.
 
@@ -9,9 +9,9 @@ Spring Boot 3.3 (Java 21) REST API. Multi-branch, role-based, Firebase-auth. Pos
 docker compose up -d
 
 # 2. Export env vars (copy from .env.example)
-export DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture
-export DATABASE_USER=gymculture
-export DATABASE_PASSWORD=gymculture
+export DATABASE_URL=jdbc:postgresql://localhost:5432/vis
+export DATABASE_USER=vis
+export DATABASE_PASSWORD=vis
 export FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
 export FIREBASE_PROJECT_ID=your-firebase-project-id
 
@@ -39,7 +39,7 @@ Run manually outside the app: `mvn flyway:migrate` (uses the same env vars).
 mvn test
 ```
 
-Default datasource = Testcontainers JDBC URL `jdbc:tc:postgresql:16:///gymculture` — spins a fresh PostgreSQL 16 container per run, no local DB needed.
+Default datasource = Testcontainers JDBC URL `jdbc:tc:postgresql:16:///vis` — spins a fresh PostgreSQL 16 container per run, no local DB needed.
 
 ### Testcontainers + Docker Engine ≥ 29 known issue
 
@@ -49,10 +49,10 @@ Testcontainers 1.19.7's shaded `docker-java` cannot parse the Docker Engine 29.x
 
 ```bash
 docker compose up -d
-TEST_DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture \
+TEST_DATABASE_URL=jdbc:postgresql://localhost:5432/vis \
 TEST_DATABASE_DRIVER=org.postgresql.Driver \
-TEST_DATABASE_USER=gymculture \
-TEST_DATABASE_PASSWORD=gymculture \
+TEST_DATABASE_USER=vis \
+TEST_DATABASE_PASSWORD=vis \
 mvn test
 ```
 
@@ -61,14 +61,14 @@ mvn test
 ## Project layout
 
 ```
-src/main/java/in/gymculture/
-  GymCultureApplication.java     # @SpringBootApplication entry point
+src/main/java/in/vis/
+  VisApplication.java     # @SpringBootApplication entry point
 src/main/resources/
   application.properties         # env-driven config
   db/migration/V*__*.sql         # Flyway migrations
 src/test/resources/
   application-test.properties    # Testcontainers / env-overridable datasource
-src/test/java/in/gymculture/
+src/test/java/in/vis/
   MigrationsIntegrationTest.java # branches seed + CHECK constraint
 docker-compose.yml               # postgres:16 on :5432
 ```

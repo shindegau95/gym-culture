@@ -1,4 +1,4 @@
-# Software Design Document — GymCulture Pro
+# Software Design Document — Vis
 
 **Version:** 1.0
 **Date:** 2026-05-07
@@ -8,14 +8,14 @@
 
 ## 1. System Overview
 
-GymCulture Pro is a three-app fitness platform for **thegymculture.in** — a multi-branch gym chain (7 branches, target 100). All three apps share a single backend API and PostgreSQL database. Every data entity is branch-scoped from day one.
+Vis is a three-app fitness platform for **vis** — a multi-branch gym chain (7 branches, target 100). All three apps share a single backend API and PostgreSQL database. Every data entity is branch-scoped from day one.
 
 **Apps:**
 - **Client App** — React Native (iOS + Android) — PT members
 - **Trainer App** — React Native (iOS + Android) — Personal Trainers
 - **Admin Web** — Angular — Branch Staff and Owners
 
-**Configuration constant:** `app.owner-name=thegymculture.in` in `application.properties` — change from one location to deploy for a different gym chain.
+**Configuration constant:** `app.owner-name=vis` in `application.properties` — change from one location to deploy for a different gym chain.
 
 ---
 
@@ -65,7 +65,7 @@ GymCulture Pro is a three-app fitness platform for **thegymculture.in** — a mu
 ### 3.1 Package Structure
 
 ```
-in.gymculture/
+in.vis/
   config/       FirebaseConfig, SecurityConfig, CorsConfig
   filter/       FirebaseAuthFilter
   model/        JPA entities (Branch, User, Membership, Session, …)
@@ -112,7 +112,7 @@ in.gymculture/
 |------|---------|-------|
 | Unit | JUnit 5 + Mockito | Services, filter logic |
 | Controller slice | `@WebMvcTest` + `MockBean` | HTTP mapping, validation — Firebase filter mocked |
-| Integration | Testcontainers (PostgreSQL 16) | Full DB stack; `application-test.properties` uses `jdbc:tc:postgresql:16:///gymculture` |
+| Integration | Testcontainers (PostgreSQL 16) | Full DB stack; `application-test.properties` uses `jdbc:tc:postgresql:16:///vis` |
 
 ---
 

@@ -1,4 +1,4 @@
-# Client App — GymCulture Pro
+# Client App — Vis
 
 React Native 0.85 (bare CLI) — PT member-facing app. Phase 0 ships only the auth shell:
 `Login → (Pending | HomeShell)` driven by Firebase Auth + backend `GET /auth/me`.
@@ -13,13 +13,13 @@ React Native 0.85 (bare CLI) — PT member-facing app. Phase 0 ships only the au
 
 ## Local-only Firebase config (NEVER commit)
 
-These come from the Firebase Console for the **Client App** entries (`in.gymculture.client`).
+These come from the Firebase Console for the **Client App** entries (`in.vis.client`).
 Both files are `.gitignore`d.
 
 | File | Source | Drop into |
 | -- | -- | -- |
-| `google-services.json` | Firebase Console → Project settings → Android app `in.gymculture.client` | `android/app/google-services.json` |
-| `GoogleService-Info.plist` | Firebase Console → iOS app `in.gymculture.client` | `ios/ClientApp/GoogleService-Info.plist` (also drag-drop into the Xcode project so it's in the resources bundle) |
+| `google-services.json` | Firebase Console → Project settings → Android app `in.vis.client` | `android/app/google-services.json` |
+| `GoogleService-Info.plist` | Firebase Console → iOS app `in.vis.client` | `ios/ClientApp/GoogleService-Info.plist` (also drag-drop into the Xcode project so it's in the resources bundle) |
 
 Then update `src/config.ts` with the **Web client ID** from
 `Firebase Console → Project settings → General → Web SDK configuration → Web client ID`.

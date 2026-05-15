@@ -22,7 +22,7 @@ export function LoginScreen(): React.JSX.Element {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.title}>GymCulture Pro</Text>
+        <Text style={styles.title}>Vis</Text>
         <Text style={styles.subtitle}>PT Member</Text>
 
         <Pressable

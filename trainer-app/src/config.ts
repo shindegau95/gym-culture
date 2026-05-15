@@ -4,7 +4,7 @@ import {Platform} from 'react-native';
 const localhost = Platform.OS === 'android' ? 'http://10.0.2.2:8080' : 'http://localhost:8080';
 
 export const config = {
-  apiBaseUrl: __DEV__ ? localhost : 'https://api.thegymculture.in',
+  apiBaseUrl: __DEV__ ? localhost : 'https://api.vis',
 
   // Firebase Web client ID for Google sign-in. Pull this from the Firebase
   // Console → Project Settings → General → Web SDK configuration → Web client ID.

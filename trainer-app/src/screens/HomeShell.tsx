@@ -12,7 +12,7 @@ export function HomeShell({user}: Props): React.JSX.Element {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.eyebrow}>{user.branchName ?? 'GymCulture'}</Text>
+          <Text style={styles.eyebrow}>{user.branchName ?? 'Vis'}</Text>
           <Text style={styles.title}>Hey, {user.name.split(' ')[0]}</Text>
         </View>
         <Pressable onPress={signOut} style={({pressed}) => [styles.signOut, pressed && styles.signOutPressed]}>

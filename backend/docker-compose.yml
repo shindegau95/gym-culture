@@ -1,21 +1,21 @@
 services:
   postgres:
     image: postgres:16
-    container_name: gymculture-postgres
+    container_name: vis-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: gymculture
-      POSTGRES_USER: gymculture
-      POSTGRES_PASSWORD: gymculture
+      POSTGRES_DB: vis
+      POSTGRES_USER: vis
+      POSTGRES_PASSWORD: vis
     ports:
       - "5432:5432"
     volumes:
-      - gymculture-pg:/var/lib/postgresql/data
+      - vis-pg:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gymculture -d gymculture"]
+      test: ["CMD-SHELL", "pg_isready -U vis -d vis"]
       interval: 5s
       timeout: 3s
       retries: 10
 
 volumes:
-  gymculture-pg:
+  vis-pg:

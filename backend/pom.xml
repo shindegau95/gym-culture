@@ -11,11 +11,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>in.gymculture</groupId>
-    <artifactId>gymculture-backend</artifactId>
+    <groupId>in.vis</groupId>
+    <artifactId>vis-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gymculture-backend</name>
-    <description>GymCulture Pro — Spring Boot REST API</description>
+    <name>vis-backend</name>
+    <description>Vis — Spring Boot REST API</description>
 
     <properties>
         <java.version>21</java.version>

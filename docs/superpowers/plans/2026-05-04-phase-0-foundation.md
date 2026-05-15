@@ -15,8 +15,8 @@
 ### Backend (`backend/`)
 ```
 backend/
-  src/main/java/in/gymculture/
-    GymCultureApplication.java
+  src/main/java/in/vis/
+    VisApplication.java
     config/
       FirebaseConfig.java          # Initialises Firebase Admin SDK
       SecurityConfig.java          # Spring Security — permit /auth/**, guard all else
@@ -50,7 +50,7 @@ backend/
       V2__create_users.sql
     application.properties         # Datasource, Firebase, Flyway config (reads env vars)
     application-test.properties    # Testcontainers PostgreSQL override
-  src/test/java/in/gymculture/
+  src/test/java/in/vis/
     filter/FirebaseAuthFilterTest.java
     service/UserServiceTest.java
     controller/AuthControllerIntegrationTest.java
@@ -122,14 +122,14 @@ admin-web/
 
 **Files:**
 - Create: `backend/pom.xml`
-- Create: `backend/src/main/java/in/gymculture/GymCultureApplication.java`
+- Create: `backend/src/main/java/in/vis/VisApplication.java`
 - Create: `backend/src/main/resources/application.properties`
 - Create: `backend/.env.example`
 
 - [ ] **Step 1: Generate Spring Boot project**
 
 Go to https://start.spring.io and download with:
-- Group: `in.gymculture` · Artifact: `backend`
+- Group: `in.vis` · Artifact: `backend`
 - Java 21 · Spring Boot 3.3.x · Packaging: Jar
 - Dependencies: Spring Web, Spring Data JPA, Spring Security, PostgreSQL Driver, Flyway Migration, Validation
 
@@ -218,16 +218,16 @@ firebase.credentials.path=${FIREBASE_CREDENTIALS_PATH}
 firebase.project.id=${FIREBASE_PROJECT_ID}
 
 # App
-app.owner-name=thegymculture.in
+app.owner-name=vis
 server.port=8080
 ```
 
 - [ ] **Step 5: Create `.env.example`**
 
 ```
-DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture
-DATABASE_USER=gymculture
-DATABASE_PASSWORD=gymculture
+DATABASE_URL=jdbc:postgresql://localhost:5432/vis
+DATABASE_USER=vis
+DATABASE_PASSWORD=vis
 FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
 FIREBASE_PROJECT_ID=your-firebase-project-id
 ```
@@ -240,7 +240,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-Expected: `Started GymCultureApplication` (may fail on DB connection — that's fine, we just want compile success).
+Expected: `Started VisApplication` (may fail on DB connection — that's fine, we just want compile success).
 
 - [ ] **Step 7: Commit**
 
@@ -268,9 +268,9 @@ services:
   postgres:
     image: postgres:16
     environment:
-      POSTGRES_DB: gymculture
-      POSTGRES_USER: gymculture
-      POSTGRES_PASSWORD: gymculture
+      POSTGRES_DB: vis
+      POSTGRES_USER: vis
+      POSTGRES_PASSWORD: vis
     ports:
       - "5432:5432"
     volumes:
@@ -338,9 +338,9 @@ CREATE INDEX idx_users_branch_id ON users(branch_id);
 Create `src/test/resources/application-test.properties`:
 
 ```properties
-spring.datasource.url=jdbc:tc:postgresql:16:///gymculture
-spring.datasource.username=gymculture
-spring.datasource.password=gymculture
+spring.datasource.url=jdbc:tc:postgresql:16:///vis
+spring.datasource.username=vis
+spring.datasource.password=vis
 spring.datasource.driver-class-name=org.testcontainers.jdbc.ContainerDatabaseDriver
 spring.jpa.hibernate.ddl-auto=validate
 spring.flyway.enabled=true
@@ -352,9 +352,9 @@ firebase.credentials.path=  # empty — we mock FirebaseAuth in tests
 
 ```bash
 cd backend
-export DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture
-export DATABASE_USER=gymculture
-export DATABASE_PASSWORD=gymculture
+export DATABASE_URL=jdbc:postgresql://localhost:5432/vis
+export DATABASE_USER=vis
+export DATABASE_PASSWORD=vis
 export FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
 export FIREBASE_PROJECT_ID=placeholder
 mvn flyway:migrate
@@ -374,16 +374,16 @@ git commit -m "feat: add Flyway migrations for branches and users tables"
 ## Task 3: JPA entities and repositories
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/enums/Role.java`
-- Create: `backend/src/main/java/in/gymculture/model/Branch.java`
-- Create: `backend/src/main/java/in/gymculture/model/User.java`
-- Create: `backend/src/main/java/in/gymculture/repository/BranchRepository.java`
-- Create: `backend/src/main/java/in/gymculture/repository/UserRepository.java`
+- Create: `backend/src/main/java/in/vis/enums/Role.java`
+- Create: `backend/src/main/java/in/vis/model/Branch.java`
+- Create: `backend/src/main/java/in/vis/model/User.java`
+- Create: `backend/src/main/java/in/vis/repository/BranchRepository.java`
+- Create: `backend/src/main/java/in/vis/repository/UserRepository.java`
 
 - [ ] **Step 1: Write `Role.java`**
 
 ```java
-package in.gymculture.enums;
+package in.vis.enums;
 
 public enum Role {
     CLIENT, TRAINER, STAFF, OWNER
@@ -393,7 +393,7 @@ public enum Role {
 - [ ] **Step 2: Write `Branch.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
@@ -434,9 +434,9 @@ public class Branch {
 - [ ] **Step 3: Write `User.java`**
 
 ```java
-package in.gymculture.model;
+package in.vis.model;
 
-import in.gymculture.enums.Role;
+import in.vis.enums.Role;
 import jakarta.persistence.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -500,9 +500,9 @@ public class User {
 - [ ] **Step 4: Write `BranchRepository.java`**
 
 ```java
-package in.gymculture.repository;
+package in.vis.repository;
 
-import in.gymculture.model.Branch;
+import in.vis.model.Branch;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
@@ -512,9 +512,9 @@ public interface BranchRepository extends JpaRepository<Branch, UUID> {}
 - [ ] **Step 5: Write `UserRepository.java`**
 
 ```java
-package in.gymculture.repository;
+package in.vis.repository;
 
-import in.gymculture.model.User;
+import in.vis.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
@@ -536,7 +536,7 @@ Expected: `BUILD SUCCESS`
 - [ ] **Step 7: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/
+git add backend/src/main/java/in/vis/
 git commit -m "feat: add Branch and User JPA entities with repositories"
 ```
 
@@ -545,7 +545,7 @@ git commit -m "feat: add Branch and User JPA entities with repositories"
 ## Task 4: Firebase Admin SDK initialisation
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/config/FirebaseConfig.java`
+- Create: `backend/src/main/java/in/vis/config/FirebaseConfig.java`
 
 - [ ] **Step 1: Download Firebase service account key**
 
@@ -558,7 +558,7 @@ echo "firebase-service-account.json" >> backend/.gitignore
 - [ ] **Step 2: Write `FirebaseConfig.java`**
 
 ```java
-package in.gymculture.config;
+package in.vis.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -606,18 +606,18 @@ public class FirebaseConfig {
 cd backend
 export FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
 export FIREBASE_PROJECT_ID=your-actual-project-id
-export DATABASE_URL=jdbc:postgresql://localhost:5432/gymculture
-export DATABASE_USER=gymculture
-export DATABASE_PASSWORD=gymculture
+export DATABASE_URL=jdbc:postgresql://localhost:5432/vis
+export DATABASE_USER=vis
+export DATABASE_PASSWORD=vis
 mvn spring-boot:run
 ```
 
-Expected: `Started GymCultureApplication` with no Firebase errors.
+Expected: `Started VisApplication` with no Firebase errors.
 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/config/FirebaseConfig.java backend/.gitignore
+git add backend/src/main/java/in/vis/config/FirebaseConfig.java backend/.gitignore
 git commit -m "feat: initialise Firebase Admin SDK with service account or ADC"
 ```
 
@@ -626,13 +626,13 @@ git commit -m "feat: initialise Firebase Admin SDK with service account or ADC"
 ## Task 5: Firebase auth filter
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/filter/FirebaseAuthFilter.java`
-- Create: `backend/src/test/java/in/gymculture/filter/FirebaseAuthFilterTest.java`
+- Create: `backend/src/main/java/in/vis/filter/FirebaseAuthFilter.java`
+- Create: `backend/src/test/java/in/vis/filter/FirebaseAuthFilterTest.java`
 
 - [ ] **Step 1: Write the failing test**
 
 ```java
-package in.gymculture.filter;
+package in.vis.filter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
@@ -716,7 +716,7 @@ Expected: FAIL — `FirebaseAuthFilter` does not exist yet.
 - [ ] **Step 3: Write `FirebaseAuthFilter.java`**
 
 ```java
-package in.gymculture.filter;
+package in.vis.filter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -778,7 +778,7 @@ Expected: 3 tests pass.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/filter/ backend/src/test/java/in/gymculture/filter/
+git add backend/src/main/java/in/vis/filter/ backend/src/test/java/in/vis/filter/
 git commit -m "feat: Firebase JWT auth filter with unit tests"
 ```
 
@@ -787,16 +787,16 @@ git commit -m "feat: Firebase JWT auth filter with unit tests"
 ## Task 6: Spring Security configuration
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/config/SecurityConfig.java`
-- Create: `backend/src/main/java/in/gymculture/config/CorsConfig.java`
+- Create: `backend/src/main/java/in/vis/config/SecurityConfig.java`
+- Create: `backend/src/main/java/in/vis/config/CorsConfig.java`
 
 - [ ] **Step 1: Write `SecurityConfig.java`**
 
 ```java
-package in.gymculture.config;
+package in.vis.config;
 
 import com.google.firebase.auth.FirebaseAuth;
-import in.gymculture.filter.FirebaseAuthFilter;
+import in.vis.filter.FirebaseAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -841,7 +841,7 @@ public class SecurityConfig {
 - [ ] **Step 2: Write `CorsConfig.java`**
 
 ```java
-package in.gymculture.config;
+package in.vis.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -881,8 +881,8 @@ Expected: App starts. `curl http://localhost:8080/actuator/health` returns `{"st
 - [ ] **Step 4: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/config/SecurityConfig.java \
-         backend/src/main/java/in/gymculture/config/CorsConfig.java
+git add backend/src/main/java/in/vis/config/SecurityConfig.java \
+         backend/src/main/java/in/vis/config/CorsConfig.java
 git commit -m "feat: Spring Security config — stateless JWT, CORS"
 ```
 
@@ -891,17 +891,17 @@ git commit -m "feat: Spring Security config — stateless JWT, CORS"
 ## Task 7: DTOs and exceptions
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/dto/UserResponse.java`
-- Create: `backend/src/main/java/in/gymculture/dto/RegisterRequest.java`
-- Create: `backend/src/main/java/in/gymculture/dto/BranchResponse.java`
-- Create: `backend/src/main/java/in/gymculture/exception/UnauthorizedException.java`
-- Create: `backend/src/main/java/in/gymculture/exception/NotFoundException.java`
-- Create: `backend/src/main/java/in/gymculture/exception/GlobalExceptionHandler.java`
+- Create: `backend/src/main/java/in/vis/dto/UserResponse.java`
+- Create: `backend/src/main/java/in/vis/dto/RegisterRequest.java`
+- Create: `backend/src/main/java/in/vis/dto/BranchResponse.java`
+- Create: `backend/src/main/java/in/vis/exception/UnauthorizedException.java`
+- Create: `backend/src/main/java/in/vis/exception/NotFoundException.java`
+- Create: `backend/src/main/java/in/vis/exception/GlobalExceptionHandler.java`
 
 - [ ] **Step 1: Write `RegisterRequest.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -915,9 +915,9 @@ public record RegisterRequest(
 - [ ] **Step 2: Write `UserResponse.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
-import in.gymculture.enums.Role;
+import in.vis.enums.Role;
 import java.util.UUID;
 
 public record UserResponse(
@@ -936,7 +936,7 @@ public record UserResponse(
 - [ ] **Step 3: Write `BranchResponse.java`**
 
 ```java
-package in.gymculture.dto;
+package in.vis.dto;
 
 import java.util.UUID;
 
@@ -947,13 +947,13 @@ public record BranchResponse(UUID id, String name, String city) {}
 
 ```java
 // UnauthorizedException.java
-package in.gymculture.exception;
+package in.vis.exception;
 public class UnauthorizedException extends RuntimeException {
     public UnauthorizedException(String message) { super(message); }
 }
 
 // NotFoundException.java
-package in.gymculture.exception;
+package in.vis.exception;
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) { super(message); }
 }
@@ -962,7 +962,7 @@ public class NotFoundException extends RuntimeException {
 - [ ] **Step 5: Write `GlobalExceptionHandler.java`**
 
 ```java
-package in.gymculture.exception;
+package in.vis.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -999,7 +999,7 @@ Expected: `BUILD SUCCESS`
 - [ ] **Step 7: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/dto/ backend/src/main/java/in/gymculture/exception/
+git add backend/src/main/java/in/vis/dto/ backend/src/main/java/in/vis/exception/
 git commit -m "feat: DTOs and global exception handler"
 ```
 
@@ -1008,24 +1008,24 @@ git commit -m "feat: DTOs and global exception handler"
 ## Task 8: UserService + AuthController
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/service/UserService.java`
-- Create: `backend/src/main/java/in/gymculture/controller/AuthController.java`
-- Create: `backend/src/test/java/in/gymculture/service/UserServiceTest.java`
-- Create: `backend/src/test/java/in/gymculture/controller/AuthControllerIntegrationTest.java`
+- Create: `backend/src/main/java/in/vis/service/UserService.java`
+- Create: `backend/src/main/java/in/vis/controller/AuthController.java`
+- Create: `backend/src/test/java/in/vis/service/UserServiceTest.java`
+- Create: `backend/src/test/java/in/vis/controller/AuthControllerIntegrationTest.java`
 
 - [ ] **Step 1: Write `UserServiceTest.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.RegisterRequest;
-import in.gymculture.dto.UserResponse;
-import in.gymculture.enums.Role;
-import in.gymculture.exception.NotFoundException;
-import in.gymculture.model.Branch;
-import in.gymculture.model.User;
-import in.gymculture.repository.BranchRepository;
-import in.gymculture.repository.UserRepository;
+import in.vis.dto.RegisterRequest;
+import in.vis.dto.UserResponse;
+import in.vis.enums.Role;
+import in.vis.exception.NotFoundException;
+import in.vis.model.Branch;
+import in.vis.model.User;
+import in.vis.repository.BranchRepository;
+import in.vis.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -1104,16 +1104,16 @@ Expected: FAIL — `UserService` does not exist.
 - [ ] **Step 3: Write `UserService.java`**
 
 ```java
-package in.gymculture.service;
+package in.vis.service;
 
-import in.gymculture.dto.RegisterRequest;
-import in.gymculture.dto.UserResponse;
-import in.gymculture.enums.Role;
-import in.gymculture.exception.NotFoundException;
-import in.gymculture.model.Branch;
-import in.gymculture.model.User;
-import in.gymculture.repository.BranchRepository;
-import in.gymculture.repository.UserRepository;
+import in.vis.dto.RegisterRequest;
+import in.vis.dto.UserResponse;
+import in.vis.enums.Role;
+import in.vis.exception.NotFoundException;
+import in.vis.model.Branch;
+import in.vis.model.User;
+import in.vis.repository.BranchRepository;
+import in.vis.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -1174,12 +1174,12 @@ Expected: 3 tests pass.
 - [ ] **Step 5: Write `AuthController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.RegisterRequest;
-import in.gymculture.dto.UserResponse;
-import in.gymculture.enums.Role;
-import in.gymculture.service.UserService;
+import in.vis.dto.RegisterRequest;
+import in.vis.dto.UserResponse;
+import in.vis.enums.Role;
+import in.vis.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -1219,13 +1219,13 @@ public class AuthController {
 - [ ] **Step 6: Write `AuthControllerIntegrationTest.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import in.gymculture.dto.RegisterRequest;
-import in.gymculture.enums.Role;
-import in.gymculture.filter.FirebaseAuthFilter;
-import in.gymculture.service.UserService;
+import in.vis.dto.RegisterRequest;
+import in.vis.enums.Role;
+import in.vis.filter.FirebaseAuthFilter;
+import in.vis.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -1273,9 +1273,9 @@ Expected: All tests pass (filter tests + service tests + controller slice tests)
 - [ ] **Step 8: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/service/ \
-         backend/src/main/java/in/gymculture/controller/AuthController.java \
-         backend/src/test/java/in/gymculture/
+git add backend/src/main/java/in/vis/service/ \
+         backend/src/main/java/in/vis/controller/AuthController.java \
+         backend/src/test/java/in/vis/
 git commit -m "feat: UserService + AuthController with /auth/me and /auth/register"
 ```
 
@@ -1284,17 +1284,17 @@ git commit -m "feat: UserService + AuthController with /auth/me and /auth/regist
 ## Task 9: BranchController (Owner-only cross-branch view)
 
 **Files:**
-- Create: `backend/src/main/java/in/gymculture/controller/BranchController.java`
-- Create: `backend/src/test/java/in/gymculture/controller/BranchControllerIntegrationTest.java`
+- Create: `backend/src/main/java/in/vis/controller/BranchController.java`
+- Create: `backend/src/test/java/in/vis/controller/BranchControllerIntegrationTest.java`
 
 - [ ] **Step 1: Write `BranchController.java`**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.dto.BranchResponse;
-import in.gymculture.exception.NotFoundException;
-import in.gymculture.repository.BranchRepository;
+import in.vis.dto.BranchResponse;
+import in.vis.exception.NotFoundException;
+import in.vis.repository.BranchRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -1331,10 +1331,10 @@ public class BranchController {
 - [ ] **Step 2: Write integration test**
 
 ```java
-package in.gymculture.controller;
+package in.vis.controller;
 
-import in.gymculture.filter.FirebaseAuthFilter;
-import in.gymculture.repository.BranchRepository;
+import in.vis.filter.FirebaseAuthFilter;
+import in.vis.repository.BranchRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -1384,8 +1384,8 @@ Expected: 2 tests pass.
 - [ ] **Step 4: Commit**
 
 ```bash
-git add backend/src/main/java/in/gymculture/controller/BranchController.java \
-         backend/src/test/java/in/gymculture/controller/BranchControllerIntegrationTest.java
+git add backend/src/main/java/in/vis/controller/BranchController.java \
+         backend/src/test/java/in/vis/controller/BranchControllerIntegrationTest.java
 git commit -m "feat: BranchController — list and get branches (authenticated)"
 ```
 
@@ -1411,14 +1411,14 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 ```bash
 cd backend
 mvn package -DskipTests
-docker build -t gymculture-backend .
+docker build -t vis-backend .
 docker run --rm -p 8080:8080 \
-  -e DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/gymculture \
-  -e DATABASE_USER=gymculture \
-  -e DATABASE_PASSWORD=gymculture \
+  -e DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/vis \
+  -e DATABASE_USER=vis \
+  -e DATABASE_PASSWORD=vis \
   -e FIREBASE_PROJECT_ID=your-project-id \
   -e FIREBASE_CREDENTIALS_PATH= \
-  gymculture-backend
+  vis-backend
 ```
 
 Expected: App starts, `curl http://localhost:8080/actuator/health` returns `{"status":"UP"}`.
@@ -1552,7 +1552,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>GymCulture</Text>
+      <Text style={styles.title}>Vis</Text>
       <TouchableOpacity style={styles.button} onPress={handleGoogleSignIn}>
         <Text style={styles.buttonText}>Continue with Google</Text>
       </TouchableOpacity>
@@ -1901,7 +1901,7 @@ export class LoginComponent {
 `login.component.html`:
 ```html
 <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:24px">
-  <h1>GymCulture Admin</h1>
+  <h1>Vis Admin</h1>
   <button (click)="signInWithGoogle()">Continue with Google</button>
 </div>
 ```
