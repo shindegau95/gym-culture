@@ -1035,7 +1035,7 @@
 /* ─── Workout: exercise table ───────────────────────────────────────────── */
 .tableHead {
   display: grid;
-  grid-template-columns: 1fr 40px 48px 64px;
+  grid-template-columns: 30px 1fr 40px 48px 64px;
   gap: 6px;
   padding: 10px 14px 8px;
   border-bottom: 0.5px solid var(--gc-sep);
@@ -1052,7 +1052,7 @@
 
 .tableRow {
   display: grid;
-  grid-template-columns: 1fr 40px 48px 64px;
+  grid-template-columns: 30px 1fr 40px 48px 64px;
   gap: 6px;
   padding: 12px 14px;
   border-bottom: 0.5px solid var(--gc-sep);
@@ -1596,4 +1596,10 @@
   font-size: 12px;
   color: var(--gc-ink2);
   font-weight: 500;
+}
+
+.tableOrbCell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

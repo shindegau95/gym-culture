@@ -27,6 +27,15 @@ export default function App() {
 
   return (
     <div className={s.shell} data-theme={isDark ? 'dark' : 'light'}>
+      <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
+        <defs>
+          <filter id="vis-refract" x="0%" y="0%" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise"/>
+            <feGaussianBlur in="noise" stdDeviation="1.4" result="noiseBlur"/>
+            <feDisplacementMap in="SourceGraphic" in2="noiseBlur" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+        </defs>
+      </svg>
       <div className={s.nav}>
         <div className={s.brand}>
           <img src={visMark} alt="Vis" className={s.brandMark} />

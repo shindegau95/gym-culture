@@ -222,3 +222,16 @@ export function BottomTabBar({ tabs, active, onSelect }) {
     </div>
   );
 }
+
+// ─── TensionOrb — brand metaphor for set/exercise state ─────────────────────
+// states: 'rest' | 'load' | 'peak' | 'recovered'
+export function TensionOrb({ state = 'rest', size = 28 }) {
+  const cls = s.tensionOrb + ' ' + s[`tensionOrb--${state}`];
+  return (
+    <span className={cls} style={{ width: size, height: size }}>
+      <span className={s.tensionOrbCore}/>
+      {state === 'peak' && <span className={s.tensionOrbStress}/>}
+      {state === 'recovered' && <span className={s.tensionOrbHalo}/>}
+    </span>
+  );
+}

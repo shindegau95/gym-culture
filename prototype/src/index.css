@@ -122,6 +122,14 @@ body {
   --gc-bad:          #FF6A3D;
 }
 
+/* ─── True iOS-26 refraction (Chrome 119+) — progressive enhancement ─────── */
+@supports (backdrop-filter: url(#vis-refract)) {
+  .vis-refract {
+    backdrop-filter: url(#vis-refract) blur(28px) saturate(190%);
+    -webkit-backdrop-filter: url(#vis-refract) blur(28px) saturate(190%);
+  }
+}
+
 /* ─── Liquid glass utility ───────────────────────────────────────────────── */
 .vis-glass {
   position: relative;

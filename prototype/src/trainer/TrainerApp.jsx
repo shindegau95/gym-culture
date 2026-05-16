@@ -78,7 +78,7 @@ function TrainerHome({ t, onSession }) {
 
       <div className={s.heroPad}>
         <div className={s.heroStage}>
-          <div className={s.hero}>
+          <div className={`${s.hero} vis-refract`}>
             <div className={`${s.heroContent} ${s.heroCard}`}>
             {fc.restDay ? (
               <div className={s.heroRing}>

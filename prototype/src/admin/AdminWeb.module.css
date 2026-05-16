@@ -1522,3 +1522,52 @@
   .pageTitle { font-size: 18px; }
   .gradBtn { padding: 8px 14px; font-size: 12px; }
 }
+
+/* ─── Owner brand color picker ───────────────────────────────────────────── */
+.brandPicker {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--gc-fill-tint);
+  border: 0.5px solid var(--gc-sep);
+}
+
+.brandPickerLabel {
+  font-family: var(--vis-font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gc-ink3);
+  margin-bottom: 8px;
+}
+
+.brandPickerRow {
+  display: flex;
+  gap: 8px;
+}
+
+.brandSwatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: transform var(--vis-dur-short) var(--vis-ease), box-shadow var(--vis-dur-short) var(--vis-ease);
+  box-shadow: 0 2px 8px -2px rgba(0,0,0,0.30);
+}
+
+.brandSwatch:hover { transform: scale(1.08); }
+
+.brandSwatch--active {
+  border-color: #fff;
+  box-shadow:
+    0 0 0 2px var(--gc-accent),
+    0 4px 12px -2px rgba(0,0,0,0.40);
+}
+
+@media (max-width: 1024px) {
+  .brandPicker { display: none; }
+}

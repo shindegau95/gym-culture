@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar } from '../components/Primitives';
+import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar, TensionOrb } from '../components/Primitives';
 import s from './ClientApp.module.css';
 
 // ─── Home ────────────────────────────────────────────────────────────────────
@@ -23,7 +23,7 @@ function ClientHome({ t, onStartWorkout, onViewCoach }) {
       />
       <div className={s.heroPad}>
         <div className={s.heroStage}>
-          <div className={s.hero}>
+          <div className={`${s.hero} vis-refract`}>
             <div className={s.heroContent}>
             <div className={s.heroEyebrow}>
               <span className={s.heroDot}/>
@@ -48,7 +48,7 @@ function ClientHome({ t, onStartWorkout, onViewCoach }) {
 
       <div className={s.section}>
         <SectionLabel t={t} action="All groups">Muscle recovery</SectionLabel>
-        <div className={s.recoveryCard}>
+        <div className={`${s.recoveryCard} vis-refract`}>
           <div className={s.recoveryBgA}/>
           <div className={s.recoveryBgB}/>
           <div className={s.recoveryInner}>
@@ -268,13 +268,14 @@ function ClientWorkout({ t, onStartWorkout }) {
     { d: 'Sat', label: 'Pull',          done: false, rest: false },
     { d: 'Sun', label: 'Rest',          done: false, rest: true  },
   ];
+  // state: rest / load / peak / recovered — drives brand TensionOrb visual
   const exercises = [
-    { name: 'Bench Press',       sets: 4, reps: '6–8',  weight: '90 kg' },
-    { name: 'Incline DB Press',  sets: 3, reps: '10',   weight: '24 kg' },
-    { name: 'Cable Fly',         sets: 3, reps: '12',   weight: '14 kg' },
-    { name: 'Close-Grip Bench',  sets: 3, reps: '8',    weight: '70 kg' },
-    { name: 'Overhead Press',    sets: 3, reps: '8–10', weight: '50 kg' },
-    { name: 'Tricep Pushdown',   sets: 3, reps: '12',   weight: '20 kg' },
+    { name: 'Bench Press',       sets: 4, reps: '6–8',  weight: '90 kg', state: 'recovered' },
+    { name: 'Incline DB Press',  sets: 3, reps: '10',   weight: '24 kg', state: 'recovered' },
+    { name: 'Cable Fly',         sets: 3, reps: '12',   weight: '14 kg', state: 'load' },
+    { name: 'Close-Grip Bench',  sets: 3, reps: '8',    weight: '70 kg', state: 'peak' },
+    { name: 'Overhead Press',    sets: 3, reps: '8–10', weight: '50 kg', state: 'rest' },
+    { name: 'Tricep Pushdown',   sets: 3, reps: '12',   weight: '20 kg', state: 'rest' },
   ];
   return (
     <div className={s.page}>
@@ -316,12 +317,14 @@ function ClientWorkout({ t, onStartWorkout }) {
         <SectionLabel t={t}>Today · Chest & Triceps</SectionLabel>
         <Card t={t} padding={0}>
           <div className={s.tableHead}>
+            <span className={s.tableHeadCell}/>
             {['Exercise','Sets','Reps','Target'].map(h => (
               <span key={h} className={s.tableHeadCell}>{h}</span>
             ))}
           </div>
           {exercises.map((ex, i) => (
             <div key={i} className={s.tableRow}>
+              <div className={s.tableOrbCell}><TensionOrb state={ex.state} size={22}/></div>
               <div className={s.tableExName}>{ex.name}</div>
               <div className={s.tableNum}>{ex.sets}</div>
               <div className={s.tableNum}>{ex.reps}</div>

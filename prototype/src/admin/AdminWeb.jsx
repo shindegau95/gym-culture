@@ -50,6 +50,7 @@ function Sidebar({ active, onNav }) {
             </button>
           ))}
         </div>
+        {role === 'owner' && <BrandColorPicker/>}
         <div className={s.branchBadge}>
           <div className={s.branchEyebrow}>{role === 'owner' ? 'LOGGED IN AS' : 'CURRENT BRANCH'}</div>
           {role === 'owner' ? (
@@ -64,6 +65,52 @@ function Sidebar({ active, onNav }) {
             </>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── BrandColorPicker — Owner-only tenant accent override (mock) ─────────────
+// Maps to backend GymBrand.primary_color column (see spec §5).
+const BRAND_PRESETS = [
+  { id: 'vis',     label: 'Vis',     accent: '#F25A1F', soft: '#FF8A5C', deep: '#8A2E08', light: { accent: '#F25A1F' }, dark: { accent: '#FF6A2C' } },
+  { id: 'iron',    label: 'Iron',    accent: '#B43F00', soft: '#FF7A30', deep: '#5A1F00', light: { accent: '#B43F00' }, dark: { accent: '#E25510' } },
+  { id: 'amber',   label: 'Amber',   accent: '#E08A00', soft: '#FFB855', deep: '#7A4400', light: { accent: '#C97500' }, dark: { accent: '#FFA033' } },
+  { id: 'crimson', label: 'Crimson', accent: '#C92330', soft: '#FF6878', deep: '#6A0E15', light: { accent: '#C92330' }, dark: { accent: '#FF4054' } },
+];
+
+function BrandColorPicker() {
+  const [active, setActive] = useState('vis');
+  const apply = (b) => {
+    setActive(b.id);
+    const r = document.documentElement;
+    const isDark = r.getAttribute('data-theme') === 'dark';
+    const accent = isDark ? b.dark.accent : b.light.accent;
+    r.style.setProperty('--gc-accent',      accent);
+    r.style.setProperty('--gc-accent-soft', b.soft);
+    r.style.setProperty('--gc-gradient',
+      `linear-gradient(135deg, ${b.soft} 0%, ${accent} 50%, ${b.deep} 100%)`);
+    r.style.setProperty('--gc-accent-tint',
+      accent.replace('#','rgba(').replace(/(..)(..)(..)/, (_,a,b2,c) =>
+        `${parseInt(a,16)},${parseInt(b2,16)},${parseInt(c,16)},0.10)`));
+    r.style.setProperty('--gc-accent-ring',
+      accent.replace('#','rgba(').replace(/(..)(..)(..)/, (_,a,b2,c) =>
+        `${parseInt(a,16)},${parseInt(b2,16)},${parseInt(c,16)},0.30)`));
+  };
+  return (
+    <div className={s.brandPicker}>
+      <div className={s.brandPickerLabel}>Brand accent</div>
+      <div className={s.brandPickerRow}>
+        {BRAND_PRESETS.map(b => (
+          <button
+            key={b.id}
+            onClick={() => apply(b)}
+            className={`${s.brandSwatch} ${active === b.id ? s['brandSwatch--active'] : ''}`}
+            style={{ background: `linear-gradient(135deg, ${b.soft}, ${b.accent}, ${b.deep})` }}
+            title={b.label}
+            aria-label={b.label}
+          />
+        ))}
       </div>
     </div>
   );
@@ -560,6 +607,7 @@ function LogPaymentModal({ member, onClose }) {
 
 function Members() {
   const t = useT();
+  const { role } = useRole();
   const [search, setSearch]             = useState('');
   const [filter, setFilter]             = useState('all');
   const [branch, setBranch]             = useState('all');
@@ -590,14 +638,16 @@ function Members() {
         <h1 className={s.pageTitle}>Members</h1>
         <button className={s.gradBtn}>+ Add Member</button>
       </div>
-      <div className={s.branchRow}>
-        {BRANCH_FILTERS.map(b => (
-          <button key={b.id} onClick={() => setBranch(b.id)}
-            className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
-            {b.label}
-          </button>
-        ))}
-      </div>
+      {role === 'owner' && (
+        <div className={s.branchRow}>
+          {BRANCH_FILTERS.map(b => (
+            <button key={b.id} onClick={() => setBranch(b.id)}
+              className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
+              {b.label}
+            </button>
+          ))}
+        </div>
+      )}
       <div className={s.searchRow}>
         <input
           placeholder="Search members..."
@@ -755,6 +805,7 @@ function ScoreRing({ label, value }) {
 }
 
 function Trainers() {
+  const { role } = useRole();
   const [branch, setBranch] = useState('all');
   const filtered = TRAINERS.filter(tr => branch === 'all' || tr.branch === branch);
   return (
@@ -763,14 +814,16 @@ function Trainers() {
         <h1 className={s.pageTitle}>Trainers</h1>
         <button className={s.gradBtn}>+ Add Trainer</button>
       </div>
-      <div className={s.branchRow}>
-        {BRANCH_FILTERS.map(b => (
-          <button key={b.id} onClick={() => setBranch(b.id)}
-            className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
-            {b.label}
-          </button>
-        ))}
-      </div>
+      {role === 'owner' && (
+        <div className={s.branchRow}>
+          {BRANCH_FILTERS.map(b => (
+            <button key={b.id} onClick={() => setBranch(b.id)}
+              className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
+              {b.label}
+            </button>
+          ))}
+        </div>
+      )}
       <div className={s.trainerGrid}>
         {filtered.map((tr, i) => (
           <Card key={i} className={s.trainerCard}>
