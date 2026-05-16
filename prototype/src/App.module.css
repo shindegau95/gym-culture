@@ -184,3 +184,29 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .nav { padding: 10px 20px; height: 60px; }
+  .brandSub, .subLabel { display: none; }
+  .brandDot { display: none; }
+  .phoneStage { padding: 32px 20px; }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 8px 14px; height: 56px; }
+  .switchBtn { padding: 6px 12px; font-size: 12px; }
+  .themeBtn { padding: 5px 10px; font-size: 11px; }
+  .themeBtn > :first-child { display: none; }
+  .phoneStage { padding: 20px 12px; }
+  .phoneCaption { display: none; }
+}
+
+@media (max-width: 480px) {
+  .nav { padding: 6px 10px; height: 52px; gap: 6px; }
+  .switcher { padding: 3px; }
+  .switchBtn { padding: 5px 9px; font-size: 11px; }
+  .brandWordmark { font-size: 17px; }
+  .brandMark { height: 24px; width: 24px; }
+  .adminInner { height: calc(100vh - 52px); }
+}

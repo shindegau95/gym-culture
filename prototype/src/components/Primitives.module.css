@@ -267,15 +267,29 @@
   right: 0;
   z-index: 2;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 50%),
-    var(--vis-glass-tint);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border-top: 0.5px solid var(--vis-glass-edge);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+    linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%),
+    linear-gradient(180deg, rgba(255,209,168,0.10), rgba(138,46,8,0.16));
+  backdrop-filter: blur(40px) saturate(220%);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  border-top: 0.5px solid rgba(255,255,255,0.22);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.30),
+    inset 0 -1px 0 rgba(255,255,255,0.06),
+    0 -10px 30px -8px rgba(196,69,16,0.20);
   display: flex;
   padding-bottom: 20px;
   padding-top: 10px;
+}
+
+[data-theme="light"] .tabBar {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.40) 50%),
+    linear-gradient(180deg, rgba(255,209,168,0.35), rgba(255,138,92,0.25));
+  border-top: 0.5px solid rgba(196,69,16,0.16);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.95),
+    inset 0 -1px 0 rgba(255,255,255,0.40),
+    0 -10px 30px -8px rgba(196,69,16,0.18);
 }
 
 .tabBtn {

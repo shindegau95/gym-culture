@@ -1458,3 +1458,67 @@
   font-family: var(--gc-font-ui);
   font-size: 13px;
 }
+
+/* ─── Responsive ──────────────────────────────────────────────────────────── */
+
+/* Wide tablet (≤ 1200): tighter padding, dashboard collapses to one column */
+@media (max-width: 1200px) {
+  .page { padding: 24px 28px; }
+  .dashCols { grid-template-columns: 1fr; }
+  .kpiGrid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Tablet (≤ 1024): sidebar collapses to icon-only rail */
+@media (max-width: 1024px) {
+  .sidebar { width: 68px; }
+  .sidebarBrand { padding: 18px 12px; border-bottom: 0.5px solid var(--gc-sep); }
+  .sidebarBrandRow > div { display: none; }
+  .sidebarMark { height: 30px; width: 30px; }
+  .sidebarItem { justify-content: center; padding: 12px 0; font-size: 0; }
+  .sidebarItem > svg { font-size: initial; }
+  .sidebarFoot { padding: 12px 8px 16px; }
+  .roleSwitcher { flex-direction: column; padding: 4px; }
+  .roleBtn { padding: 6px 8px; font-size: 11px; }
+  .branchCurrent { display: none; }
+  .kpiGrid { grid-template-columns: repeat(2, 1fr); }
+  .pageHeaderRow { flex-wrap: wrap; gap: 12px; }
+  .pageTitle { font-size: 22px; }
+  .trainerGrid { grid-template-columns: 1fr; }
+}
+
+/* Small tablet / large phone (≤ 768) */
+@media (max-width: 768px) {
+  .page { padding: 18px 16px 28px; }
+  .sidebar { width: 56px; }
+  .sidebarBrand { padding: 14px 10px; }
+  .sidebarMark { height: 26px; width: 26px; }
+  .sidebarNav { padding: 8px 6px; }
+  .sidebarItem { padding: 10px 0; }
+  .kpiGrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .kpiCard { padding: 14px; }
+  .kpiValue, .kpiNumber { font-size: 26px; }
+  .pageTitle { font-size: 20px; }
+
+  /* Horizontal-scroll tables so dense rows stay readable */
+  .tableCard { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .dataTable { min-width: 700px; }
+
+  /* Filter/branch chip rows wrap and scroll horizontally if needed */
+  .searchRow { flex-wrap: wrap; gap: 8px; }
+  .branchRow { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .branchChip { flex-shrink: 0; }
+}
+
+/* Phone (≤ 480) */
+@media (max-width: 480px) {
+  .sidebar { width: 48px; }
+  .sidebarMark { height: 22px; width: 22px; }
+  .sidebarItem svg { width: 16px !important; height: 16px !important; }
+  .kpiGrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kpiCard { padding: 12px; }
+  .kpiValue, .kpiNumber { font-size: 22px; }
+  .kpiLabel { font-size: 10px; }
+  .page { padding: 14px 12px 24px; }
+  .pageTitle { font-size: 18px; }
+  .gradBtn { padding: 8px 14px; font-size: 12px; }
+}
