@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar, TensionOrb } from '../components/Primitives';
+import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar, TensionOrb, OrbFill, PulseProgressBar } from '../components/Primitives';
 import s from './ClientApp.module.css';
 
 // ─── Home ────────────────────────────────────────────────────────────────────
@@ -58,18 +58,19 @@ function ClientHome({ t, onStartWorkout, onViewCoach }) {
                 <span className={s.recoveryStrainDot}/> {m.strain} strain
               </div>
             </div>
-            <div className={s.recoveryValueRow}>
-              <span className={s.recoveryValue}>{m.v}</span>
-              <span className={s.recoveryUnit}>%</span>
-              <span className={s.recoveryValueCaption}>recovered</span>
-            </div>
-            <div className={s.recoveryBarTrack}>
-              <div className={s.recoveryBarFill} style={{ width: `${m.v}%` }}/>
-            </div>
-            <div className={s.recoveryMeta}>
-              <span className={s.recoveryMetaItem}>{m.lastTrained}</span>
-              <span className={s.recoveryMetaSep}/>
-              <span className={s.recoveryMetaItem}>{m.tone}</span>
+            <div className={s.recoveryBody}>
+              <OrbFill value={m.v} size={132}/>
+              <div className={s.recoveryStats}>
+                <div className={s.recoveryValueRow}>
+                  <span className={s.recoveryValue}>{m.v}</span>
+                  <span className={s.recoveryUnit}>%</span>
+                </div>
+                <div className={s.recoveryValueCaption}>recovered</div>
+                <div className={s.recoveryMeta}>
+                  <div className={s.recoveryMetaItem}>{m.lastTrained}</div>
+                  <div className={s.recoveryMetaItem}>{m.tone}</div>
+                </div>
+              </div>
             </div>
             <div className={s.recoveryNav}>
               <button

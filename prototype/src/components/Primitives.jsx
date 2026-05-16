@@ -235,3 +235,76 @@ export function TensionOrb({ state = 'rest', size = 28 }) {
     </span>
   );
 }
+
+// ─── OrbFill — liquid sphere fills with recovery % (brand-ref: recovery_animation.png) ──
+export function OrbFill({ value = 0, size = 140 }) {
+  const v = Math.max(0, Math.min(100, value));
+  // Liquid surface Y (SVG coords, viewBox 0–120) — inverted: 0%→120, 100%→0
+  const surfaceY = 120 - (v * 1.20);
+  const reactKey = `orb-${size}`;
+  return (
+    <div className={s.orbFill} style={{ width: size, height: size }}>
+      <svg viewBox="0 0 120 120" className={s.orbFillSvg} aria-hidden="true">
+        <defs>
+          <clipPath id={`orbClip-${reactKey}`}><circle cx="60" cy="60" r="58"/></clipPath>
+          <linearGradient id={`orbLiquid-${reactKey}`} x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%"   stopColor="#FF6A1B"/>
+            <stop offset="60%"  stopColor="#FF8E45"/>
+            <stop offset="100%" stopColor="#FFA570"/>
+          </linearGradient>
+          <radialGradient id={`orbHi-${reactKey}`} cx="0.3" cy="0.25" r="0.55">
+            <stop offset="0%"   stopColor="rgba(255,230,210,0.55)"/>
+            <stop offset="100%" stopColor="rgba(255,230,210,0)"/>
+          </radialGradient>
+        </defs>
+
+        {/* Empty sphere body (dark, faintly lit) */}
+        <circle cx="60" cy="60" r="58"
+          fill="rgba(20,12,8,0.92)"
+          stroke="rgba(255,165,112,0.35)" strokeWidth="0.6"/>
+
+        {/* Liquid clipped to sphere; surface waves animate via CSS transform */}
+        <g clipPath={`url(#orbClip-${reactKey})`}>
+          <g className={s.orbWaveGroup} style={{ transform: `translateY(${surfaceY}px)` }}>
+            <path
+              className={s.orbWave}
+              d="M-60,0 Q-30,-4 0,0 T60,0 T120,0 T180,0 L180,120 L-60,120 Z"
+              fill={`url(#orbLiquid-${reactKey})`}
+            />
+            <path
+              className={s.orbWaveBack}
+              d="M-60,2 Q-30,-2 0,2 T60,2 T120,2 T180,2 L180,120 L-60,120 Z"
+              fill={`url(#orbLiquid-${reactKey})`}
+              opacity="0.55"
+            />
+          </g>
+        </g>
+
+        {/* Top-left specular highlight */}
+        <ellipse cx="42" cy="30" rx="22" ry="10"
+          fill={`url(#orbHi-${reactKey})`}
+          transform="rotate(-22 42 30)"/>
+
+        {/* Edge rim glow */}
+        <circle cx="60" cy="60" r="58" fill="none"
+          stroke="rgba(255,165,112,0.45)" strokeWidth="0.4"/>
+      </svg>
+      {/* Bottom mini progress strip mirror */}
+      <div className={s.orbFillStrip}>
+        <div className={s.orbFillStripFill} style={{ width: `${v}%` }}/>
+      </div>
+    </div>
+  );
+}
+
+// ─── PulseProgressBar — bar with breathing pulse head (brand-ref: progressbar_animation.png) ──
+export function PulseProgressBar({ value = 0, height = 8 }) {
+  const v = Math.max(0, Math.min(100, value));
+  return (
+    <div className={s.pulseTrack} style={{ height }}>
+      <div className={s.pulseFill} style={{ width: `${v}%` }}>
+        <div className={s.pulseHead}/>
+      </div>
+    </div>
+  );
+}
