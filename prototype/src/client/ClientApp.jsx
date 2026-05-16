@@ -3,7 +3,7 @@ import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, Muscl
 import s from './ClientApp.module.css';
 
 // ─── Home ────────────────────────────────────────────────────────────────────
-function ClientHome({ t, onStartWorkout, onViewCoach }) {
+function ClientHome({ t, onStartWorkout, onViewCoach, onViewRecovery }) {
   const muscles = [
     { l: 'Legs',      v: 95, lastTrained: '4 days ago', strain: 'Low',      tone: 'Fully recovered. Ready for max load.' },
     { l: 'Back',      v: 88, lastTrained: '3 days ago', strain: 'Low',      tone: 'Recovered. Heavy pulls OK today.' },
@@ -47,7 +47,7 @@ function ClientHome({ t, onStartWorkout, onViewCoach }) {
       </div>
 
       <div className={s.section}>
-        <SectionLabel t={t} action="All groups">Muscle recovery</SectionLabel>
+        <SectionLabel t={t} action={<span onClick={() => onViewRecovery && onViewRecovery(muscleIdx)} style={{cursor:'pointer'}}>All groups</span>}>Muscle recovery</SectionLabel>
         <div className={`${s.recoveryCard} vis-refract`}>
           <div className={s.recoveryBgA}/>
           <div className={s.recoveryBgB}/>
@@ -341,6 +341,141 @@ function ClientWorkout({ t, onStartWorkout }) {
   );
 }
 
+// ─── Muscle Recovery Detail ──────────────────────────────────────────────────
+function RecoveryDetail({ t, onBack, startIdx = 0 }) {
+  const groups = [
+    { l: 'Shoulders', v: 65, trend: [42,48,52,55,60,62,65], lastTrained: '2 days ago', strain: 'Moderate', tone: 'Light isolation only — avoid overhead press.',
+      factors: [{ l: 'Sleep', v: 78 }, { l: 'Nutrition', v: 84 }, { l: 'Stress', v: 42 }, { l: 'Training load', v: 65 }, { l: 'Hydration', v: 88 }],
+      tip: 'You have moderate residual fatigue. Stick to light isolation and add 5 min mobility work to clear it before tomorrow.' },
+    { l: 'Legs',      v: 95, trend: [60,68,75,82,88,92,95], lastTrained: '4 days ago', strain: 'Low',      tone: 'Fully recovered. Ready for max load.',
+      factors: [{ l: 'Sleep', v: 88 }, { l: 'Nutrition', v: 90 }, { l: 'Stress', v: 35 }, { l: 'Training load', v: 25 }, { l: 'Hydration', v: 92 }],
+      tip: 'Legs fully recovered. Tomorrow is a green light for max-effort squats.' },
+    { l: 'Back',      v: 88, trend: [55,62,70,76,82,86,88], lastTrained: '3 days ago', strain: 'Low',      tone: 'Recovered. Heavy pulls OK today.',
+      factors: [{ l: 'Sleep', v: 82 }, { l: 'Nutrition', v: 85 }, { l: 'Stress', v: 38 }, { l: 'Training load', v: 35 }, { l: 'Hydration', v: 85 }],
+      tip: 'Back is fresh. Prioritise compound pulls (deadlifts, rows) before isolation.' },
+    { l: 'Arms',      v: 58, trend: [30,38,42,48,52,55,58], lastTrained: '2 days ago', strain: 'Moderate', tone: 'Today\'s push will hit triceps.',
+      factors: [{ l: 'Sleep', v: 72 }, { l: 'Nutrition', v: 80 }, { l: 'Stress', v: 50 }, { l: 'Training load', v: 70 }, { l: 'Hydration', v: 78 }],
+      tip: 'Triceps still mending. Keep volume moderate today, dose protein in the next meal.' },
+    { l: 'Chest',     v: 42, trend: [12,18,24,30,34,38,42], lastTrained: 'Yesterday',  strain: 'High',     tone: 'Today\'s session targets chest — prep mentally.',
+      factors: [{ l: 'Sleep', v: 64 }, { l: 'Nutrition', v: 70 }, { l: 'Stress', v: 60 }, { l: 'Training load', v: 90 }, { l: 'Hydration', v: 72 }],
+      tip: 'Heavy chest day yesterday. Warm up thoroughly and start sub-max today.' },
+  ];
+  const [idx, setIdx] = useState(startIdx);
+  const m = groups[idx];
+
+  // Trend chart geometry
+  const W = 280, H = 90;
+  const maxT = 100;
+  const points = m.trend.map((v, i) => {
+    const x = (i / (m.trend.length - 1)) * W;
+    const y = H - (v / maxT) * (H - 8) - 4;
+    return [x, y];
+  });
+  const pathD = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
+  const areaD = pathD + ` L ${W} ${H} L 0 ${H} Z`;
+  const last = points[points.length - 1];
+
+  return (
+    <div className={s.page}>
+      <div className={s.recoveryDetailHeader}>
+        <button onClick={onBack} className={s.backBtn}>← Home</button>
+      </div>
+
+      {/* Group selector */}
+      <div className={s.recoveryDetailGroups}>
+        {groups.map((g, i) => (
+          <button
+            key={g.l}
+            onClick={() => setIdx(i)}
+            className={`${s.recoveryGroupChip} ${i === idx ? s['recoveryGroupChip--active'] : ''}`}
+          >{g.l}</button>
+        ))}
+      </div>
+
+      {/* Hero — orb + value */}
+      <div className={s.section}>
+        <div className={s.recoveryDetailCard}>
+          <div className={s.recoveryDetailTop}>
+            <div>
+              <div className={s.recoveryDetailTitle}>{m.l}</div>
+              <div className={s.recoveryDetailSub}>{m.lastTrained}</div>
+            </div>
+            <div className={s.recoveryStrain} data-strain={m.strain.toLowerCase()}>
+              <span className={s.recoveryStrainDot}/> {m.strain} strain
+            </div>
+          </div>
+          <div className={s.recoveryDetailBody}>
+            <OrbFill value={m.v} size={170}/>
+            <div className={s.recoveryDetailStats}>
+              <div className={s.recoveryValueRow}>
+                <span className={s.recoveryValue}>{m.v}</span>
+                <span className={s.recoveryUnit}>%</span>
+              </div>
+              <div className={s.recoveryValueCaption}>recovered</div>
+              <div className={s.recoveryDetailTone}>{m.tone}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Trend chart */}
+      <div className={s.section}>
+        <SectionLabel t={t}>Recovery trend</SectionLabel>
+        <div className={s.recoveryTrendCard}>
+          <div className={s.recoveryTrendHead}>
+            <div className={s.recoveryTrendNum}>{m.v}%</div>
+            <div className={s.recoveryTrendLabel}>last 7 days</div>
+          </div>
+          <svg viewBox={`0 0 ${W} ${H}`} className={s.recoveryTrendSvg} preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FF8E45" stopOpacity="0.45"/>
+                <stop offset="100%" stopColor="#FF8E45" stopOpacity="0"/>
+              </linearGradient>
+              <linearGradient id="trendStroke" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#FFA570"/>
+                <stop offset="100%" stopColor="#FF6A1B"/>
+              </linearGradient>
+            </defs>
+            <path d={areaD} fill="url(#trendArea)"/>
+            <path d={pathD} fill="none" stroke="url(#trendStroke)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+              style={{ filter: 'drop-shadow(0 2px 6px rgba(255,142,69,0.45))' }}/>
+            <circle cx={last[0]} cy={last[1]} r="4" fill="#FFE3CC" stroke="#FF6A1B" strokeWidth="1.5"
+              style={{ filter: 'drop-shadow(0 0 6px rgba(255,142,69,0.85))' }}/>
+          </svg>
+          <div className={s.recoveryTrendDays}>
+            {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i) => <span key={i}>{d}</span>)}
+          </div>
+        </div>
+      </div>
+
+      {/* Factors */}
+      <div className={s.section}>
+        <SectionLabel t={t}>Recovery factors</SectionLabel>
+        <div className={s.recoveryFactorsCard}>
+          {m.factors.map((f) => (
+            <div key={f.l} className={s.recoveryFactor}>
+              <span className={s.recoveryFactorLabel}>{f.l}</span>
+              <div className={s.recoveryFactorTrack}>
+                <PulseProgressBar value={f.v} height={6}/>
+              </div>
+              <span className={s.recoveryFactorValue}>{f.v}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tip */}
+      <div className={s.section}>
+        <div className={s.recoveryTipCard}>
+          <div className={s.recoveryTipBadge}>Tip</div>
+          <div className={s.recoveryTipBody}>{m.tip}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Coach Profile ─────────────────────────────────────────────────────────
 function CoachProfile({ t, onBack }) {
   const stats = [
@@ -615,6 +750,7 @@ export default function ClientApp({ t }) {
   const [tab, setTab] = useState('home');
   const [inSession, setInSession] = useState(false);
   const [viewCoach, setViewCoach] = useState(false);
+  const [recoveryIdx, setRecoveryIdx] = useState(null); // null = hidden; else opens detail at idx
 
   const tabs = [
     { key: 'home',      label: 'Home',      icon: 'home' },
@@ -635,10 +771,19 @@ export default function ClientApp({ t }) {
     </div>
   );
 
+  if (recoveryIdx !== null) return (
+    <div className={s.shell}>
+      <div className={s.scroll}>
+        <RecoveryDetail t={t} startIdx={recoveryIdx} onBack={() => setRecoveryIdx(null)}/>
+      </div>
+      <BottomTabBar t={t} tabs={tabs} active={tab} onSelect={setTab}/>
+    </div>
+  );
+
   return (
     <div className={s.shell}>
       <div className={s.scroll}>
-        {tab === 'home'      && <ClientHome t={t} onStartWorkout={() => setInSession(true)} onViewCoach={() => setViewCoach(true)}/>}
+        {tab === 'home'      && <ClientHome t={t} onStartWorkout={() => setInSession(true)} onViewCoach={() => setViewCoach(true)} onViewRecovery={(i) => setRecoveryIdx(i)}/>}
         {tab === 'workout'   && <ClientWorkout t={t} onStartWorkout={() => setInSession(true)}/>}
         {tab === 'progress'  && <ClientProgress t={t}/>}
         {tab === 'nutrition' && <ClientNutrition t={t}/>}

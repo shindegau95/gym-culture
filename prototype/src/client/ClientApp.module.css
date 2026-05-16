@@ -1629,3 +1629,267 @@
   font-size: 11.5px;
   line-height: 1.4;
 }
+
+/* ─── Recovery Detail screen ─────────────────────────────────────────────── */
+.recoveryDetailHeader {
+  padding: 14px 16px 6px;
+  display: flex;
+  align-items: center;
+}
+
+.recoveryDetailGroups {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 16px 12px;
+  scroll-snap-type: x mandatory;
+}
+
+.recoveryGroupChip {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 0.5px solid var(--gc-sep-strong);
+  background: var(--gc-fill-tint);
+  color: var(--gc-ink2);
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--vis-dur-short) var(--vis-ease);
+}
+.recoveryGroupChip--active {
+  background: var(--gc-gradient);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 10px -4px rgba(196,69,16,0.45);
+}
+
+.recoveryDetailCard {
+  position: relative;
+  border-radius: 22px;
+  padding: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
+    var(--vis-glass-tint);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 18px 40px -22px rgba(196,69,16,0.40);
+  color: #fff;
+}
+
+[data-theme="light"] .recoveryDetailCard {
+  background:
+    linear-gradient(180deg, rgba(255,253,250,0.78) 0%, rgba(255,250,242,0.55) 70%),
+    linear-gradient(180deg, rgba(255,250,242,0.40), rgba(255,250,242,0.25));
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.96),
+    inset 0 0 0 0.5px rgba(196,69,16,0.06),
+    0 18px 40px -18px rgba(50,30,15,0.20);
+  color: var(--gc-ink);
+}
+
+.recoveryDetailTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.recoveryDetailTitle {
+  font-family: var(--vis-font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: inherit;
+}
+
+.recoveryDetailSub {
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gc-ink3);
+  margin-top: 2px;
+}
+
+[data-theme="dark"] .recoveryDetailSub {
+  color: rgba(255,235,215,0.70);
+}
+
+.recoveryDetailBody {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.recoveryDetailStats {
+  flex: 1;
+  min-width: 0;
+}
+
+.recoveryDetailTone {
+  font-family: var(--vis-font-ui);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--gc-ink2);
+  margin-top: 10px;
+}
+
+[data-theme="dark"] .recoveryDetailTone {
+  color: rgba(255,235,215,0.80);
+}
+
+/* Trend card */
+.recoveryTrendCard {
+  border-radius: 18px;
+  padding: 14px 16px 10px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 18px 40px -22px rgba(196,69,16,0.30);
+}
+
+[data-theme="light"] .recoveryTrendCard {
+  background:
+    linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
+    linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.96),
+    inset 0 0 0 0.5px rgba(196,69,16,0.06),
+    0 12px 30px -18px rgba(50,30,15,0.18);
+}
+
+.recoveryTrendHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.recoveryTrendNum {
+  font-family: var(--vis-font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  letter-spacing: -0.02em;
+}
+
+.recoveryTrendLabel {
+  font-family: var(--vis-font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gc-ink3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.recoveryTrendSvg {
+  display: block;
+  width: 100%;
+  height: 90px;
+}
+
+.recoveryTrendDays {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-family: var(--vis-font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--gc-ink4);
+  letter-spacing: 0.04em;
+}
+
+/* Factors card */
+.recoveryFactorsCard {
+  border-radius: 18px;
+  padding: 16px 18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  backdrop-filter: blur(22px) saturate(180%);
+  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 18px 40px -22px rgba(196,69,16,0.30);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+[data-theme="light"] .recoveryFactorsCard {
+  background:
+    linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
+    linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.96),
+    inset 0 0 0 0.5px rgba(196,69,16,0.06),
+    0 12px 30px -18px rgba(50,30,15,0.18);
+}
+
+.recoveryFactor {
+  display: grid;
+  grid-template-columns: 88px 1fr 32px;
+  align-items: center;
+  gap: 10px;
+}
+
+.recoveryFactorLabel {
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gc-ink2);
+}
+
+.recoveryFactorTrack {
+  width: 100%;
+}
+
+.recoveryFactorValue {
+  text-align: right;
+  font-family: var(--vis-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+/* Tip card */
+.recoveryTipCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: var(--gc-accent-tint);
+  border: 0.5px solid var(--gc-accent-ring);
+}
+
+.recoveryTipBadge {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--gc-gradient);
+  color: #fff;
+  font-family: var(--vis-font-ui);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.recoveryTipBody {
+  font-family: var(--vis-font-ui);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--gc-ink);
+}
