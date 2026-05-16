@@ -1,6 +1,6 @@
 .shell {
   min-height: 100vh;
-  background: var(--vis-page-grad), var(--gc-bg);
+  background: var(--gc-bg);
   background-attachment: fixed;
   display: flex;
   flex-direction: column;
@@ -9,6 +9,9 @@
   color: var(--gc-ink);
   letter-spacing: -0.005em;
 }
+
+[data-theme="dark"].shell  { background: #0A0604; }
+[data-theme="light"].shell { background: #F4ECDF; }
 
 .nav {
   width: 100%;

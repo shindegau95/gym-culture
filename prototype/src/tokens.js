@@ -3,16 +3,16 @@
 // to glow on warm charcoal in dark.
 
 const ORANGE = {
-  blush:    '#FFE6D2',  // sun-disc outer fade
-  peach:    '#FFD0A8',  // sun-disc mid fade
-  apricot:  '#FFA570',  // soft accent
-  tangerine:'#FF8E45',  // core (brand primary, sampled from sun-disc center)
-  rust:     '#C44510',
+  blush:    '#FFDCC4',  // outer fade
+  peach:    '#FFB890',  // mid fade
+  apricot:  '#FF8A4D',  // soft accent
+  tangerine:'#FF5E1F',  // core — sampled from reference Start workout pill / TODAY'S SESSION eyebrow
+  rust:     '#D04510',
   burnt:    '#8A2E08',
   charcoal: '#1B0F08',
 };
 
-const ORB = 'radial-gradient(circle at 32% 28%, #FFE6D2 0%, #FFA570 40%, #FF8E45 70%, #8A2E08 100%)';
+const ORB = 'radial-gradient(circle at 32% 28%, #FFDCC4 0%, #FF8A4D 38%, #FF5E1F 70%, #8A2E08 100%)';
 
 export const TOKENS = {
   light: {
@@ -34,13 +34,13 @@ export const TOKENS = {
     accent:     ORANGE.tangerine,
     accentSoft: ORANGE.apricot,
     accentInk:  '#FFFFFF',
-    accentTint: 'rgba(255,142,69,0.10)',
-    accentRing: 'rgba(255,142,69,0.30)',
+    accentTint: 'rgba(255,94,31,0.10)',
+    accentRing: 'rgba(255,94,31,0.30)',
 
-    gradient:     'linear-gradient(135deg, #FFD0A8 0%, #FFA570 40%, #FF8E45 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,165,112,0.10), rgba(255,142,69,0.10))',
+    gradient:     'linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #E04A11 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,138,77,0.10), rgba(255,94,31,0.10))',
     gradientOrb:  ORB,
-    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #FFA570 28%, #FFD0A8 55%, transparent 78%)',
+    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #FF8A4D 28%, #FFDCC4 55%, transparent 78%)',
 
     good: '#3F9D5E',
     warn: '#C97B1B',
@@ -65,13 +65,13 @@ export const TOKENS = {
     accent:     ORANGE.tangerine,
     accentSoft: ORANGE.apricot,
     accentInk:  '#0F0A07',
-    accentTint: 'rgba(255,142,69,0.14)',
-    accentRing: 'rgba(255,142,69,0.40)',
+    accentTint: 'rgba(255,94,31,0.14)',
+    accentRing: 'rgba(255,94,31,0.40)',
 
-    gradient:     'linear-gradient(135deg, #FFA570 0%, #FF8E45 50%, #8A2E08 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,165,112,0.16), rgba(138,46,8,0.20))',
+    gradient:     'linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #D04510 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,138,77,0.16), rgba(208,69,16,0.20))',
     gradientOrb:  ORB,
-    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #C44510 30%, rgba(138,46,8,0.55) 60%, transparent 80%)',
+    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #D04510 30%, rgba(138,46,8,0.55) 60%, transparent 80%)',
 
     good: '#5BCB85',
     warn: '#F2A640',
@@ -80,7 +80,7 @@ export const TOKENS = {
 };
 
 export const FONT = {
-  ui:      '"DM Sans", -apple-system, "SF Pro Text", system-ui, sans-serif',
-  display: '"DM Sans", -apple-system, "SF Pro Display", system-ui, sans-serif',
-  mono:    '"DM Mono", "SF Mono", ui-monospace, Menlo, monospace',
+  ui:      '"Geist", -apple-system, "SF Pro Text", system-ui, sans-serif',
+  display: '"Geist", -apple-system, "SF Pro Display", system-ui, sans-serif',
+  mono:    '"Geist Mono", "SF Mono", ui-monospace, Menlo, monospace',
 };

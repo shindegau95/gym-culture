@@ -10,28 +10,9 @@
   background: var(--gc-bg);
 }
 
-/* Whole-screen warm gradient sits behind everything;
-   frosted glass surfaces refract this through backdrop-filter. */
-.shell::before {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(50% 35% at 78% 22%, rgba(255,142,69,0.65) 0%, rgba(255,165,112,0.40) 30%, rgba(255,208,168,0.20) 55%, transparent 78%),
-    var(--gc-bg);
-  z-index: 0;
-  pointer-events: none;
-  animation: visBgShift 30s ease-in-out infinite alternate;
-}
-
-.shell::after {
-  content: "";
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(40% 30% at 18% 88%, rgba(255,165,112,0.22) 0%, transparent 75%);
-  z-index: 0;
-  pointer-events: none;
-  animation: visBgShift 36s ease-in-out infinite alternate-reverse;
-}
+/* Reference uses flat near-black (dark) / flat cream (light) — no whole-screen glow */
+[data-theme="dark"] .shell { background: #0A0604; }
+[data-theme="light"] .shell { background: #F4ECDF; }
 
 .shell > .scroll { position: relative; z-index: 1; }
 
@@ -52,66 +33,70 @@
   background: var(--gc-bg);
 }
 
-/* ─── Home: Hero ─────────────────────────────────────────────────────────── */
+/* ─── Home: Hero (reference: dark card body + mini orb + tangerine CTA) ─── */
 .heroPad {
   padding: 4px 16px 16px;
 }
 
-/* Stage hosts the frosted hero card. The whole-screen warm gradient
-   on .shell::before refracts through the card via backdrop-filter. */
 .heroStage {
   position: relative;
-  isolation: isolate;
-  padding: 4px 2px;
-}
-
-/* Outer accent halo so card still reads as "highlight" */
-.heroStage::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, rgba(255,138,92,0.55), rgba(242,90,31,0.45));
-  filter: blur(18px);
-  opacity: 0.65;
-  z-index: 0;
-  pointer-events: none;
-  animation: visBreathe 5s var(--vis-ease) infinite;
+  padding: 0;
 }
 
 .hero {
   position: relative;
-  z-index: 1;
   border-radius: 24px;
-  padding: 22px;
+  padding: 18px 18px 14px;
   overflow: hidden;
-  color: #fff;
-
-  /* pure liquid glass — refracts page bg gradient */
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 70%),
-    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  color: var(--gc-ink);
+  background: var(--gc-bg-elevated);
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.40),
-    inset 0 -1px 0 rgba(255,255,255,0.08),
-    inset 0 0 0 1px rgba(255,255,255,0.16),
-    0 24px 56px -22px rgba(196,69,16,0.55);
+    0 1px 0 rgba(255,255,255,0.04) inset,
+    0 18px 36px -22px rgba(0,0,0,0.45);
 }
 
-.hero::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(110deg,
-    transparent 0%, transparent 42%,
-    rgba(255,255,255,0.10) 50%,
-    transparent 58%, transparent 100%);
-  background-size: 220% 100%;
-  animation: visShimmer 8s linear infinite;
+/* Big orb sits in the card background, right edge clipped off the card */
+.heroOrbBg {
+  position: absolute;
+  top: -56px;
+  right: -100px;
+  z-index: 0;
   pointer-events: none;
-  border-radius: inherit;
-  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+/* Soft scrim on the left side so eyebrow+title remain readable over orb */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    var(--hero-scrim, rgba(20,12,8,0.0)) 0%,
+    var(--hero-scrim, rgba(20,12,8,0.0)) 40%,
+    transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+[data-theme="dark"]  .hero { --hero-scrim: rgba(24,18,16,0.65); }
+[data-theme="light"] .hero { --hero-scrim: rgba(255,255,255,0.78); }
+
+[data-theme="dark"] .hero {
+  background: #181210;
+  box-shadow:
+    inset 0 1px 0 rgba(255,210,170,0.06),
+    inset 0 0 0 1px rgba(255,210,170,0.05),
+    0 18px 36px -22px rgba(0,0,0,0.60);
+  color: #FAF6F2;
+}
+
+[data-theme="light"] .hero {
+  background: #FFFFFF;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    0 14px 34px -22px rgba(50,30,15,0.18);
+  color: #1B1108;
 }
 
 .heroContent {
@@ -120,90 +105,131 @@
 }
 
 .heroEyebrow {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .heroDot {
   width: 6px;
   height: 6px;
-  border-radius: 3px;
-  background: #fff;
+  border-radius: 50%;
+  background: var(--gc-accent);
+  box-shadow: 0 0 8px rgba(255,142,69,0.65);
 }
 
 .heroEyebrowText {
-  font-family: var(--gc-font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
+  font-family: var(--vis-font-ui);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
+  color: var(--gc-accent);
 }
 
 .heroTitle {
-  font-family: var(--gc-font-display);
+  font-family: var(--vis-font-display);
   font-size: 28px;
-  font-weight: 700;
-  letter-spacing: -0.6px;
-  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: inherit;
+  white-space: nowrap;
 }
 
 .heroMetaRow {
   display: flex;
-  gap: 16px;
-  margin-top: 10px;
-  align-items: baseline;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .heroNumber {
-  font-family: var(--gc-font-mono);
-  font-size: 20px;
-  font-weight: 600;
+  font-family: var(--vis-font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gc-ink2);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
+[data-theme="dark"] .heroNumber { color: rgba(250,235,215,0.78); }
+
 .heroNumberUnit {
-  font-size: 12px;
-  opacity: 0.85;
-  font-family: var(--gc-font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gc-ink3);
+  font-family: var(--vis-font-ui);
 }
 
 .heroCoachBtn {
   margin-left: auto;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
+  gap: 7px;
+  padding: 4px 12px 4px 4px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255,255,255,0.96);
   border: 0;
   cursor: pointer;
+  color: #1B1108;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.25);
+}
+
+[data-theme="dark"] .heroCoachBtn {
+  background: rgba(36,24,20,0.92);
+  border: 0.5px solid rgba(255,210,170,0.16);
+  color: #FAF6F2;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,0.6);
 }
 
 .heroCoachLabel {
-  font-family: var(--gc-font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  color: #fff;
+  font-family: var(--vis-font-ui);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
 }
 
 .heroStartBtn {
   margin-top: 14px;
   width: 100%;
-  height: 44px;
-  border-radius: 12px;
+  height: 52px;
+  border-radius: 16px;
   border: 0;
   cursor: pointer;
-  background: #fff;
-  color: var(--gc-accent);
-  font-family: var(--gc-font-ui);
+  background: linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #E04A11 100%);
+  color: #fff;
+  font-family: var(--vis-font-ui);
   font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.2px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.30) inset,
+    0 -1px 0 rgba(120,40,0,0.20) inset,
+    0 10px 22px -8px rgba(255,94,31,0.55);
+  transition: transform var(--vis-dur-micro) var(--vis-ease), filter var(--vis-dur-short) var(--vis-ease);
+}
+
+.heroStartBtn:hover  { filter: brightness(1.04); }
+.heroStartBtn:active { transform: scale(0.985); }
+
+.heroStartBtnArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.22);
+  margin-left: 2px;
 }
 
 /* ─── Home: Muscle recovery ─────────────────────────────────────────────── */
@@ -211,46 +237,33 @@
   padding: 0 16px;
 }
 
-/* Carousel card — frosted glass over animated warm blobs (subtler than hero) */
+/* Recovery card — flat dark / flat white per reference */
 .recoveryCard {
   position: relative;
-  isolation: isolate;
-  border-radius: 22px;
+  border-radius: 24px;
   overflow: hidden;
   padding: 18px 18px 14px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 70%),
-    var(--vis-glass-tint);
-  backdrop-filter: blur(22px) saturate(170%);
-  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  background: var(--gc-bg-elevated);
+}
+
+[data-theme="dark"] .recoveryCard {
+  background: #181210;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.22),
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(196,69,16,0.40);
+    inset 0 1px 0 rgba(255,210,170,0.06),
+    inset 0 0 0 1px rgba(255,210,170,0.05),
+    0 18px 36px -22px rgba(0,0,0,0.60);
+}
+
+[data-theme="light"] .recoveryCard {
+  background: #FFFFFF;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    0 14px 34px -22px rgba(50,30,15,0.18);
 }
 
 .recoveryBgA,
-.recoveryBgB {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(20px);
-  z-index: 0;
-}
-
-.recoveryBgA {
-  width: 220px; height: 220px;
-  left: -40px; top: -40px;
-  background: radial-gradient(circle, rgba(255,138,92,0.55) 0%, rgba(242,90,31,0.28) 50%, transparent 75%);
-  animation: visBlobDrift 18s ease-in-out infinite alternate;
-}
-
-.recoveryBgB {
-  width: 200px; height: 200px;
-  right: -40px; bottom: -60px;
-  background: radial-gradient(circle, rgba(196,69,16,0.55) 0%, rgba(138,46,8,0.30) 50%, transparent 75%);
-  animation: visBlobDrift 22s ease-in-out infinite alternate-reverse;
-}
+.recoveryBgB { display: none; }
 
 .recoveryInner {
   position: relative;
@@ -1632,9 +1645,53 @@
 
 /* ─── Recovery Detail screen ─────────────────────────────────────────────── */
 .recoveryDetailHeader {
-  padding: 14px 16px 6px;
+  padding: 14px 16px 12px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+.recoveryDetailBack {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--vis-font-display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--gc-ink);
+  letter-spacing: -0.015em;
+  padding: 0;
+}
+
+.recoveryDetailAllPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gc-accent);
+  background: var(--gc-accent-tint);
+  border: 0.5px solid var(--gc-accent-ring);
+}
+
+.recoveryStatusPill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-family: var(--vis-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gc-accent);
+  background: var(--gc-accent-tint);
+  border: 0.5px solid var(--gc-accent-ring);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
 }
 
 .recoveryDetailGroups {
@@ -1647,10 +1704,10 @@
 
 .recoveryGroupChip {
   flex-shrink: 0;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
-  border: 0.5px solid var(--gc-sep-strong);
-  background: var(--gc-fill-tint);
+  border: 0.5px solid var(--gc-sep);
+  background: transparent;
   color: var(--gc-ink2);
   font-family: var(--vis-font-ui);
   font-size: 12px;
@@ -1659,38 +1716,129 @@
   transition: all var(--vis-dur-short) var(--vis-ease);
 }
 .recoveryGroupChip--active {
-  background: var(--gc-gradient);
+  background: var(--gc-accent);
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 4px 10px -4px rgba(196,69,16,0.45);
+  box-shadow: 0 4px 10px -4px rgba(255,142,69,0.55);
+}
+
+.recoveryDetailMetaList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.recoveryDetailMetaItem {
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  color: var(--gc-ink3);
+  font-weight: 500;
+}
+
+[data-theme="dark"] .recoveryDetailMetaItem { color: rgba(250,235,215,0.65); }
+
+/* Factor row: icon + label + bar + value */
+.recoveryFactor {
+  display: grid;
+  grid-template-columns: 26px 96px 1fr 26px;
+  align-items: center;
+  gap: 10px;
+}
+
+.recoveryFactorIcon {
+  width: 26px; height: 26px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recoveryFactorLabel {
+  font-family: var(--vis-font-ui);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--gc-ink);
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .recoveryFactorLabel { color: #FAF6F2; }
+
+.recoveryFactorTrack {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(120,80,50,0.10);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .recoveryFactorTrack {
+  background: rgba(255,210,170,0.10);
+}
+
+.recoveryFactorFill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 600ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.recoveryFactorValue {
+  text-align: right;
+  font-family: var(--vis-font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gc-ink);
+}
+
+[data-theme="dark"] .recoveryFactorValue { color: #FAF6F2; }
+
+/* Trend axis (25/50/75/100 on Y) */
+.recoveryTrendBody {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 6px;
+}
+
+.recoveryTrendAxis {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-family: var(--vis-font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--gc-ink4);
+  letter-spacing: 0.04em;
+}
+
+.recoveryTrendDays {
+  margin-top: 4px;
 }
 
 .recoveryDetailCard {
   position: relative;
-  border-radius: 22px;
+  border-radius: 24px;
   padding: 18px;
   overflow: hidden;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
-    var(--vis-glass-tint);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  color: var(--gc-ink);
+  background: var(--gc-bg-elevated);
+}
+
+[data-theme="dark"] .recoveryDetailCard {
+  background: #181210;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.24),
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(196,69,16,0.40);
-  color: #fff;
+    inset 0 1px 0 rgba(255,210,170,0.06),
+    inset 0 0 0 1px rgba(255,210,170,0.05),
+    0 18px 36px -22px rgba(0,0,0,0.60);
+  color: #FAF6F2;
 }
 
 [data-theme="light"] .recoveryDetailCard {
-  background:
-    linear-gradient(180deg, rgba(255,253,250,0.78) 0%, rgba(255,250,242,0.55) 70%),
-    linear-gradient(180deg, rgba(255,250,242,0.40), rgba(255,250,242,0.25));
+  background: #FFFFFF;
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.96),
-    inset 0 0 0 0.5px rgba(196,69,16,0.06),
-    0 18px 40px -18px rgba(50,30,15,0.20);
-  color: var(--gc-ink);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    0 14px 34px -22px rgba(50,30,15,0.18);
 }
 
 .recoveryDetailTop {
@@ -1745,27 +1893,25 @@
 
 /* Trend card */
 .recoveryTrendCard {
-  border-radius: 18px;
-  padding: 14px 16px 10px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
+  border-radius: 22px;
+  padding: 16px 18px 12px;
+  background: var(--gc-bg-elevated);
+}
+
+[data-theme="dark"] .recoveryTrendCard {
+  background: #181210;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.22),
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(196,69,16,0.30);
+    inset 0 1px 0 rgba(255,210,170,0.06),
+    inset 0 0 0 1px rgba(255,210,170,0.05),
+    0 14px 28px -20px rgba(0,0,0,0.55);
 }
 
 [data-theme="light"] .recoveryTrendCard {
-  background:
-    linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
-    linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
+  background: #FFFFFF;
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.96),
-    inset 0 0 0 0.5px rgba(196,69,16,0.06),
-    0 12px 30px -18px rgba(50,30,15,0.18);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    0 12px 28px -20px rgba(50,30,15,0.15);
 }
 
 .recoveryTrendHead {
@@ -1799,8 +1945,9 @@
 }
 
 .recoveryTrendDays {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 28px repeat(7, 1fr);
+  gap: 6px;
   margin-top: 6px;
   font-family: var(--vis-font-ui);
   font-size: 10px;
@@ -1809,58 +1956,34 @@
   letter-spacing: 0.04em;
 }
 
+.recoveryTrendDays > span {
+  text-align: center;
+}
+
 /* Factors card */
 .recoveryFactorsCard {
-  border-radius: 18px;
+  border-radius: 22px;
   padding: 16px 18px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.22),
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(196,69,16,0.30);
+  background: var(--gc-bg-elevated);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+}
+
+[data-theme="dark"] .recoveryFactorsCard {
+  background: #181210;
+  box-shadow:
+    inset 0 1px 0 rgba(255,210,170,0.06),
+    inset 0 0 0 1px rgba(255,210,170,0.05),
+    0 14px 28px -20px rgba(0,0,0,0.55);
 }
 
 [data-theme="light"] .recoveryFactorsCard {
-  background:
-    linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
-    linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
+  background: #FFFFFF;
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.96),
-    inset 0 0 0 0.5px rgba(196,69,16,0.06),
-    0 12px 30px -18px rgba(50,30,15,0.18);
-}
-
-.recoveryFactor {
-  display: grid;
-  grid-template-columns: 88px 1fr 32px;
-  align-items: center;
-  gap: 10px;
-}
-
-.recoveryFactorLabel {
-  font-family: var(--vis-font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--gc-ink2);
-}
-
-.recoveryFactorTrack {
-  width: 100%;
-}
-
-.recoveryFactorValue {
-  text-align: right;
-  font-family: var(--vis-font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--gc-ink);
+    inset 0 1px 0 rgba(255,255,255,1),
+    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    0 12px 28px -20px rgba(50,30,15,0.15);
 }
 
 /* Tip card */

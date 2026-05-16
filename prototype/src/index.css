@@ -14,10 +14,11 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "ss01", "cv11", "tnum";
+  font-feature-settings: "ss01", "ss02", "ss03", "tnum", "cv11";
   background: #0F0A07;
   color: #FAF6F2;
   font-family: var(--vis-font-ui);
+  letter-spacing: -0.011em;
 }
 
 #root {
@@ -53,27 +54,27 @@ body {
   --gc-fill-tint:    rgba(120, 80, 50, 0.06);
   --gc-fill-tint2:   rgba(120, 80, 50, 0.03);
 
-  --gc-accent:       #FF8E45;
-  --gc-accent-soft:  #FFA570;
+  --gc-accent:       #FF5E1F;
+  --gc-accent-soft:  #FF8A4D;
   --gc-accent-ink:   #FFFFFF;
-  --gc-accent-tint:  rgba(255, 142, 69, 0.10);
-  --gc-accent-ring:  rgba(255, 142, 69, 0.30);
-  --gc-gradient:     linear-gradient(135deg, #FFD0A8 0%, #FFA570 40%, #FF8E45 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,165,112,0.10), rgba(255,142,69,0.10));
+  --gc-accent-tint:  rgba(255, 94, 31, 0.10);
+  --gc-accent-ring:  rgba(255, 94, 31, 0.30);
+  --gc-gradient:     linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #E04A11 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,77,0.10), rgba(255,94,31,0.10));
 
-  --vis-orb:         radial-gradient(circle at 32% 28%, #FFE6D2 0%, #FFA570 40%, #FF8E45 70%, #8A2E08 100%);
-  --vis-glass-tint:  linear-gradient(135deg, rgba(255,230,210,0.40), rgba(255,165,112,0.18));
+  --vis-orb:         radial-gradient(circle at 32% 28%, #FFDCC4 0%, #FF8A4D 38%, #FF5E1F 70%, #8A2E08 100%);
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,220,196,0.40), rgba(255,138,77,0.18));
   --vis-glass-edge:  rgba(255,255,255,0.85);
   --vis-glass-shadow:0 18px 40px -18px rgba(50,30,15,0.22);
-  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #FFA570 28%, #FFD0A8 55%, transparent 78%);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #FF8A4D 28%, #FFDCC4 55%, transparent 78%);
 
   --gc-good:         #3F9D5E;
   --gc-warn:         #C97B1B;
   --gc-bad:          #B4350F;
 
-  --vis-font-ui:      "DM Sans", -apple-system, "SF Pro Text", system-ui, sans-serif;
-  --vis-font-display: "DM Sans", -apple-system, "SF Pro Display", system-ui, sans-serif;
-  --vis-font-mono:    "DM Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  --vis-font-ui:      "Geist", -apple-system, "SF Pro Text", system-ui, sans-serif;
+  --vis-font-display: "Geist", -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --vis-font-mono:    "Geist Mono", "SF Mono", ui-monospace, Menlo, monospace;
 
   /* legacy alias — older code still references --gc-font-* */
   --gc-font-ui:      var(--vis-font-ui);
@@ -106,18 +107,18 @@ body {
   --gc-fill-tint:    rgba(255, 170, 110, 0.10);
   --gc-fill-tint2:   rgba(255, 170, 110, 0.05);
 
-  --gc-accent:       #FF8E45;
-  --gc-accent-soft:  #FFA570;
+  --gc-accent:       #FF5E1F;
+  --gc-accent-soft:  #FF8A4D;
   --gc-accent-ink:   #0F0A07;
-  --gc-accent-tint:  rgba(255, 142, 69, 0.14);
-  --gc-accent-ring:  rgba(255, 142, 69, 0.40);
-  --gc-gradient:     linear-gradient(135deg, #FFA570 0%, #FF8E45 50%, #8A2E08 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,165,112,0.16), rgba(138,46,8,0.20));
+  --gc-accent-tint:  rgba(255, 94, 31, 0.14);
+  --gc-accent-ring:  rgba(255, 94, 31, 0.40);
+  --gc-gradient:     linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #D04510 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,77,0.16), rgba(208,69,16,0.20));
 
-  --vis-glass-tint:  linear-gradient(135deg, rgba(255,165,112,0.14), rgba(138,46,8,0.18));
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,138,77,0.14), rgba(138,46,8,0.18));
   --vis-glass-edge:  rgba(255,210,170,0.22);
   --vis-glass-shadow:0 24px 60px -20px rgba(138,46,8,0.55);
-  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #C44510 30%, rgba(138,46,8,0.55) 60%, transparent 80%);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #D04510 30%, rgba(138,46,8,0.55) 60%, transparent 80%);
 
   --gc-good:         #5BCB85;
   --gc-warn:         #F2A640;

@@ -159,14 +159,14 @@ export function RingProgress({ value, size = 108, stroke = 11, children, showMir
       <svg width={size} height={size} className={s.ringSvg}>
         <defs>
           <linearGradient id={`${gid}-g`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%"   stopColor="#FFE3CC" />
+            <stop offset="0%"   stopColor="#FFDCC4" />
             <stop offset="40%"  stopColor="#FFB07A" />
-            <stop offset="100%" stopColor="#FF6A1B" />
+            <stop offset="100%" stopColor="#FF5E1F" />
           </linearGradient>
           <radialGradient id={`${gid}-head`} cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%"   stopColor="#FFE3CC" />
-            <stop offset="55%"  stopColor="#FF8E45" />
-            <stop offset="100%" stopColor="#FF6A1B" />
+            <stop offset="0%"   stopColor="#FFDCC4" />
+            <stop offset="55%"  stopColor="#FF8A4D" />
+            <stop offset="100%" stopColor="#FF5E1F" />
           </radialGradient>
         </defs>
 
@@ -287,63 +287,116 @@ export function TensionOrb({ state = 'rest', size = 28 }) {
   );
 }
 
-// ─── OrbFill — liquid sphere fills with recovery % (brand-ref: recovery_animation.png) ──
-export function OrbFill({ value = 0, size = 140 }) {
+// ─── OrbFill — glossy 3D liquid sphere (brand-ref: reference_dark.png / reference_light.png)
+// Reference: dark warm-charcoal shell, tangerine liquid filling from bottom,
+// strong cream specular highlight top-left, soft cast shadow under.
+export function OrbFill({ value = 0, size = 140, showStrip = true }) {
   const v = Math.max(0, Math.min(100, value));
   // Liquid surface Y (SVG coords, viewBox 0–120) — inverted: 0%→120, 100%→0
   const surfaceY = 120 - (v * 1.20);
-  const reactKey = `orb-${size}`;
+  const reactKey = `orb-${size}-${Math.round(v * 100)}`;
   return (
     <div className={s.orbFill} style={{ width: size, height: size }}>
       <svg viewBox="0 0 120 120" className={s.orbFillSvg} aria-hidden="true">
         <defs>
-          <clipPath id={`orbClip-${reactKey}`}><circle cx="60" cy="60" r="58"/></clipPath>
-          <linearGradient id={`orbLiquid-${reactKey}`} x1="0" y1="1" x2="0" y2="0">
-            <stop offset="0%"   stopColor="#FF6A1B"/>
-            <stop offset="60%"  stopColor="#FF8E45"/>
-            <stop offset="100%" stopColor="#FFA570"/>
+          <clipPath id={`orbClip-${reactKey}`}><circle cx="60" cy="60" r="56"/></clipPath>
+
+          {/* Shell — warm near-black with subtle radial shading */}
+          <radialGradient id={`orbShell-${reactKey}`} cx="0.35" cy="0.30" r="0.85">
+            <stop offset="0%"   stopColor="#3A2418"/>
+            <stop offset="55%"  stopColor="#1A0F0A"/>
+            <stop offset="100%" stopColor="#0A0604"/>
+          </radialGradient>
+
+          {/* Liquid — flat tangerine; brightness constant regardless of fill level */}
+          <linearGradient id={`orbLiquid-${reactKey}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor="#FF6E2A"/>
+            <stop offset="100%" stopColor="#FF5E1F"/>
           </linearGradient>
-          <radialGradient id={`orbHi-${reactKey}`} cx="0.3" cy="0.25" r="0.55">
-            <stop offset="0%"   stopColor="rgba(255,230,210,0.55)"/>
-            <stop offset="100%" stopColor="rgba(255,230,210,0)"/>
+
+          {/* Liquid surface meniscus — slight brighter band at the top edge */}
+          <linearGradient id={`orbMeniscus-${reactKey}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor="rgba(255,225,200,0.85)"/>
+            <stop offset="100%" stopColor="rgba(255,225,200,0)"/>
+          </linearGradient>
+
+          {/* Big specular highlight — cream sheen top-left */}
+          <radialGradient id={`orbHi-${reactKey}`} cx="0.35" cy="0.25" r="0.45">
+            <stop offset="0%"   stopColor="rgba(255,240,225,0.85)"/>
+            <stop offset="55%"  stopColor="rgba(255,225,200,0.30)"/>
+            <stop offset="100%" stopColor="rgba(255,225,200,0)"/>
+          </radialGradient>
+
+          {/* Inner shadow ring — darkens the sphere edge from inside */}
+          <radialGradient id={`orbInner-${reactKey}`} cx="0.5" cy="0.5" r="0.5">
+            <stop offset="70%"  stopColor="rgba(0,0,0,0)"/>
+            <stop offset="100%" stopColor="rgba(0,0,0,0.55)"/>
+          </radialGradient>
+
+          {/* Soft rim — warm amber pinprick along bottom-right curvature */}
+          <radialGradient id={`orbRim-${reactKey}`} cx="0.65" cy="0.75" r="0.55">
+            <stop offset="0%"   stopColor="rgba(0,0,0,0)"/>
+            <stop offset="80%"  stopColor="rgba(0,0,0,0)"/>
+            <stop offset="100%" stopColor="rgba(255,170,110,0.35)"/>
           </radialGradient>
         </defs>
 
-        {/* Empty sphere body (dark, faintly lit) */}
-        <circle cx="60" cy="60" r="58"
-          fill="rgba(20,12,8,0.92)"
-          stroke="rgba(255,165,112,0.35)" strokeWidth="0.6"/>
+        {/* Soft cast shadow under the orb */}
+        <ellipse cx="60" cy="114" rx="34" ry="4" fill="rgba(0,0,0,0.45)" filter="blur(3px)"/>
 
-        {/* Liquid clipped to sphere; surface waves animate via CSS transform */}
+        {/* Shell body */}
+        <circle cx="60" cy="60" r="56" fill={`url(#orbShell-${reactKey})`}/>
+
+        {/* Liquid + meniscus clipped to sphere */}
         <g clipPath={`url(#orbClip-${reactKey})`}>
           <g className={s.orbWaveGroup} style={{ transform: `translateY(${surfaceY}px)` }}>
             <path
-              className={s.orbWave}
-              d="M-60,0 Q-30,-4 0,0 T60,0 T120,0 T180,0 L180,120 L-60,120 Z"
-              fill={`url(#orbLiquid-${reactKey})`}
-            />
-            <path
               className={s.orbWaveBack}
-              d="M-60,2 Q-30,-2 0,2 T60,2 T120,2 T180,2 L180,120 L-60,120 Z"
+              d="M-60,4 Q-30,-1 0,3 T60,3 T120,3 T180,3 L180,120 L-60,120 Z"
               fill={`url(#orbLiquid-${reactKey})`}
               opacity="0.55"
+            />
+            <path
+              className={s.orbWave}
+              d="M-60,0 Q-30,-3 0,0 T60,0 T120,0 T180,0 L180,120 L-60,120 Z"
+              fill={`url(#orbLiquid-${reactKey})`}
+            />
+            {/* Surface meniscus — bright band at top of liquid */}
+            <path
+              d="M-60,-1 Q-30,-4 0,-1 T60,-1 T120,-1 T180,-1 L180,3 L-60,3 Z"
+              fill={`url(#orbMeniscus-${reactKey})`}
+              opacity="0.85"
             />
           </g>
         </g>
 
-        {/* Top-left specular highlight */}
-        <ellipse cx="42" cy="30" rx="22" ry="10"
-          fill={`url(#orbHi-${reactKey})`}
-          transform="rotate(-22 42 30)"/>
+        {/* Inner shadow ring (gives 3D sphericality) */}
+        <circle cx="60" cy="60" r="56" fill={`url(#orbInner-${reactKey})`} pointerEvents="none"/>
 
-        {/* Edge rim glow */}
-        <circle cx="60" cy="60" r="58" fill="none"
-          stroke="rgba(255,165,112,0.45)" strokeWidth="0.4"/>
+        {/* Rim ambient (warm pinprick) */}
+        <circle cx="60" cy="60" r="56" fill={`url(#orbRim-${reactKey})`} pointerEvents="none"/>
+
+        {/* Big top-left specular highlight (cream sheen) */}
+        <ellipse cx="44" cy="32" rx="26" ry="14"
+          fill={`url(#orbHi-${reactKey})`}
+          transform="rotate(-28 44 32)"
+          pointerEvents="none"/>
+
+        {/* Tiny crisp highlight dot — adds glass-like sparkle */}
+        <ellipse cx="40" cy="26" rx="6" ry="2.5"
+          fill="rgba(255,250,245,0.75)"
+          transform="rotate(-28 40 26)"
+          pointerEvents="none"/>
+
+        {/* Rim edge — thin warm outline */}
+        <circle cx="60" cy="60" r="56" fill="none"
+          stroke="rgba(255,170,110,0.18)" strokeWidth="0.4"/>
       </svg>
-      {/* Bottom mini progress strip mirror */}
-      <div className={s.orbFillStrip}>
-        <div className={s.orbFillStripFill} style={{ width: `${v}%` }}/>
-      </div>
+      {showStrip && (
+        <div className={s.orbFillStrip}>
+          <div className={s.orbFillStripFill} style={{ width: `${v}%` }}/>
+        </div>
+      )}
     </div>
   );
 }
