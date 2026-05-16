@@ -1,56 +1,85 @@
+// Vis brand tokens — warm orange family only. See docs §17.
+// All semantic surfaces derive from a single palette; cool tones forbidden.
+
+const ORANGE = {
+  peach:    '#FFD1A8',
+  coral:    '#FF8A5C',
+  flame:    '#FF6A2C',
+  ember:    '#F25A1F',
+  rust:     '#C44510',
+  burnt:    '#8A2E08',
+  charcoal: '#1B0F08',
+};
+
+const ORB = 'radial-gradient(circle at 32% 28%, #FFD1A8 0%, #FF8A5C 35%, #F25A1F 65%, #8A2E08 100%)';
+
 export const TOKENS = {
   light: {
-    bg: '#F7F5F3',
+    bg:         '#FAF6F2',
     bgElevated: '#FFFFFF',
-    bgGrouped: '#EFECE9',
-    bgScrim: 'rgba(247,245,243,0.88)',
-    ink: '#0E0E10',
-    ink2: '#3A3A3C',
-    ink3: 'rgba(60,60,67,0.6)',
-    ink4: 'rgba(60,60,67,0.3)',
-    sep: 'rgba(60,60,67,0.14)',
-    sepStrong: 'rgba(60,60,67,0.24)',
-    fillTint: 'rgba(120,120,128,0.10)',
-    fillTint2: 'rgba(120,120,128,0.06)',
-    accent: '#E11D48',
-    accentSoft: '#FF6B4A',
-    accentInk: '#FFFFFF',
-    accentTint: 'rgba(225,29,72,0.10)',
-    accentRing: 'rgba(225,29,72,0.30)',
-    gradient: 'linear-gradient(135deg, #FF6B4A 0%, #E11D48 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,107,74,0.12) 0%, rgba(225,29,72,0.12) 100%)',
-    good: '#22A06B',
-    warn: '#E08600',
-    bad: '#D62A2A',
+    bgGrouped:  '#F0E9E1',
+    bgScrim:    'rgba(250,246,242,0.86)',
+
+    ink:   '#1B0F08',
+    ink2:  '#3A2A1F',
+    ink3:  'rgba(60,40,28,0.62)',
+    ink4:  'rgba(60,40,28,0.30)',
+
+    sep:        'rgba(60,40,28,0.12)',
+    sepStrong:  'rgba(60,40,28,0.22)',
+    fillTint:   'rgba(120,80,50,0.08)',
+    fillTint2:  'rgba(120,80,50,0.04)',
+
+    accent:     ORANGE.ember,
+    accentSoft: ORANGE.coral,
+    accentInk:  '#FFFFFF',
+    accentTint: 'rgba(242,90,31,0.10)',
+    accentRing: 'rgba(242,90,31,0.30)',
+
+    gradient:     'linear-gradient(135deg, #FFD1A8 0%, #FF8A5C 45%, #F25A1F 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,138,92,0.10), rgba(242,90,31,0.10))',
+    gradientOrb:  ORB,
+    gradientPage: 'radial-gradient(ellipse at top, #FFE9D6 0%, #FAF6F2 55%)',
+
+    good: '#3F9D5E',
+    warn: '#C97B1B',
+    bad:  '#B4350F',
   },
   dark: {
-    bg: '#0B0B0D',
-    bgElevated: '#16161A',
-    bgGrouped: '#0F0F12',
-    bgScrim: 'rgba(11,11,13,0.88)',
-    ink: '#F5F4F2',
-    ink2: '#D8D6D2',
-    ink3: 'rgba(235,235,245,0.6)',
-    ink4: 'rgba(235,235,245,0.3)',
-    sep: 'rgba(255,255,255,0.08)',
-    sepStrong: 'rgba(255,255,255,0.16)',
-    fillTint: 'rgba(120,120,128,0.24)',
-    fillTint2: 'rgba(120,120,128,0.14)',
-    accent: '#FF4664',
-    accentSoft: '#FF7B5A',
-    accentInk: '#0B0B0D',
-    accentTint: 'rgba(255,70,100,0.14)',
-    accentRing: 'rgba(255,70,100,0.40)',
-    gradient: 'linear-gradient(135deg, #FF7B5A 0%, #FF2D55 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,123,90,0.14) 0%, rgba(255,45,85,0.14) 100%)',
-    good: '#34D17C',
-    warn: '#FFB13D',
-    bad: '#FF5A55',
+    bg:         '#0F0A07',
+    bgElevated: '#1A1108',
+    bgGrouped:  '#0C0805',
+    bgScrim:    'rgba(15,10,7,0.84)',
+
+    ink:   '#FAF6F2',
+    ink2:  '#E8DCCB',
+    ink3:  'rgba(250,235,215,0.62)',
+    ink4:  'rgba(250,235,215,0.30)',
+
+    sep:        'rgba(255,210,170,0.10)',
+    sepStrong:  'rgba(255,210,170,0.18)',
+    fillTint:   'rgba(255,170,110,0.10)',
+    fillTint2:  'rgba(255,170,110,0.05)',
+
+    accent:     ORANGE.flame,
+    accentSoft: '#FF9466',
+    accentInk:  '#0F0A07',
+    accentTint: 'rgba(255,106,44,0.14)',
+    accentRing: 'rgba(255,106,44,0.40)',
+
+    gradient:     'linear-gradient(135deg, #FF8A5C 0%, #F25A1F 50%, #8A2E08 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,138,92,0.16), rgba(138,46,8,0.20))',
+    gradientOrb:  ORB,
+    gradientPage: 'radial-gradient(ellipse at top, #2A1408 0%, #0F0A07 60%)',
+
+    good: '#5BCB85',
+    warn: '#F2A640',
+    bad:  '#FF6A3D',
   },
 };
 
 export const FONT = {
-  ui: '-apple-system, "SF Pro Text", "SF Pro", system-ui, sans-serif',
-  display: '-apple-system, "SF Pro Display", "SF Pro", system-ui, sans-serif',
-  mono: '"Geist Mono", "SF Mono", ui-monospace, Menlo, monospace',
+  ui:      '"DM Sans", -apple-system, "SF Pro Text", system-ui, sans-serif',
+  display: '"DM Sans", -apple-system, "SF Pro Display", system-ui, sans-serif',
+  mono:    '"DM Mono", "SF Mono", ui-monospace, Menlo, monospace',
 };

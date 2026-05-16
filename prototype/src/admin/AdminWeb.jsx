@@ -1,5 +1,6 @@
 import { useState, createContext, useContext } from 'react';
 import { TOKENS } from '../tokens';
+import visMark from '../assets/vis-mark.png';
 import s from './AdminWeb.module.css';
 
 const ThemeCtx = createContext(TOKENS.dark);
@@ -21,21 +22,9 @@ function Sidebar({ active, onNav }) {
     <div className={s.sidebar}>
       <div className={s.sidebarBrand}>
         <div className={s.sidebarBrandRow}>
-          <div className={s.sidebarMark}>
-            <svg width={18} height={18} viewBox="0 0 16 16" fill="none">
-              <defs>
-                <linearGradient id="db-sidebar" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FF6B4A"/>
-                  <stop offset="100%" stopColor="#E11D48"/>
-                </linearGradient>
-              </defs>
-              <rect x="0.5" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-sidebar)"/>
-              <rect x="4" y="6" width="8" height="4" rx="1" fill="url(#db-sidebar)"/>
-              <rect x="12" y="3" width="3.5" height="10" rx="1.5" fill="url(#db-sidebar)"/>
-            </svg>
-          </div>
+          <img src={visMark} alt="Vis" className={s.sidebarMark} />
           <div>
-            <div className={s.sidebarTitle}>GYM CULTURE</div>
+            <div className={s.sidebarTitle}>vis</div>
             <div className={s.sidebarSubtitle}>Admin Portal</div>
           </div>
         </div>
@@ -146,24 +135,24 @@ function RevenueChart() {
 
 function TopTrainers() {
   const trainers = [
-    { name: 'Priya Sharma',   clients: 14, revenue: '₹1,12,000', rating: 4.9 },
-    { name: 'Rohit Malhotra', clients: 11, revenue: '₹88,000',   rating: 4.8 },
-    { name: 'Ananya Iyer',    clients: 9,  revenue: '₹72,000',   rating: 4.7 },
-    { name: 'Karan Mehta',    clients: 8,  revenue: '₹64,000',   rating: 4.6 },
-  ];
+    { name: 'Priya Sharma',   clients: 14, rating: 4.9 },
+    { name: 'Rohit Malhotra', clients: 11, rating: 4.8 },
+    { name: 'Ananya Iyer',    clients: 9,  rating: 4.7 },
+    { name: 'Karan Mehta',    clients: 8,  rating: 4.6 },
+  ].sort((a, b) => b.rating - a.rating);
   return (
     <Card className={s.chartCard}>
       <div className={s.simpleHead}>Top Trainers</div>
       <div className={s.trainerStack}>
         {trainers.map((tr, i) => (
-          <div key={i} className={s.trainerRow}>
-            <div className={s.trainerAvatar} style={{ opacity: 1 - i * 0.15 }}>{tr.name[0]}</div>
+          <button key={i} className={s.trainerRow} type="button">
+            <div className={s.trainerAvatar} style={{ opacity: 1 - i * 0.12 }}>{tr.name[0]}</div>
             <div className={s.trainerBody}>
               <div className={s.trainerName}>{tr.name}</div>
-              <div className={s.trainerMeta}>{tr.clients} clients · ★ {tr.rating}</div>
+              <div className={s.trainerMeta}>{tr.clients} clients</div>
             </div>
-            <div className={s.trainerRevenue}>{tr.revenue}</div>
-          </div>
+            <div className={s.trainerRating}>★ {tr.rating}</div>
+          </button>
         ))}
       </div>
     </Card>
@@ -195,7 +184,7 @@ function RecentActivity() {
   );
 }
 
-const BRANCH_COLORS = ['#FF4664', '#FF8042', '#22A06B', '#A78BFA'];
+const BRANCH_COLORS = ['#FF6A2C', '#FFB13D', '#22A06B', '#5B8DEF'];
 const MONTHS = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
 
 const BRANCHES = [
@@ -447,15 +436,22 @@ function Dashboard() {
 }
 
 // ─── Members ──────────────────────────────────────────────────────────────────
+const BRANCH_FILTERS = [
+  { id: 'all',       label: 'All branches' },
+  { id: 'kandivali', label: 'Kandivali' },
+  { id: 'borivali',  label: 'Borivali' },
+  { id: 'mira-road', label: 'Mira Road' },
+];
+
 const MEMBERS = [
-  { id: 1, name: 'Sneha Kapoor',  type: 'PT',  trainer: 'Priya Sharma',   since: '2025-11-01', status: 'active',   phone: '+91 98765 43210', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 48 },
-  { id: 2, name: 'Arjun Singh',   type: 'PT',  trainer: 'Rohit Malhotra', since: '2025-09-15', status: 'active',   phone: '+91 87654 32109', fee: '₹8,500/mo', nextPayment: '2026-05-15', sessions: 72 },
-  { id: 3, name: 'Meera Pillai',  type: 'PT',  trainer: 'Rohit Malhotra', since: '2026-01-10', status: 'active',   phone: '+91 76543 21098', fee: '₹8,500/mo', nextPayment: '2026-06-10', sessions: 32 },
-  { id: 4, name: 'Vikram Nair',   type: 'Gym', trainer: '—',              since: '2026-04-01', status: 'active',   phone: '+91 65432 10987', fee: '₹2,500/mo', nextPayment: '2026-06-01', sessions: 0 },
-  { id: 5, name: 'Divya Rao',     type: 'Gym', trainer: '—',              since: '2025-08-20', status: 'active',   phone: '+91 54321 09876', fee: '₹2,500/mo', nextPayment: '2026-05-20', sessions: 0 },
-  { id: 6, name: 'Rahul Verma',   type: 'PT',  trainer: 'Ananya Iyer',    since: '2025-12-05', status: 'inactive', phone: '+91 43210 98765', fee: '₹8,500/mo', nextPayment: '—',          sessions: 20 },
-  { id: 7, name: 'Pooja Desai',   type: 'Gym', trainer: '—',              since: '2026-02-14', status: 'active',   phone: '+91 32109 87654', fee: '₹2,500/mo', nextPayment: '2026-06-14', sessions: 0 },
-  { id: 8, name: 'Amit Joshi',    type: 'PT',  trainer: 'Karan Mehta',    since: '2026-03-01', status: 'active',   phone: '+91 21098 76543', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 24 },
+  { id: 1, name: 'Sneha Kapoor',  branch: 'kandivali', type: 'PT',  trainer: 'Priya Sharma',   since: '2025-11-01', status: 'active',   phone: '+91 98765 43210', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 48 },
+  { id: 2, name: 'Arjun Singh',   branch: 'kandivali', type: 'PT',  trainer: 'Rohit Malhotra', since: '2025-09-15', status: 'active',   phone: '+91 87654 32109', fee: '₹8,500/mo', nextPayment: '2026-05-15', sessions: 72 },
+  { id: 3, name: 'Meera Pillai',  branch: 'borivali',  type: 'PT',  trainer: 'Rohit Malhotra', since: '2026-01-10', status: 'active',   phone: '+91 76543 21098', fee: '₹8,500/mo', nextPayment: '2026-06-10', sessions: 32 },
+  { id: 4, name: 'Vikram Nair',   branch: 'kandivali', type: 'Gym', trainer: '—',              since: '2026-04-01', status: 'active',   phone: '+91 65432 10987', fee: '₹2,500/mo', nextPayment: '2026-06-01', sessions: 0 },
+  { id: 5, name: 'Divya Rao',     branch: 'borivali',  type: 'Gym', trainer: '—',              since: '2025-08-20', status: 'active',   phone: '+91 54321 09876', fee: '₹2,500/mo', nextPayment: '2026-05-20', sessions: 0 },
+  { id: 6, name: 'Rahul Verma',   branch: 'mira-road', type: 'PT',  trainer: 'Ananya Iyer',    since: '2025-12-05', status: 'inactive', phone: '+91 43210 98765', fee: '₹8,500/mo', nextPayment: '—',          sessions: 20 },
+  { id: 7, name: 'Pooja Desai',   branch: 'mira-road', type: 'Gym', trainer: '—',              since: '2026-02-14', status: 'active',   phone: '+91 32109 87654', fee: '₹2,500/mo', nextPayment: '2026-06-14', sessions: 0 },
+  { id: 8, name: 'Amit Joshi',    branch: 'kandivali', type: 'PT',  trainer: 'Karan Mehta',    since: '2026-03-01', status: 'active',   phone: '+91 21098 76543', fee: '₹8,500/mo', nextPayment: '2026-06-01', sessions: 24 },
 ];
 
 function MemberDetail({ member, onBack, onLogPayment }) {
@@ -566,6 +562,7 @@ function Members() {
   const t = useT();
   const [search, setSearch]             = useState('');
   const [filter, setFilter]             = useState('all');
+  const [branch, setBranch]             = useState('all');
   const [selectedMember, setSelected]   = useState(null);
   const [paymentTarget, setPayTarget]   = useState(null);
 
@@ -576,7 +573,8 @@ function Members() {
       (filter === 'pt'       && m.type === 'PT') ||
       (filter === 'gym'      && m.type === 'Gym') ||
       (filter === 'inactive' && m.status === 'inactive');
-    return matchSearch && matchFilter;
+    const matchBranch = branch === 'all' || m.branch === branch;
+    return matchSearch && matchFilter && matchBranch;
   });
 
   if (selectedMember) return (
@@ -591,6 +589,14 @@ function Members() {
       <div className={s.pageHeaderRow}>
         <h1 className={s.pageTitle}>Members</h1>
         <button className={s.gradBtn}>+ Add Member</button>
+      </div>
+      <div className={s.branchRow}>
+        {BRANCH_FILTERS.map(b => (
+          <button key={b.id} onClick={() => setBranch(b.id)}
+            className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
+            {b.label}
+          </button>
+        ))}
       </div>
       <div className={s.searchRow}>
         <input
@@ -713,11 +719,11 @@ function Payments() {
 
 // ─── Trainers ─────────────────────────────────────────────────────────────────
 const TRAINERS = [
-  { name: 'Priya Sharma',   clients: 14, active: true,  speciality: 'Strength & Hypertrophy',  exp: '6 yrs', phone: '+91 98001 12345', expRating: 4.9, feedbackRating: 4.8, progressRating: 4.7 },
-  { name: 'Rohit Malhotra', clients: 11, active: true,  speciality: 'Fat Loss & Conditioning', exp: '4 yrs', phone: '+91 97002 23456', expRating: 4.6, feedbackRating: 4.8, progressRating: 4.5 },
-  { name: 'Ananya Iyer',    clients: 9,  active: true,  speciality: 'Functional Training',     exp: '3 yrs', phone: '+91 96003 34567', expRating: 4.3, feedbackRating: 4.7, progressRating: 4.4 },
-  { name: 'Karan Mehta',    clients: 8,  active: true,  speciality: 'Powerlifting',            exp: '5 yrs', phone: '+91 95004 45678', expRating: 4.7, feedbackRating: 4.6, progressRating: 4.8 },
-  { name: 'Divya Bose',     clients: 6,  active: false, speciality: 'Yoga & Mobility',         exp: '2 yrs', phone: '+91 94005 56789', expRating: 4.1, feedbackRating: 4.5, progressRating: 4.2 },
+  { name: 'Priya Sharma',   branch: 'kandivali', clients: 14, active: true,  speciality: 'Strength & Hypertrophy',  exp: '6 yrs', phone: '+91 98001 12345', expRating: 4.9, feedbackRating: 4.8, progressRating: 4.7 },
+  { name: 'Rohit Malhotra', branch: 'kandivali', clients: 11, active: true,  speciality: 'Fat Loss & Conditioning', exp: '4 yrs', phone: '+91 97002 23456', expRating: 4.6, feedbackRating: 4.8, progressRating: 4.5 },
+  { name: 'Ananya Iyer',    branch: 'borivali',  clients: 9,  active: true,  speciality: 'Functional Training',     exp: '3 yrs', phone: '+91 96003 34567', expRating: 4.3, feedbackRating: 4.7, progressRating: 4.4 },
+  { name: 'Karan Mehta',    branch: 'mira-road', clients: 8,  active: true,  speciality: 'Powerlifting',            exp: '5 yrs', phone: '+91 95004 45678', expRating: 4.7, feedbackRating: 4.6, progressRating: 4.8 },
+  { name: 'Divya Bose',     branch: 'borivali',  clients: 6,  active: false, speciality: 'Yoga & Mobility',         exp: '2 yrs', phone: '+91 94005 56789', expRating: 4.1, feedbackRating: 4.5, progressRating: 4.2 },
 ];
 
 function ScoreRing({ label, value }) {
@@ -736,8 +742,8 @@ function ScoreRing({ label, value }) {
           />
           <defs>
             <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#FF7B5A"/>
-              <stop offset="100%" stopColor="#FF2D55"/>
+              <stop offset="0%" stopColor="#FF9C66"/>
+              <stop offset="100%" stopColor="#FF6A2C"/>
             </linearGradient>
           </defs>
         </svg>
@@ -749,14 +755,24 @@ function ScoreRing({ label, value }) {
 }
 
 function Trainers() {
+  const [branch, setBranch] = useState('all');
+  const filtered = TRAINERS.filter(tr => branch === 'all' || tr.branch === branch);
   return (
     <div className={s.page}>
       <div className={s.pageHeaderRow}>
         <h1 className={s.pageTitle}>Trainers</h1>
         <button className={s.gradBtn}>+ Add Trainer</button>
       </div>
+      <div className={s.branchRow}>
+        {BRANCH_FILTERS.map(b => (
+          <button key={b.id} onClick={() => setBranch(b.id)}
+            className={`${s.branchChip} ${branch === b.id ? s['branchChip--active'] : ''}`}>
+            {b.label}
+          </button>
+        ))}
+      </div>
       <div className={s.trainerGrid}>
-        {TRAINERS.map((tr, i) => (
+        {filtered.map((tr, i) => (
           <Card key={i} className={s.trainerCard}>
             <div className={s.trainerHead}>
               <div className={s.trainerCardAvatar} style={{ opacity: 0.85 + i * 0.03 }}>{tr.name[0]}</div>
@@ -791,7 +807,7 @@ function Trainers() {
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 function DashIcon({ active }) {
-  const c = active ? '#FF4664' : 'currentColor';
+  const c = active ? '#FF6A2C' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 1 : 0.5}/>
     <rect x={11} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 0.6 : 0.3}/>
@@ -800,7 +816,7 @@ function DashIcon({ active }) {
   </svg>;
 }
 function MembersIcon({ active }) {
-  const c = active ? '#FF4664' : 'currentColor';
+  const c = active ? '#FF6A2C' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <circle cx={7} cy={6} r={3.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 15c0-3 2.7-5 6-5s6 2 6 5" stroke={c} strokeWidth={1.5} strokeLinecap="round"/>
@@ -809,7 +825,7 @@ function MembersIcon({ active }) {
   </svg>;
 }
 function PayIcon({ active }) {
-  const c = active ? '#FF4664' : 'currentColor';
+  const c = active ? '#FF6A2C' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={4} width={16} height={11} rx={2.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 8h16" stroke={c} strokeWidth={1.5}/>
@@ -817,7 +833,7 @@ function PayIcon({ active }) {
   </svg>;
 }
 function TrainerIcon({ active }) {
-  const c = active ? '#FF4664' : 'currentColor';
+  const c = active ? '#FF6A2C' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <path d="M2 9h3l2-5 3 9 2-4h4" stroke={c} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
   </svg>;

@@ -14,7 +14,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #0E0E10;
+  font-feature-settings: "ss01", "cv11", "tnum";
+  background: #0F0A07;
+  color: #FAF6F2;
+  font-family: var(--vis-font-ui);
 }
 
 #root {
@@ -33,77 +36,200 @@ body {
 
 /* ─── Design tokens — light (default) ────────────────────────────────────── */
 :root, [data-theme="light"] {
-  --gc-bg:           #F7F5F3;
+  --gc-bg:           #FAF6F2;
   --gc-bg-elevated:  #FFFFFF;
-  --gc-bg-grouped:   #EFECE9;
-  --gc-bg-scrim:     rgba(247, 245, 243, 0.88);
+  --gc-bg-grouped:   #F0E9E1;
+  --gc-bg-scrim:     rgba(250, 246, 242, 0.86);
 
-  --gc-ink:          #0E0E10;
-  --gc-ink2:         #3A3A3C;
-  --gc-ink3:         rgba(60, 60, 67, 0.6);
-  --gc-ink4:         rgba(60, 60, 67, 0.3);
+  --gc-ink:          #1B0F08;
+  --gc-ink2:         #3A2A1F;
+  --gc-ink3:         rgba(60, 40, 28, 0.62);
+  --gc-ink4:         rgba(60, 40, 28, 0.30);
 
-  --gc-sep:          rgba(60, 60, 67, 0.14);
-  --gc-sep-strong:   rgba(60, 60, 67, 0.24);
+  --gc-sep:          rgba(60, 40, 28, 0.12);
+  --gc-sep-strong:   rgba(60, 40, 28, 0.22);
 
-  --gc-fill-tint:    rgba(120, 120, 128, 0.10);
-  --gc-fill-tint2:   rgba(120, 120, 128, 0.06);
+  --gc-fill-tint:    rgba(120, 80, 50, 0.08);
+  --gc-fill-tint2:   rgba(120, 80, 50, 0.04);
 
-  --gc-accent:       #E11D48;
-  --gc-accent-soft:  #FF6B4A;
+  --gc-accent:       #F25A1F;
+  --gc-accent-soft:  #FF8A5C;
   --gc-accent-ink:   #FFFFFF;
-  --gc-accent-tint:  rgba(225, 29, 72, 0.10);
-  --gc-accent-ring:  rgba(225, 29, 72, 0.30);
-  --gc-gradient:     linear-gradient(135deg, #FF6B4A 0%, #E11D48 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,107,74,0.12) 0%, rgba(225,29,72,0.12) 100%);
+  --gc-accent-tint:  rgba(242, 90, 31, 0.10);
+  --gc-accent-ring:  rgba(242, 90, 31, 0.30);
+  --gc-gradient:     linear-gradient(135deg, #FFD1A8 0%, #FF8A5C 45%, #F25A1F 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,92,0.10), rgba(242,90,31,0.10));
 
-  --gc-good:         #22A06B;
-  --gc-warn:         #E08600;
-  --gc-bad:          #D62A2A;
+  --vis-orb:         radial-gradient(circle at 32% 28%, #FFD1A8 0%, #FF8A5C 35%, #F25A1F 65%, #8A2E08 100%);
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,209,168,0.22), rgba(242,90,31,0.12));
+  --vis-glass-edge:  rgba(255,255,255,0.55);
+  --vis-glass-shadow:0 24px 60px -22px rgba(196,69,16,0.28);
+  --vis-page-grad:   radial-gradient(ellipse at top, #FFE9D6 0%, #FAF6F2 55%);
 
-  --gc-font-ui:      -apple-system, "SF Pro Text", "SF Pro", system-ui, sans-serif;
-  --gc-font-display: -apple-system, "SF Pro Display", "SF Pro", system-ui, sans-serif;
-  --gc-font-mono:    "Geist Mono", "SF Mono", ui-monospace, Menlo, monospace;
+  --gc-good:         #3F9D5E;
+  --gc-warn:         #C97B1B;
+  --gc-bad:          #B4350F;
+
+  --vis-font-ui:      "DM Sans", -apple-system, "SF Pro Text", system-ui, sans-serif;
+  --vis-font-display: "DM Sans", -apple-system, "SF Pro Display", system-ui, sans-serif;
+  --vis-font-mono:    "DM Mono", "SF Mono", ui-monospace, Menlo, monospace;
+
+  /* legacy alias — older code still references --gc-font-* */
+  --gc-font-ui:      var(--vis-font-ui);
+  --gc-font-display: var(--vis-font-display);
+  --gc-font-mono:    var(--vis-font-mono);
+
+  --vis-ease:        cubic-bezier(0.32, 0.72, 0, 1);
+  --vis-dur-micro:   120ms;
+  --vis-dur-short:   200ms;
+  --vis-dur-med:     360ms;
+  --vis-dur-long:    560ms;
 }
 
 /* ─── Design tokens — dark ───────────────────────────────────────────────── */
 [data-theme="dark"] {
-  --gc-bg:           #0B0B0D;
-  --gc-bg-elevated:  #16161A;
-  --gc-bg-grouped:   #0F0F12;
-  --gc-bg-scrim:     rgba(11, 11, 13, 0.88);
+  --gc-bg:           #0F0A07;
+  --gc-bg-elevated:  #1A1108;
+  --gc-bg-grouped:   #0C0805;
+  --gc-bg-scrim:     rgba(15, 10, 7, 0.84);
 
-  --gc-ink:          #F5F4F2;
-  --gc-ink2:         #D8D6D2;
-  --gc-ink3:         rgba(235, 235, 245, 0.6);
-  --gc-ink4:         rgba(235, 235, 245, 0.3);
+  --gc-ink:          #FAF6F2;
+  --gc-ink2:         #E8DCCB;
+  --gc-ink3:         rgba(250, 235, 215, 0.62);
+  --gc-ink4:         rgba(250, 235, 215, 0.30);
 
-  --gc-sep:          rgba(255, 255, 255, 0.08);
-  --gc-sep-strong:   rgba(255, 255, 255, 0.16);
+  --gc-sep:          rgba(255, 210, 170, 0.10);
+  --gc-sep-strong:   rgba(255, 210, 170, 0.18);
 
-  --gc-fill-tint:    rgba(120, 120, 128, 0.24);
-  --gc-fill-tint2:   rgba(120, 120, 128, 0.14);
+  --gc-fill-tint:    rgba(255, 170, 110, 0.10);
+  --gc-fill-tint2:   rgba(255, 170, 110, 0.05);
 
-  --gc-accent:       #FF4664;
-  --gc-accent-soft:  #FF7B5A;
-  --gc-accent-ink:   #0B0B0D;
-  --gc-accent-tint:  rgba(255, 70, 100, 0.14);
-  --gc-accent-ring:  rgba(255, 70, 100, 0.40);
-  --gc-gradient:     linear-gradient(135deg, #FF7B5A 0%, #FF2D55 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,123,90,0.14) 0%, rgba(255,45,85,0.14) 100%);
+  --gc-accent:       #FF6A2C;
+  --gc-accent-soft:  #FF9466;
+  --gc-accent-ink:   #0F0A07;
+  --gc-accent-tint:  rgba(255, 106, 44, 0.14);
+  --gc-accent-ring:  rgba(255, 106, 44, 0.40);
+  --gc-gradient:     linear-gradient(135deg, #FF8A5C 0%, #F25A1F 50%, #8A2E08 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,92,0.16), rgba(138,46,8,0.20));
 
-  --gc-good:         #34D17C;
-  --gc-warn:         #FFB13D;
-  --gc-bad:          #FF5A55;
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,138,92,0.14), rgba(138,46,8,0.18));
+  --vis-glass-edge:  rgba(255,210,170,0.22);
+  --vis-glass-shadow:0 24px 60px -20px rgba(138,46,8,0.55);
+  --vis-page-grad:   radial-gradient(ellipse at top, #2A1408 0%, #0F0A07 60%);
+
+  --gc-good:         #5BCB85;
+  --gc-warn:         #F2A640;
+  --gc-bad:          #FF6A3D;
+}
+
+/* ─── Liquid glass utility ───────────────────────────────────────────────── */
+.vis-glass {
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0) 60%),
+    var(--vis-glass-tint);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 var(--vis-glass-edge),
+    0 0 0 0.5px rgba(255,255,255,0.10),
+    var(--vis-glass-shadow);
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────────────── */
 @keyframes gcPulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(0.88); }
+  50%      { opacity: 0.5; transform: scale(0.88); }
 }
 
 @keyframes gcFadeUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes visBreathe {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.94; transform: scale(1.005); }
+}
+
+@keyframes visShimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes visOrbGlow {
+  0%, 100% { filter: drop-shadow(0 0 18px rgba(255,138,92,0.45)); }
+  50%      { filter: drop-shadow(0 0 28px rgba(255,138,92,0.75)); }
+}
+
+@keyframes visFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+@keyframes visBlobDrift {
+  0%   { transform: translate(0, 0)      scale(1);    }
+  35%  { transform: translate(18px, -12px) scale(1.08); }
+  65%  { transform: translate(-14px, 16px) scale(0.95); }
+  100% { transform: translate(10px, 8px)  scale(1.05); }
+}
+
+@keyframes visHeroPulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.85; }
+}
+
+/* Whole-screen warm gradient drift — slowly shifts hot-spots so liquid glass
+   surfaces refract a living background, not a static one. */
+@keyframes visBgShift {
+  0%   { transform: translate(0, 0)        scale(1);    }
+  25%  { transform: translate(-2%, 1.5%)   scale(1.04); }
+  50%  { transform: translate(1.5%, -2%)   scale(0.98); }
+  75%  { transform: translate(-1.5%, -1%)  scale(1.03); }
+  100% { transform: translate(1%, 1.5%)    scale(1.01); }
+}
+
+/* Animated gradient flow for progress bars */
+@keyframes visBarFlow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.vis-breathe { animation: visBreathe 5s var(--vis-ease) infinite; }
+.vis-orb-glow { animation: visOrbGlow 4.5s ease-in-out infinite; }
+.vis-float { animation: visFloat 6s ease-in-out infinite; }
+
+/* Shimmer overlay across orange surfaces — apply via a child div */
+.vis-shimmer {
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%,
+    transparent 40%,
+    rgba(255,255,255,0.18) 50%,
+    transparent 60%,
+    transparent 100%);
+  background-size: 220% 100%;
+  animation: visShimmer 6s linear infinite;
+  pointer-events: none;
+  border-radius: inherit;
+  mix-blend-mode: overlay;
+}
+
+/* ─── Accessibility ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .vis-breathe, .vis-orb-glow, .vis-float, .vis-shimmer {
+    animation: none !important;
+  }
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .vis-glass {
+    background: var(--gc-bg-elevated);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }

@@ -81,12 +81,20 @@ The stack is effectively free until meaningful scale. Cloud Run charges only on 
 
 ---
 
-## 5. Multi-Branch Data Model
+## 5. Multi-Branch & Multi-Tenant Data Model
 
-Every core entity (members, trainers, sessions, plans) is scoped to a `branch_id`. The database schema enforces this. Branch Staff can only query/mutate data for their `branch_id`. Owners can query across all branches.
+Vis is a multi-tenant SaaS — each gym brand (e.g. "Vis Fitness", "Iron Den", "Cult Arena") operates as a separate tenant with its own branches, members, trainers, and revenue books. Within a tenant, every core entity (members, trainers, sessions, plans) is scoped to a `branch_id`. Cross-tenant data leakage is forbidden at every query layer.
 
-**Branches table** stores: id, name, address, city, created_at.  
-**Users table** stores: id, firebase_uid, name, phone, email, role (CLIENT | TRAINER | STAFF | OWNER), branch_id (nullable for OWNER), created_at.
+**GymBrands table** (top-level tenant): id, name, slug, logo_url, primary_color, owner_user_id, plan_tier, created_at.  
+**Branches table**: id, gym_brand_id, name, address, city, created_at.  
+**Users table**: id, firebase_uid, gym_brand_id, name, phone, email, role (CLIENT | TRAINER | STAFF | OWNER | PLATFORM_ADMIN), branch_id (nullable for OWNER and PLATFORM_ADMIN), created_at.
+
+Role scope inside a brand:
+- `STAFF` / `TRAINER` / `CLIENT` — single branch within their brand.
+- `OWNER` — all branches within their brand, but no visibility into other brands.
+- `PLATFORM_ADMIN` — Vis internal staff; cross-brand observability for support, never edit access without an audit-logged impersonation request.
+
+The `app.owner-name` config (currently `vis`) becomes a per-brand `gym_brand.slug` lookup; backend resolves brand from the authenticated user's `gym_brand_id` on every request.
 
 ---
 
@@ -129,6 +137,19 @@ If the PT membership lapses, the app shows a "Your PT membership has expired" sc
   - "+ Add Exercise" — search by name or filter by muscle group
   - Both trainer and client can update the same session simultaneously (last-write-wins per set row)
 - Rest days are shown distinctly and excluded from streak/completion calculations
+
+**Visual metaphor — tension & progression** (see `docs/brand-ref/design_1.png` and `design_2.png`):
+
+The Workout tab is the brand's signature canvas for the orb-as-organism metaphor. Each exercise card carries a *tension state* sphere alongside its set rows:
+
+| Set state | Orb appearance | Animation |
+|---|---|---|
+| **At rest** (unstarted set) | smooth glossy sphere, neutral peach | gentle 6s breathing |
+| **Under load** (active set in progress) | sphere squeezed taller, deeper saturation | pulse synced to expected rep tempo |
+| **Peak tension** (last rep of last working set) | sphere with visible vertical stress lines, deepest rust shadow | tight, fast micro-shake |
+| **Recovered** (set complete) | sphere settles to soft glow, faint orange halo | one-shot 800 ms ease-out settle |
+
+Stacked orbs (concept #3 "Motion & progression") render in the weekly schedule strip — each day's completed volume contributes one orb layer ascending. The connection orb (concept #4) appears in the Active Session header when the trainer joins live — two orbs linked by a tension stem visualises the trainer↔client bond.
 
 ### 7.5 Progress Tab
 - **Body Measurements over time:** weight, body fat %, chest/waist/hip/arm/thigh — line charts
@@ -175,19 +196,45 @@ If the PT membership lapses, the app shows a "Your PT membership has expired" sc
   - Nutrition plan with ability to edit
   - Session history
 
-### 8.3 Plan Tab
-- **Plan Builder:**
-  - Plan name, goal, length (weeks), days per week
-  - Week day selector (Mon–Sun)
-  - Per day: muscle group label (e.g. Lower · Quads · Glutes), reorderable exercise list
-  - Each exercise: name, sets × reps (or time), RPE target, exercise type tag (Compound / Machine / Isolation / Bodyweight / Core)
-  - "+ Add Exercise" with search + muscle group filter
-  - AI suggestions: given the client's goal and today's muscle recovery status, the AI recommends exercises to include (light suggestions, not full plan generation)
-- **Templates:** save any plan as a reusable template. Browse and fork from own templates when creating a new plan.
-- **Nutrition Plan Builder:**
-  - Total calories and macro targets (protein/carbs/fat)
-  - Per meal: food items with portion sizes and macro contributions
-  - **AI Macro Generation:** input client's goal, body weight, activity level → AI suggests calorie target and macro split. Trainer reviews and saves.
+### 8.3 Plan Tab — Templates, Bespoke Plans, Real-Time Sync
+
+The trainer's authoring model has two tracks: **templates** (reusable starting points) and **bespoke plans** (assigned to a specific client). Every assigned plan is a clone of either a template or another plan, then customised per client. Edits made by the trainer (any time — pre-session, mid-session, or off-session) must sync to the client's app in real time, and exercise logs made by the client must sync back to the trainer.
+
+**Plan template builder** (not client-scoped):
+- Template name, goal preset (Muscle Gain | Fat Loss | Strength | Body Recomp | Mobility)
+- Length (weeks) and days/week
+- Pattern tag (Push/Pull/Legs, Upper/Lower, Full-Body, Bro Split, custom)
+- Per day: muscle group label, reorderable exercise list
+- Per exercise: name, sets × reps (or time), RPE target, exercise type (Compound / Machine / Isolation / Bodyweight / Core), notes
+- "+ Add Exercise" with search + muscle group filter
+- AI suggestions: given goal and split, recommend exercises (light suggestions only, not full plan generation)
+- Save / duplicate / archive
+
+**Assigning a plan to a client**:
+1. Trainer picks a template or a previously-assigned client plan → "Customise for [client]".
+2. System creates a *bespoke plan* tied to `(client_id, trainer_id, gym_brand_id, branch_id)`.
+3. Trainer edits the bespoke plan freely without affecting the source template.
+4. Edits can change pattern (e.g. switch Push/Pull → Upper/Lower mid-cycle), add or remove muscle groups, add or remove exercises.
+
+**Editing & ad-hoc changes during an active session**:
+- Trainer can open the session screen and add or remove exercises *for today only* (these become an "ad-hoc overlay" on top of the plan day; the underlying plan is not mutated unless trainer chooses "Save to plan").
+- Client sees the overlay within ~2 seconds via the real-time sync channel.
+- Either side can log sets as they're completed; conflicts on the same set row follow last-write-wins.
+
+**Off-session edits**:
+- Trainer can edit a future day's plan from the Plan tab.
+- Client's Workout tab reflects the new plan on next view; if the client is mid-day, an "Updated by Coach" banner appears and changes apply on next exercise transition.
+
+**Sync model**:
+- Real-time WebSocket channel per `(client_id, plan_id)` carries: `plan.exercises.added`, `plan.exercises.removed`, `plan.exercises.reordered`, `plan.dayPattern.changed`, `set.logged`, `set.updated`, `session.started`, `session.ended`, `notes.updated`.
+- Polling fallback at 10 s interval if WS unavailable.
+- Server is authoritative; both apps optimistically apply local writes then reconcile on ack.
+
+**Nutrition plan builder**:
+- Total calories and macro targets (protein/carbs/fat).
+- Per meal: food items with portion sizes and macro contributions.
+- **AI macro generation:** input client's goal, body weight, activity level → AI suggests calorie target and macro split. Trainer reviews and saves.
+- Nutrition follows the same template + bespoke + sync pattern as plans.
 
 ### 8.4 Profile Tab
 - Trainer name, photo, branch(es)
@@ -338,13 +385,151 @@ Each trainer card displays:
 
 ---
 
-## 17. UI Prototype (VIS-61)
+## 17. UI Prototype & Brand Language (VIS-61)
 
-A static Vite + React demo app in `prototype/` for showcasing the design to gym stakeholders before full implementation. No backend, no auth, all mock data.
+A static Vite + React demo app in `prototype/` for showcasing the design to gym stakeholders before full implementation. No backend, no auth, all mock data. All three apps (Client, Trainer, Admin) share the same brand system defined below.
 
-**Design style:** Dark gradient — deep dark backgrounds (`linear-gradient(135deg, #1a0a0a, #0d0d1a)`), red-orange gradient accents (`#E53935 → #ff6b35`), glassmorphism cards (`rgba(255,255,255,0.07)` with `rgba(255,255,255,0.08)` border).
+### 17.1 Brand Identity
 
-**Structure:** Top tab bar switches between the three apps. Client and Trainer apps render inside a 375×812 phone frame. Admin Web fills the full browser viewport.
+The Vis identity is built around a single orange sphere paired with a custom lowercase "vis" wordmark. Brand-ref source: `docs/brand-ref/`.
+
+**Logo concepts** (from `docs/brand-ref/`):
+1. **Tension point** — the sphere is under controlled load; strength comes from restraint, not force.
+2. **Hidden "V" in the form** — negative space inside the sphere implies victory and vitality.
+3. **Motion & progression** — stacked, layered orbs hint at upward growth.
+4. **Connection & collaboration** — two orbs connected by a stem symbolise trainer ↔ client alignment.
+5. **Custom typography** — the dot above the "i" is replaced by the orange orb; the "v" is a sharp 45° wedge; the "s" has tight horizontal terminals.
+
+The sphere is the *only* repeating visual icon in the system. Avoid introducing other illustrative motifs.
+
+### 17.2 Color System — Warm Orange Family Only
+
+Restraint is the rule: limit accent variation to gradients within the logo's warm orange spectrum plus neutral grays. Semantic colors (good/warn/bad) are kept muted so the brand orange always leads.
+
+**Warm orange palette** (light → dark):
+
+| Token | Hex | Use |
+|---|---|---|
+| `--vis-peach`     | `#FFD1A8` | Top-light highlight on orb / light-theme gradient start |
+| `--vis-coral`     | `#FF8A5C` | Soft accent, hover states |
+| `--vis-flame`     | `#FF6A2C` | Dark-theme primary accent |
+| `--vis-ember`     | `#F25A1F` | Light-theme primary accent (logo core) |
+| `--vis-rust`      | `#C44510` | Mid-shadow on orb |
+| `--vis-burnt`     | `#8A2E08` | Deep shadow, dark-theme gradient end |
+| `--vis-charcoal`  | `#1B0F08` | Background tint, dark theme |
+
+**Gradients**:
+
+```css
+/* Orb (logo sphere) — radial, used wherever the brand mark appears */
+--vis-orb: radial-gradient(circle at 32% 28%, #FFD1A8 0%, #FF8A5C 35%, #F25A1F 65%, #8A2E08 100%);
+
+/* Light theme — peach to ember (soft, airy) */
+--vis-grad-light: linear-gradient(135deg, #FFD1A8 0%, #FF8A5C 45%, #F25A1F 100%);
+
+/* Dark theme — flame to burnt (moody, glowing) */
+--vis-grad-dark:  linear-gradient(135deg, #FF8A5C 0%, #F25A1F 50%, #8A2E08 100%);
+
+/* Surface glow — soft alpha gradient for cards */
+--vis-grad-soft-light: linear-gradient(135deg, rgba(255,138,92,0.10), rgba(242,90,31,0.10));
+--vis-grad-soft-dark:  linear-gradient(135deg, rgba(255,138,92,0.16), rgba(138,46,8,0.20));
+```
+
+**Rule of restraint:** A screen should rarely use more than one orange gradient surface at full saturation. Secondary surfaces use the *soft* variants. Pure white and black are forbidden — always use warm-tinted neutrals (`#FAF6F2` on light, `#0F0A07` on dark).
+
+### 17.3 Typography
+
+Use **Geist** (sans) for display + UI body and **Geist Mono** for tabular/numeric values. Geist is geometric, smooth, with humanist proportions — closest free match to the custom "vis" wordmark's character. Hosted via Google Fonts.
+
+```css
+--vis-font-display: 'Geist', -apple-system, system-ui, sans-serif;
+--vis-font-ui:      'Geist', -apple-system, system-ui, sans-serif;
+--vis-font-mono:    'Geist Mono', 'SF Mono', ui-monospace, Menlo, monospace;
+```
+
+**Type scale** (4px baseline grid, smooth via `-webkit-font-smoothing: antialiased` + `text-rendering: optimizeLegibility`):
+
+| Token | Size / Line | Weight | Letter-spacing |
+|---|---|---|---|
+| Display XL | 40 / 44 | 600 | -0.02em |
+| Display    | 28 / 32 | 600 | -0.015em |
+| Title      | 20 / 26 | 600 | -0.01em |
+| Body       | 15 / 22 | 400 | 0 |
+| Caption    | 13 / 18 | 500 | 0.005em |
+| Eyebrow    | 11 / 14 | 600 | 0.08em (UPPER) |
+| Numeric    | varies  | 500 | 0 (Geist Mono, tabular) |
+
+**Spacing scale** (use only): `4 · 8 · 12 · 16 · 20 · 24 · 32 · 40 · 56 · 72`. No off-grid values.
+
+### 17.4 Liquid Glass Design Language
+
+Vis surfaces follow Apple's **Liquid Glass** material system (iOS 26 / macOS 26): translucent, refractive panels that float above content, with motion that suggests the movement of a liquid drop. Reference: [Apple liquid glass design](https://medium.com/@expertappdevs/liquid-glass-2026-apples-new-design-language-6a709e49ca8b).
+
+**Core principles** (apply *appropriately*, not everywhere):
+
+1. **Content leads.** Glass is the chrome around content, never the content itself. Lists, charts, and data stay on solid surfaces; only navigation, controls, modals, and "hero" cards use glass.
+2. **Contextual blur.** `backdrop-filter: blur(20–40px) saturate(140%)` adapts to what's behind it. A glass nav over a warm photo absorbs that warmth; over the bg gradient it picks up the orange glow.
+3. **Refractive edges.** Each glass surface has a 1px inner highlight (`inset 0 1px 0 rgba(255,255,255,0.18)`) and a 1px outer hairline (`0 0 0 0.5px rgba(255,255,255,0.10)`) to suggest a lens edge.
+4. **Specular highlights.** Concave/convex hint via a soft gradient overlay (top: white-alpha 12% → 0).
+5. **Motion responsiveness.** Glass elements gently `transform: translateY(-1px)` on hover and `scale(0.98)` on active. Cards "breathe" with a 4–6s opacity/scale loop on idle hero surfaces only. Avoid page-wide motion that competes with content.
+6. **Accessibility fallback.** Honour `@media (prefers-reduced-transparency: reduce)` and `(prefers-reduced-motion: reduce)` — collapse glass to solid neutrals and disable breathing/shimmer loops.
+
+**Where to use glass:**
+- Top navigation bar, bottom tab bar (always)
+- Session-active "hero" card (Client home, Trainer focused-client)
+- Modals, sheets, alerts
+- Pinned filter chips, search field
+- Live indicators (timer ring, "Live" pill)
+
+**Where NOT to use glass:**
+- Tables, lists, dense data rows
+- Body paragraphs, captions
+- Charts and progress bars (must be solid for legibility)
+- Settings forms
+
+**Sample CSS:**
+
+```css
+.vis-glass {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 60%),
+    var(--vis-grad-soft-dark);             /* warm tint shows through */
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.16),
+    0 0 0 0.5px rgba(255,255,255,0.10),
+    0 24px 60px -20px rgba(138,46,8,0.45);
+}
+```
+
+### 17.5 Animation Language
+
+Keep motion purposeful and warm — never showy.
+
+- **Easing default:** `cubic-bezier(0.32, 0.72, 0, 1)` (Apple's spring-like out-curve).
+- **Duration scale:** micro `120ms` · short `200ms` · medium `360ms` · long `560ms`.
+- **Breathing loops** (hero hero card only): 5s alternate `opacity 1 → 0.94`, `scale 1 → 1.005`.
+- **Shimmer** on the orb logo: a 6s slow diagonal sweep of a 12%-alpha highlight.
+- **Page transitions:** 240ms fade + 4px translateY-in.
+- **Number tickers:** count-up over 360ms with `ease-out`.
+- **Touch feedback:** opacity 1 → 0.85 in 80ms, then back.
+
+Respect `prefers-reduced-motion: reduce` — collapse all loops, keep only enter/exit fades.
+
+### 17.6 Theme Strategy
+
+| Theme | Bg | Primary gradient | Card surface | Text |
+|---|---|---|---|---|
+| **Light** | `#FAF6F2` (warm cream) | `--vis-grad-light` (peach → ember) | white + warm tint, glass on hero only | `#1B0F08` |
+| **Dark**  | `#0F0A07` (warm charcoal) | `--vis-grad-dark` (flame → burnt) | `#1A1108` + glass | `#FAF6F2` |
+
+Both themes share the *same* orange family — only luminance and gradient direction shift. Never introduce cool-tone accents.
+
+### 17.7 Prototype Structure
+
+Top tab bar switches between the three apps. Client and Trainer apps render inside a 375×812 phone frame. Admin Web fills the full browser viewport.
 
 **Screens to prototype** (subset of the full spec — all content from sections above):
 

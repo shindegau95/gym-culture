@@ -5,12 +5,14 @@ import s from './ClientApp.module.css';
 // ─── Home ────────────────────────────────────────────────────────────────────
 function ClientHome({ t, onStartWorkout, onViewCoach }) {
   const muscles = [
-    { l: 'Chest',     v: 42 },
-    { l: 'Back',      v: 88 },
-    { l: 'Legs',      v: 95 },
-    { l: 'Shoulders', v: 65 },
-    { l: 'Arms',      v: 58 },
+    { l: 'Legs',      v: 95, lastTrained: '4 days ago', strain: 'Low',      tone: 'Fully recovered. Ready for max load.' },
+    { l: 'Back',      v: 88, lastTrained: '3 days ago', strain: 'Low',      tone: 'Recovered. Heavy pulls OK today.' },
+    { l: 'Shoulders', v: 65, lastTrained: '2 days ago', strain: 'Moderate', tone: 'Light isolation only — avoid overhead press.' },
+    { l: 'Arms',      v: 58, lastTrained: '2 days ago', strain: 'Moderate', tone: 'Today\'s push will hit triceps.' },
+    { l: 'Chest',     v: 42, lastTrained: 'Yesterday',  strain: 'High',     tone: 'Today\'s session targets chest — prep mentally.' },
   ];
+  const [muscleIdx, setMuscleIdx] = useState(0);
+  const m = muscles[muscleIdx];
   return (
     <div className={s.page}>
       <TopBar t={t}
@@ -20,39 +22,74 @@ function ClientHome({ t, onStartWorkout, onViewCoach }) {
         trailing={<><IconBtn name="search" t={t}/><IconBtn name="bell" t={t}/></>}
       />
       <div className={s.heroPad}>
-        <div className={s.hero}>
-          <div className={s.heroBlob1}/>
-          <div className={s.heroBlob2}/>
-          <div className={s.heroEyebrow}>
-            <span className={s.heroDot}/>
-            <span className={s.heroEyebrowText}>Today's session</span>
-          </div>
-          <div className={s.heroTitle}>Chest & Triceps</div>
-          <div className={s.heroMetaRow}>
-            <span className={s.heroNumber}>6 <span className={s.heroNumberUnit}>exercises</span></span>
-            <span className={s.heroNumber}>55<span className={s.heroNumberUnit}>min</span></span>
-            <button onClick={onViewCoach} className={s.heroCoachBtn}>
-              <Avatar initials="RK" size={18} t={t} color="rgba(255,255,255,0.3)"/>
-              <span className={s.heroCoachLabel}>Coach Rohan</span>
+        <div className={s.heroStage}>
+          <div className={s.hero}>
+            <div className={s.heroContent}>
+            <div className={s.heroEyebrow}>
+              <span className={s.heroDot}/>
+              <span className={s.heroEyebrowText}>Today's session</span>
+            </div>
+            <div className={s.heroTitle}>Chest & Triceps</div>
+            <div className={s.heroMetaRow}>
+              <span className={s.heroNumber}>6 <span className={s.heroNumberUnit}>exercises</span></span>
+              <span className={s.heroNumber}>55<span className={s.heroNumberUnit}>min</span></span>
+              <button onClick={onViewCoach} className={s.heroCoachBtn}>
+                <Avatar initials="RK" size={18} t={t} color="rgba(255,255,255,0.3)"/>
+                <span className={s.heroCoachLabel}>Coach Rohan</span>
+              </button>
+            </div>
+            <button onClick={onStartWorkout} className={s.heroStartBtn}>
+              <Icon name="play" size={14} color="var(--gc-accent)"/> Start workout
             </button>
+            </div>
           </div>
-          <button onClick={onStartWorkout} className={s.heroStartBtn}>
-            <Icon name="play" size={14} color="var(--gc-accent)"/> Start workout
-          </button>
         </div>
       </div>
 
       <div className={s.section}>
-        <SectionLabel t={t} action="Details">Muscle recovery</SectionLabel>
-        <Card t={t} padding={16}>
-          <div className={s.muscleStack}>
-            {muscles.map(m => <MuscleBar key={m.l} label={m.l} value={m.v} t={t}/>)}
+        <SectionLabel t={t} action="All groups">Muscle recovery</SectionLabel>
+        <div className={s.recoveryCard}>
+          <div className={s.recoveryBgA}/>
+          <div className={s.recoveryBgB}/>
+          <div className={s.recoveryInner}>
+            <div className={s.recoveryHeader}>
+              <div className={s.recoveryLabel}>{m.l}</div>
+              <div className={s.recoveryStrain} data-strain={m.strain.toLowerCase()}>
+                <span className={s.recoveryStrainDot}/> {m.strain} strain
+              </div>
+            </div>
+            <div className={s.recoveryValueRow}>
+              <span className={s.recoveryValue}>{m.v}</span>
+              <span className={s.recoveryUnit}>%</span>
+              <span className={s.recoveryValueCaption}>recovered</span>
+            </div>
+            <div className={s.recoveryBarTrack}>
+              <div className={s.recoveryBarFill} style={{ width: `${m.v}%` }}/>
+            </div>
+            <div className={s.recoveryMeta}>
+              <span className={s.recoveryMetaItem}>{m.lastTrained}</span>
+              <span className={s.recoveryMetaSep}/>
+              <span className={s.recoveryMetaItem}>{m.tone}</span>
+            </div>
+            <div className={s.recoveryNav}>
+              <button
+                className={s.recoveryNavBtn}
+                onClick={() => setMuscleIdx((muscleIdx - 1 + muscles.length) % muscles.length)}
+                aria-label="Previous"
+              >‹</button>
+              <div className={s.recoveryDots}>
+                {muscles.map((_, i) => (
+                  <span key={i} className={`${s.recoveryDot} ${i === muscleIdx ? s['recoveryDot--active'] : ''}`}/>
+                ))}
+              </div>
+              <button
+                className={s.recoveryNavBtn}
+                onClick={() => setMuscleIdx((muscleIdx + 1) % muscles.length)}
+                aria-label="Next"
+              >›</button>
+            </div>
           </div>
-          <div className={s.muscleNote}>
-            <span className={s.muscleNoteDot}/>
-            <span className={s.muscleNoteText}>Today's session targets <strong>chest + arms</strong> — the two least-recovered groups.</span>
-          </div>
-        </Card>
+        </div>
       </div>
 
       <div className={s.section}>

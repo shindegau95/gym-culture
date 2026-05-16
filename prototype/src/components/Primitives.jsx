@@ -147,11 +147,16 @@ export function RingProgress({ value, size = 108, stroke = 11, children }) {
   return (
     <div className={s.ring} style={{ width: size, height: size }}>
       <svg width={size} height={size} className={s.ringSvg}>
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--gc-fill-tint)" strokeWidth={stroke} fill="none" />
+        <circle
+          cx={size / 2} cy={size / 2} r={r}
+          stroke="rgba(255,255,255,0.18)"
+          strokeWidth={stroke} fill="none"
+        />
         <defs>
-          <linearGradient id="gcRingGrad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FF6B4A" />
-            <stop offset="100%" stopColor="#E11D48" />
+          <linearGradient id="gcRingGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%"   stopColor="#FFE3CC" />
+            <stop offset="40%"  stopColor="#FFB07A" />
+            <stop offset="100%" stopColor="#F25A1F" />
           </linearGradient>
         </defs>
         <circle
@@ -160,7 +165,10 @@ export function RingProgress({ value, size = 108, stroke = 11, children }) {
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 0.6s ease' }}
+          style={{
+            transition: 'stroke-dashoffset 0.6s ease',
+            filter: 'drop-shadow(0 0 8px rgba(255,138,92,0.7))',
+          }}
         />
       </svg>
       <div className={s.ringContent}>{children}</div>

@@ -1,15 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#0A0A0A"/>
   <defs>
-    <linearGradient id="db-fav" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF6B4A"/>
-      <stop offset="100%" stop-color="#E11D48"/>
-    </linearGradient>
+    <radialGradient id="vis-orb" cx="35%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#FFC4A0"/>
+      <stop offset="45%" stop-color="#FF8A5C"/>
+      <stop offset="100%" stop-color="#C9450E"/>
+    </radialGradient>
   </defs>
-  <!-- Left plate -->
-  <rect x="3" y="9" width="7" height="14" rx="2.5" fill="url(#db-fav)"/>
-  <!-- Bar -->
-  <rect x="10" y="13" width="12" height="6" rx="1.5" fill="url(#db-fav)"/>
-  <!-- Right plate -->
-  <rect x="22" y="9" width="7" height="14" rx="2.5" fill="url(#db-fav)"/>
+  <circle cx="16" cy="16" r="13" fill="url(#vis-orb)"/>
 </svg>

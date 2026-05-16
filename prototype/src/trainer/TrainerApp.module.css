@@ -6,8 +6,36 @@
 .shell {
   height: 100%;
   position: relative;
+  overflow: hidden;
   background: var(--gc-bg);
 }
+
+.shell::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 50% at 25% 18%, rgba(255,138,92,0.45) 0%, transparent 65%),
+    radial-gradient(55% 45% at 80% 30%, rgba(242,90,31,0.40) 0%, transparent 70%),
+    radial-gradient(70% 60% at 50% 95%, rgba(196,69,16,0.35) 0%, transparent 70%),
+    var(--gc-bg);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 24s ease-in-out infinite alternate;
+}
+
+.shell::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(40% 30% at 70% 70%, rgba(255,209,168,0.30) 0%, transparent 70%),
+    radial-gradient(35% 25% at 20% 80%, rgba(255,138,92,0.28) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 32s ease-in-out infinite alternate-reverse;
+  mix-blend-mode: screen;
+}
+
+.shell > .scroll { position: relative; z-index: 1; }
 
 .scroll {
   height: 100%;
@@ -102,11 +130,77 @@
   padding: 0 16px 16px;
 }
 
+/* Pure frosted glass refracting the page bg */
+.heroStage {
+  position: relative;
+  isolation: isolate;
+  padding: 4px 2px;
+}
+
+.heroStage::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(255,138,92,0.55), rgba(242,90,31,0.45));
+  filter: blur(18px);
+  opacity: 0.65;
+  z-index: 0;
+  pointer-events: none;
+  animation: visBreathe 5s var(--vis-ease) infinite;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  padding: 18px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 70%),
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.40),
+    inset 0 -1px 0 rgba(255,255,255,0.08),
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    0 24px 56px -22px rgba(196,69,16,0.55);
+}
+
+.hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%, transparent 42%,
+    rgba(255,255,255,0.10) 50%,
+    transparent 58%, transparent 100%);
+  background-size: 220% 100%;
+  animation: visShimmer 8s linear infinite;
+  pointer-events: none;
+  border-radius: inherit;
+  mix-blend-mode: overlay;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
 .heroCard {
   display: flex;
   align-items: center;
   gap: 16px;
 }
+
+/* Override text colors inside frosted hero — light on warm bg */
+.hero .heroEyebrow,
+.hero .heroStatLabel { color: rgba(255, 235, 215, 0.78); }
+.hero .heroName,
+.hero .heroStatVal  { color: #FFFFFF; }
+.hero .heroPlan      { color: rgba(255, 235, 215, 0.85); }
+.hero .heroRingNextLabel,
+.hero .heroRingRestLabel { color: rgba(255, 235, 215, 0.85); }
 
 .heroRing {
   width: 100px;
@@ -170,24 +264,25 @@
 }
 
 .heroEyebrow {
-  font-family: var(--gc-font-ui);
-  font-size: 10px;
+  font-family: var(--vis-font-ui);
+  font-size: 10.5px;
   font-weight: 700;
-  color: var(--gc-ink3);
+  color: rgba(255,235,215,0.78);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.12em;
 }
 
 .heroName {
-  font-family: var(--gc-font-display);
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--gc-ink);
-  letter-spacing: -0.4px;
-  margin-top: 3px;
+  font-family: var(--vis-font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.025em;
+  margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.18);
 }
 
 .heroPlan {

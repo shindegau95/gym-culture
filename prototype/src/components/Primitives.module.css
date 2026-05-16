@@ -75,12 +75,30 @@
   color: var(--gc-ink2);
 }
 
-/* ─── Card ───────────────────────────────────────────────────────────────── */
+/* ─── Card — liquid glass over page bg gradient ──────────────────────────── */
 .card {
-  background: var(--gc-bg-elevated);
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 18px;
-  border: 0.5px solid var(--gc-sep);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.24),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 18px 40px -22px rgba(196,69,16,0.30);
   margin-bottom: 8px;
+}
+
+[data-theme="light"] .card {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.38) 70%),
+    linear-gradient(180deg, rgba(255,255,255,0.30), rgba(255,255,255,0.20));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.90),
+    inset 0 0 0 1px rgba(196,69,16,0.08),
+    0 12px 30px -18px rgba(196,69,16,0.25);
 }
 
 .card--clickable {
@@ -173,9 +191,29 @@
 
 .progressFill {
   height: 100%;
-  background: var(--gc-gradient);
+  background: linear-gradient(90deg,
+    #FFD1A8 0%, #FF8A5C 30%, #F25A1F 60%, #FF8A5C 80%, #FFD1A8 100%);
+  background-size: 200% 100%;
   border-radius: 999px;
   transition: width 0.6s ease;
+  box-shadow:
+    0 0 12px rgba(255,138,92,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  animation: visBarFlow 4s linear infinite;
+  position: relative;
+}
+
+.progressFill::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%, transparent 35%,
+    rgba(255,255,255,0.55) 50%,
+    transparent 65%, transparent 100%);
+  background-size: 220% 100%;
+  animation: visShimmer 3.5s linear infinite;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 /* ─── MuscleBar ──────────────────────────────────────────────────────────── */
@@ -204,7 +242,12 @@
 .muscleBarFill {
   height: 100%;
   border-radius: 3px;
+  background-size: 200% 100%;
   transition: width 0.6s ease;
+  box-shadow:
+    0 0 8px currentColor,
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  animation: visBarFlow 4s linear infinite;
 }
 
 .muscleBarValue {
@@ -222,12 +265,17 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--gc-bg-scrim);
-  backdrop-filter: blur(20px) saturate(180%);
-  border-top: 0.5px solid var(--gc-sep);
+  z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 50%),
+    var(--vis-glass-tint);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-top: 0.5px solid var(--vis-glass-edge);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
   display: flex;
   padding-bottom: 20px;
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 .tabBtn {

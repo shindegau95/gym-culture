@@ -6,8 +6,38 @@
 .shell {
   height: 100%;
   position: relative;
+  overflow: hidden;
   background: var(--gc-bg);
 }
+
+/* Whole-screen warm gradient sits behind everything;
+   frosted glass surfaces refract this through backdrop-filter. */
+.shell::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(60% 50% at 25% 18%, rgba(255,138,92,0.45) 0%, transparent 65%),
+    radial-gradient(55% 45% at 80% 30%, rgba(242,90,31,0.40) 0%, transparent 70%),
+    radial-gradient(70% 60% at 50% 95%, rgba(196,69,16,0.35) 0%, transparent 70%),
+    var(--gc-bg);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 24s ease-in-out infinite alternate;
+}
+
+.shell::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(40% 30% at 70% 70%, rgba(255,209,168,0.30) 0%, transparent 70%),
+    radial-gradient(35% 25% at 20% 80%, rgba(255,138,92,0.28) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 32s ease-in-out infinite alternate-reverse;
+  mix-blend-mode: screen;
+}
+
+.shell > .scroll { position: relative; z-index: 1; }
 
 .scroll {
   height: 100%;
@@ -31,35 +61,66 @@
   padding: 4px 16px 16px;
 }
 
-.hero {
-  background: var(--gc-gradient);
-  border-radius: 22px;
-  padding: 20px;
+/* Stage hosts the frosted hero card. The whole-screen warm gradient
+   on .shell::before refracts through the card via backdrop-filter. */
+.heroStage {
   position: relative;
+  isolation: isolate;
+  padding: 4px 2px;
+}
+
+/* Outer accent halo so card still reads as "highlight" */
+.heroStage::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, rgba(255,138,92,0.55), rgba(242,90,31,0.45));
+  filter: blur(18px);
+  opacity: 0.65;
+  z-index: 0;
+  pointer-events: none;
+  animation: visBreathe 5s var(--vis-ease) infinite;
+}
+
+.hero {
+  position: relative;
+  z-index: 1;
+  border-radius: 24px;
+  padding: 22px;
   overflow: hidden;
   color: #fff;
+
+  /* pure liquid glass — refracts page bg gradient */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.04) 70%),
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,0.40),
+    inset 0 -1px 0 rgba(255,255,255,0.08),
+    inset 0 0 0 1px rgba(255,255,255,0.16),
+    0 24px 56px -22px rgba(196,69,16,0.55);
 }
 
-.heroBlob1 {
-  position: absolute;
-  right: -40px;
-  top: -40px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.10);
+.hero::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%, transparent 42%,
+    rgba(255,255,255,0.10) 50%,
+    transparent 58%, transparent 100%);
+  background-size: 220% 100%;
+  animation: visShimmer 8s linear infinite;
   pointer-events: none;
+  border-radius: inherit;
+  mix-blend-mode: overlay;
 }
 
-.heroBlob2 {
-  position: absolute;
-  right: 30px;
-  bottom: -30px;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-  pointer-events: none;
+.heroContent {
+  position: relative;
+  z-index: 1;
 }
 
 .heroEyebrow {
@@ -152,6 +213,251 @@
 /* ─── Home: Muscle recovery ─────────────────────────────────────────────── */
 .section {
   padding: 0 16px;
+}
+
+/* Carousel card — frosted glass over animated warm blobs (subtler than hero) */
+.recoveryCard {
+  position: relative;
+  isolation: isolate;
+  border-radius: 22px;
+  overflow: hidden;
+  padding: 18px 18px 14px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 70%),
+    var(--vis-glass-tint);
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    inset 0 0 0 1px rgba(255,255,255,0.10),
+    0 18px 40px -22px rgba(196,69,16,0.40);
+}
+
+.recoveryBgA,
+.recoveryBgB {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.recoveryBgA {
+  width: 220px; height: 220px;
+  left: -40px; top: -40px;
+  background: radial-gradient(circle, rgba(255,138,92,0.55) 0%, rgba(242,90,31,0.28) 50%, transparent 75%);
+  animation: visBlobDrift 18s ease-in-out infinite alternate;
+}
+
+.recoveryBgB {
+  width: 200px; height: 200px;
+  right: -40px; bottom: -60px;
+  background: radial-gradient(circle, rgba(196,69,16,0.55) 0%, rgba(138,46,8,0.30) 50%, transparent 75%);
+  animation: visBlobDrift 22s ease-in-out infinite alternate-reverse;
+}
+
+.recoveryInner {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
+
+[data-theme="light"] .recoveryInner,
+[data-theme="light"] .recoveryLabel,
+[data-theme="light"] .recoveryValue,
+[data-theme="light"] .recoveryUnit,
+[data-theme="light"] .recoveryValueCaption,
+[data-theme="light"] .recoveryMeta {
+  color: #1B0F08;
+}
+[data-theme="light"] .recoveryUnit,
+[data-theme="light"] .recoveryValueCaption {
+  color: rgba(27,15,8,0.62);
+}
+[data-theme="light"] .recoveryMeta {
+  color: rgba(27,15,8,0.72);
+}
+[data-theme="light"] .recoveryNavBtn {
+  background: rgba(27,15,8,0.08);
+  color: #1B0F08;
+}
+[data-theme="light"] .recoveryNavBtn:hover {
+  background: rgba(27,15,8,0.14);
+}
+[data-theme="light"] .recoveryDot {
+  background: rgba(27,15,8,0.22);
+}
+[data-theme="light"] .recoveryDot--active {
+  background: var(--gc-accent);
+  box-shadow: 0 0 10px rgba(242,90,31,0.45);
+}
+[data-theme="light"] .recoveryBarTrack {
+  background: rgba(27,15,8,0.10);
+}
+
+.recoveryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.recoveryLabel {
+  font-family: var(--vis-font-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.recoveryStrain {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--vis-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.14);
+  color: #FFEDD8;
+  letter-spacing: 0.01em;
+}
+
+.recoveryStrain[data-strain="low"]      { background: rgba(95,200,140,0.22); color: #C9F7DA; }
+.recoveryStrain[data-strain="moderate"] { background: rgba(255,180,80,0.22); color: #FFE6BC; }
+.recoveryStrain[data-strain="high"]     { background: rgba(255,120,80,0.22); color: #FFD2BD; }
+
+.recoveryStrainDot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+}
+
+.recoveryValueRow {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.recoveryValue {
+  font-family: var(--vis-font-display);
+  font-size: 56px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.recoveryUnit {
+  font-family: var(--vis-font-display);
+  font-size: 24px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.65);
+  margin-right: 10px;
+}
+
+.recoveryValueCaption {
+  font-family: var(--vis-font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.recoveryBarTrack {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.18);
+}
+
+.recoveryBarFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #FFD1A8 0%, #FF8A5C 50%, #F25A1F 100%);
+  box-shadow:
+    0 0 14px rgba(255,138,92,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.30);
+  transition: width var(--vis-dur-long) var(--vis-ease);
+  position: relative;
+}
+
+.recoveryBarFill::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(110deg,
+    transparent 0%, transparent 35%,
+    rgba(255,255,255,0.45) 50%,
+    transparent 65%, transparent 100%);
+  background-size: 220% 100%;
+  animation: visShimmer 4s linear infinite;
+  border-radius: inherit;
+}
+
+.recoveryMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 14px;
+  line-height: 1.45;
+}
+
+.recoveryMetaItem { flex: 0 1 auto; }
+.recoveryMetaItem:last-child { flex: 1 1 auto; }
+
+.recoveryMetaSep {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+.recoveryNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.recoveryNavBtn {
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  border: 0;
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--vis-dur-short) var(--vis-ease), transform var(--vis-dur-micro) var(--vis-ease);
+}
+.recoveryNavBtn:hover  { background: rgba(255,255,255,0.22); }
+.recoveryNavBtn:active { transform: scale(0.92); }
+
+.recoveryDots {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recoveryDot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  transition: all var(--vis-dur-short) var(--vis-ease);
+}
+
+.recoveryDot--active {
+  width: 22px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
 .muscleStack {

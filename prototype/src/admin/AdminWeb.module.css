@@ -3,9 +3,40 @@
   display: flex;
   width: 100%;
   height: 100%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: var(--gc-bg-grouped);
-  font-family: var(--gc-font-ui);
+  font-family: var(--vis-font-ui);
 }
+
+/* Whole-screen warm gradient — drives liquid glass refraction on every panel */
+.shell::before {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(45% 50% at 12% 18%, rgba(255,138,92,0.40) 0%, transparent 60%),
+    radial-gradient(40% 45% at 88% 22%, rgba(242,90,31,0.35) 0%, transparent 65%),
+    radial-gradient(50% 55% at 50% 95%, rgba(196,69,16,0.30) 0%, transparent 65%),
+    var(--gc-bg-grouped);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 28s ease-in-out infinite alternate;
+}
+
+.shell::after {
+  content: "";
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(30% 35% at 75% 70%, rgba(255,209,168,0.26) 0%, transparent 70%),
+    radial-gradient(28% 30% at 22% 75%, rgba(255,138,92,0.24) 0%, transparent 70%);
+  z-index: 0;
+  pointer-events: none;
+  animation: visBgShift 36s ease-in-out infinite alternate-reverse;
+  mix-blend-mode: screen;
+}
+
+.shell > * { position: relative; z-index: 1; }
 
 .main {
   flex: 1;
@@ -45,13 +76,25 @@
 
 /* ─── Sidebar ────────────────────────────────────────────────────────────── */
 .sidebar {
-  width: 220px;
-  background: var(--gc-bg);
+  position: relative;
+  isolation: isolate;
+  width: 230px;
   display: flex;
   flex-direction: column;
-  border-right: 1px solid var(--gc-sep);
   flex-shrink: 0;
+
+  /* Liquid glass — fully translucent so page bg gradient refracts through */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  backdrop-filter: blur(36px) saturate(200%);
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  border-right: 0.5px solid rgba(255,255,255,0.10);
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.12);
 }
+
 
 .sidebarBrand {
   padding: 28px 24px 32px;
@@ -65,22 +108,21 @@
 }
 
 .sidebarMark {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  background: #0A0A0A;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  height: 36px;
+  width: 36px;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(242,90,31,0.45));
+  animation: visOrbGlow 5s ease-in-out infinite;
 }
 
 .sidebarTitle {
   color: var(--gc-ink);
-  font-family: var(--gc-font-display);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-family: var(--vis-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: lowercase;
 }
 
 .sidebarSubtitle {
@@ -361,6 +403,18 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  padding: 4px 6px;
+  margin: -4px -6px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--vis-dur-short) var(--vis-ease);
+}
+.trainerRow:hover {
+  background: var(--gc-fill-tint);
 }
 
 .trainerAvatar {
@@ -396,11 +450,17 @@
   font-size: 12px;
 }
 
-.trainerRevenue {
-  color: var(--gc-ink2);
-  font-family: var(--gc-font-mono);
-  font-size: 13px;
+.trainerRating {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--gc-accent-tint);
+  color: var(--gc-accent);
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
   font-weight: 600;
+  flex-shrink: 0;
 }
 
 /* ─── Recent activity ────────────────────────────────────────────────────── */
@@ -832,6 +892,38 @@
 .filterChip--active {
   background: var(--gc-gradient);
   color: #fff;
+}
+
+.branchRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.branchChip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 0.5px solid var(--gc-sep-strong);
+  cursor: pointer;
+  background: transparent;
+  color: var(--gc-ink2);
+  font-family: var(--vis-font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  transition: all var(--vis-dur-short) var(--vis-ease);
+}
+
+.branchChip:hover {
+  background: var(--gc-fill-tint);
+  color: var(--gc-ink);
+}
+
+.branchChip--active {
+  background: var(--gc-accent-tint);
+  color: var(--gc-accent);
+  border-color: var(--gc-accent-ring);
+  font-weight: 600;
 }
 
 .tableRowClick {

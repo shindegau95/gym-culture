@@ -1,117 +1,152 @@
 .shell {
   min-height: 100vh;
-  background: #0E0E10;
+  background: var(--vis-page-grad), var(--gc-bg);
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: var(--gc-font-ui);
+  font-family: var(--vis-font-ui);
+  color: var(--gc-ink);
+  letter-spacing: -0.005em;
 }
 
 .nav {
   width: 100%;
-  background: #16161A;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 32px;
-  height: 56px;
+  padding: 12px 28px;
+  height: 64px;
   box-sizing: border-box;
   flex-shrink: 0;
   position: sticky;
   top: 0;
   z-index: 50;
+
+  /* Liquid glass */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 70%),
+    var(--vis-glass-tint);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 0.5px solid var(--vis-glass-edge);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 30px -20px rgba(0,0,0,0.4);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brandMark {
-  width: 28px;
   height: 28px;
-  border-radius: 8px;
-  background: #0A0A0A;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  width: 28px;
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(242,90,31,0.45));
+  animation: visOrbGlow 5s ease-in-out infinite;
 }
 
-.brandTitle {
-  color: rgba(235, 235, 245, 0.5);
-  font-family: var(--gc-font-ui);
-  font-size: 13px;
-  font-weight: 500;
+.brandWordmark {
+  font-family: var(--vis-font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--gc-ink);
+  line-height: 1;
+  margin-left: -2px;
 }
 
 .brandDot {
-  color: rgba(235, 235, 245, 0.2);
+  color: var(--gc-ink4);
   font-size: 13px;
 }
 
 .brandSub {
-  color: rgba(235, 235, 245, 0.4);
-  font-family: var(--gc-font-ui);
+  color: var(--gc-ink3);
+  font-family: var(--vis-font-ui);
   font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
 }
 
 .switcher {
   display: flex;
   align-items: center;
   gap: 2px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--gc-fill-tint);
   border-radius: 12px;
-  padding: 3px;
+  padding: 4px;
+  box-shadow: inset 0 0 0 0.5px var(--gc-sep);
 }
 
 .switchBtn {
-  padding: 6px 16px;
+  padding: 7px 18px;
   border-radius: 9px;
   border: none;
   cursor: pointer;
   background: transparent;
-  color: rgba(235, 235, 245, 0.45);
-  font-family: var(--gc-font-ui);
+  color: var(--gc-ink3);
+  font-family: var(--vis-font-ui);
   font-size: 13px;
-  font-weight: 400;
-  transition: all 0.15s;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition: color var(--vis-dur-short) var(--vis-ease),
+              background var(--vis-dur-short) var(--vis-ease),
+              transform var(--vis-dur-micro) var(--vis-ease);
   white-space: nowrap;
 }
 
+.switchBtn:hover {
+  color: var(--gc-ink);
+}
+
+.switchBtn:active {
+  transform: scale(0.97);
+}
+
 .switchBtn--active {
-  background: linear-gradient(135deg, #FF6B4A, #E11D48);
-  color: #fff;
+  background: var(--gc-gradient);
+  color: #FFFFFF;
   font-weight: 600;
+  box-shadow:
+    0 6px 18px -6px rgba(242,90,31,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .themeBtn {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.06);
+  padding: 6px 13px;
+  border-radius: 9px;
+  border: 0.5px solid var(--gc-sep-strong);
+  background: var(--gc-fill-tint);
   cursor: pointer;
-  color: rgba(235, 235, 245, 0.6);
-  font-family: var(--gc-font-ui);
+  color: var(--gc-ink2);
+  font-family: var(--vis-font-ui);
   font-size: 12px;
-  transition: all 0.15s;
+  font-weight: 500;
+  transition: all var(--vis-dur-short) var(--vis-ease);
+}
+
+.themeBtn:hover {
+  color: var(--gc-ink);
+  background: var(--gc-fill-tint);
+  transform: translateY(-1px);
 }
 
 .subLabel {
-  color: rgba(235, 235, 245, 0.3);
-  font-family: var(--gc-font-ui);
+  color: var(--gc-ink4);
+  font-family: var(--vis-font-ui);
   font-size: 12px;
+  font-weight: 500;
 }
 
 .adminWrap {
@@ -124,7 +159,7 @@
 .adminInner {
   flex: 1;
   display: flex;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
 }
 
 .phoneStage {
@@ -132,20 +167,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 32px;
+  padding: 48px 32px;
 }
 
 .phoneStack {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 
 .phoneCaption {
-  color: rgba(235, 235, 245, 0.25);
-  font-family: var(--gc-font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  color: var(--gc-ink4);
+  font-family: var(--vis-font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }

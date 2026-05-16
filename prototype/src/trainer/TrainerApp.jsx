@@ -77,51 +77,55 @@ function TrainerHome({ t, onSession }) {
       </div>
 
       <div className={s.heroPad}>
-        <Card t={t} padding={16} className={s.heroCard}>
-          {fc.restDay ? (
-            <div className={s.heroRing}>
-              <svg width={100} height={100}>
-                <circle cx={50} cy={50} r={44} stroke="var(--gc-fill-tint)" strokeWidth={10} fill="none" strokeDasharray="4 7" />
-              </svg>
-              <div className={s.heroRingRest}>
-                <Icon name="moon" size={24} color="var(--gc-ink2)" />
-                <span className={s.heroRingRestLabel}>Rest</span>
+        <div className={s.heroStage}>
+          <div className={s.hero}>
+            <div className={`${s.heroContent} ${s.heroCard}`}>
+            {fc.restDay ? (
+              <div className={s.heroRing}>
+                <svg width={100} height={100}>
+                  <circle cx={50} cy={50} r={44} stroke="var(--gc-fill-tint)" strokeWidth={10} fill="none" strokeDasharray="4 7" />
+                </svg>
+                <div className={s.heroRingRest}>
+                  <Icon name="moon" size={24} color="var(--gc-ink2)" />
+                  <span className={s.heroRingRestLabel}>Rest</span>
+                </div>
+              </div>
+            ) : (
+              <RingProgress value={fc.status === "done" ? 100 : fc.status === "live" ? 65 : 0} size={100} stroke={10} t={t}>
+                {fc.status === "done" ? (
+                  <>
+                    <Icon name="check" size={28} color="var(--gc-good)" />
+                    <span className={s.heroRingDoneLabel}>Done</span>
+                  </>
+                ) : fc.status === "live" ? (
+                  <>
+                    <Numeric value="00:42" t={t} size={18} />
+                    <span className={s.heroRingLiveLabel}>● Live</span>
+                  </>
+                ) : (
+                  <>
+                    <Numeric value={fc.time} t={t} size={16} />
+                    <span className={s.heroRingNextLabel}>Up next</span>
+                  </>
+                )}
+              </RingProgress>
+            )}
+            <div className={s.heroBody}>
+              <div className={s.heroEyebrow}>{fc.restDay ? "Rest day" : "Focused client"}</div>
+              <div className={s.heroName}>{fc.name}</div>
+              <div className={s.heroPlan}>{fc.plan}</div>
+              <div className={s.heroStats}>
+                {[{ l: "Sessions", v: "6" }, { l: "Active", v: "24" }, { l: "Adherence", v: "87%" }].map(stat => (
+                  <div key={stat.l}>
+                    <div className={s.heroStatVal}>{stat.v}</div>
+                    <div className={s.heroStatLabel}>{stat.l}</div>
+                  </div>
+                ))}
               </div>
             </div>
-          ) : (
-            <RingProgress value={fc.status === "done" ? 100 : fc.status === "live" ? 65 : 0} size={100} stroke={10} t={t}>
-              {fc.status === "done" ? (
-                <>
-                  <Icon name="check" size={28} color="var(--gc-good)" />
-                  <span className={s.heroRingDoneLabel}>Done</span>
-                </>
-              ) : fc.status === "live" ? (
-                <>
-                  <Numeric value="00:42" t={t} size={18} />
-                  <span className={s.heroRingLiveLabel}>● Live</span>
-                </>
-              ) : (
-                <>
-                  <Numeric value={fc.time} t={t} size={16} />
-                  <span className={s.heroRingNextLabel}>Up next</span>
-                </>
-              )}
-            </RingProgress>
-          )}
-          <div className={s.heroBody}>
-            <div className={s.heroEyebrow}>{fc.restDay ? "Rest day" : "Focused client"}</div>
-            <div className={s.heroName}>{fc.name}</div>
-            <div className={s.heroPlan}>{fc.plan}</div>
-            <div className={s.heroStats}>
-              {[{ l: "Sessions", v: "6" }, { l: "Active", v: "24" }, { l: "Adherence", v: "87%" }].map(stat => (
-                <div key={stat.l}>
-                  <div className={s.heroStatVal}>{stat.v}</div>
-                  <div className={s.heroStatLabel}>{stat.l}</div>
-                </div>
-              ))}
             </div>
           </div>
-        </Card>
+        </div>
       </div>
 
       <div className={s.section}>
