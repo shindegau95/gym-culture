@@ -36,35 +36,36 @@ body {
 
 /* ─── Design tokens — light (default) ────────────────────────────────────── */
 :root, [data-theme="light"] {
-  --gc-bg:           #FAF6F2;
-  --gc-bg-elevated:  #FFFFFF;
-  --gc-bg-grouped:   #F0E9E1;
-  --gc-bg-scrim:     rgba(250, 246, 242, 0.86);
+  /* Sampled from docs/brand-ref/light_ref.png — warm cream + tangerine sun-disc */
+  --gc-bg:           #F2EBE0;
+  --gc-bg-elevated:  #FBF6EE;
+  --gc-bg-grouped:   #EAE2D5;
+  --gc-bg-scrim:     rgba(242, 235, 224, 0.86);
 
-  --gc-ink:          #1B0F08;
+  --gc-ink:          #1B1108;
   --gc-ink2:         #3A2A1F;
-  --gc-ink3:         rgba(60, 40, 28, 0.62);
-  --gc-ink4:         rgba(60, 40, 28, 0.30);
+  --gc-ink3:         rgba(60, 40, 28, 0.58);
+  --gc-ink4:         rgba(60, 40, 28, 0.28);
 
-  --gc-sep:          rgba(60, 40, 28, 0.12);
-  --gc-sep-strong:   rgba(60, 40, 28, 0.22);
+  --gc-sep:          rgba(60, 40, 28, 0.10);
+  --gc-sep-strong:   rgba(60, 40, 28, 0.20);
 
-  --gc-fill-tint:    rgba(120, 80, 50, 0.08);
-  --gc-fill-tint2:   rgba(120, 80, 50, 0.04);
+  --gc-fill-tint:    rgba(120, 80, 50, 0.06);
+  --gc-fill-tint2:   rgba(120, 80, 50, 0.03);
 
-  --gc-accent:       #F25A1F;
-  --gc-accent-soft:  #FF8A5C;
+  --gc-accent:       #FF8E45;
+  --gc-accent-soft:  #FFA570;
   --gc-accent-ink:   #FFFFFF;
-  --gc-accent-tint:  rgba(242, 90, 31, 0.10);
-  --gc-accent-ring:  rgba(242, 90, 31, 0.30);
-  --gc-gradient:     linear-gradient(135deg, #FFD1A8 0%, #FF8A5C 45%, #F25A1F 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,92,0.10), rgba(242,90,31,0.10));
+  --gc-accent-tint:  rgba(255, 142, 69, 0.10);
+  --gc-accent-ring:  rgba(255, 142, 69, 0.30);
+  --gc-gradient:     linear-gradient(135deg, #FFD0A8 0%, #FFA570 40%, #FF8E45 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,165,112,0.10), rgba(255,142,69,0.10));
 
-  --vis-orb:         radial-gradient(circle at 32% 28%, #FFD1A8 0%, #FF8A5C 35%, #F25A1F 65%, #8A2E08 100%);
-  --vis-glass-tint:  linear-gradient(135deg, rgba(255,209,168,0.22), rgba(242,90,31,0.12));
-  --vis-glass-edge:  rgba(255,255,255,0.55);
-  --vis-glass-shadow:0 24px 60px -22px rgba(196,69,16,0.28);
-  --vis-page-grad:   radial-gradient(ellipse at top, #FFE9D6 0%, #FAF6F2 55%);
+  --vis-orb:         radial-gradient(circle at 32% 28%, #FFE6D2 0%, #FFA570 40%, #FF8E45 70%, #8A2E08 100%);
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,230,210,0.40), rgba(255,165,112,0.18));
+  --vis-glass-edge:  rgba(255,255,255,0.85);
+  --vis-glass-shadow:0 18px 40px -18px rgba(50,30,15,0.22);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #FFA570 28%, #FFD0A8 55%, transparent 78%);
 
   --gc-good:         #3F9D5E;
   --gc-warn:         #C97B1B;
@@ -88,6 +89,7 @@ body {
 
 /* ─── Design tokens — dark ───────────────────────────────────────────────── */
 [data-theme="dark"] {
+  /* Same tangerine, on warm charcoal */
   --gc-bg:           #0F0A07;
   --gc-bg-elevated:  #1A1108;
   --gc-bg-grouped:   #0C0805;
@@ -104,18 +106,18 @@ body {
   --gc-fill-tint:    rgba(255, 170, 110, 0.10);
   --gc-fill-tint2:   rgba(255, 170, 110, 0.05);
 
-  --gc-accent:       #FF6A2C;
-  --gc-accent-soft:  #FF9466;
+  --gc-accent:       #FF8E45;
+  --gc-accent-soft:  #FFA570;
   --gc-accent-ink:   #0F0A07;
-  --gc-accent-tint:  rgba(255, 106, 44, 0.14);
-  --gc-accent-ring:  rgba(255, 106, 44, 0.40);
-  --gc-gradient:     linear-gradient(135deg, #FF8A5C 0%, #F25A1F 50%, #8A2E08 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,138,92,0.16), rgba(138,46,8,0.20));
+  --gc-accent-tint:  rgba(255, 142, 69, 0.14);
+  --gc-accent-ring:  rgba(255, 142, 69, 0.40);
+  --gc-gradient:     linear-gradient(135deg, #FFA570 0%, #FF8E45 50%, #8A2E08 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,165,112,0.16), rgba(138,46,8,0.20));
 
-  --vis-glass-tint:  linear-gradient(135deg, rgba(255,138,92,0.14), rgba(138,46,8,0.18));
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,165,112,0.14), rgba(138,46,8,0.18));
   --vis-glass-edge:  rgba(255,210,170,0.22);
   --vis-glass-shadow:0 24px 60px -20px rgba(138,46,8,0.55);
-  --vis-page-grad:   radial-gradient(ellipse at top, #2A1408 0%, #0F0A07 60%);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF8E45 0%, #C44510 30%, rgba(138,46,8,0.55) 60%, transparent 80%);
 
   --gc-good:         #5BCB85;
   --gc-warn:         #F2A640;

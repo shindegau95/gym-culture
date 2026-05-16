@@ -10,30 +10,24 @@
   font-family: var(--vis-font-ui);
 }
 
-/* Whole-screen warm gradient — drives liquid glass refraction on every panel */
+/* Single sun-disc — sampled from docs/brand-ref/light_ref.png */
 .shell::before {
   content: "";
   position: absolute; inset: 0;
-  background:
-    radial-gradient(45% 50% at 12% 18%, rgba(255,138,92,0.40) 0%, transparent 60%),
-    radial-gradient(40% 45% at 88% 22%, rgba(242,90,31,0.35) 0%, transparent 65%),
-    radial-gradient(50% 55% at 50% 95%, rgba(196,69,16,0.30) 0%, transparent 65%),
-    var(--gc-bg-grouped);
+  background: var(--vis-page-grad), var(--gc-bg-grouped);
   z-index: 0;
   pointer-events: none;
-  animation: visBgShift 28s ease-in-out infinite alternate;
+  animation: visBgShift 32s ease-in-out infinite alternate;
 }
 
 .shell::after {
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(30% 35% at 75% 70%, rgba(255,209,168,0.26) 0%, transparent 70%),
-    radial-gradient(28% 30% at 22% 75%, rgba(255,138,92,0.24) 0%, transparent 70%);
+    radial-gradient(35% 40% at 15% 85%, rgba(255,165,112,0.22) 0%, transparent 75%);
   z-index: 0;
   pointer-events: none;
-  animation: visBgShift 36s ease-in-out infinite alternate-reverse;
-  mix-blend-mode: screen;
+  animation: visBgShift 40s ease-in-out infinite alternate-reverse;
 }
 
 .shell > * { position: relative; z-index: 1; }

@@ -14,26 +14,21 @@
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(60% 45% at 25% 15%, rgba(255,138,92,0.50) 0%, transparent 65%),
-    radial-gradient(55% 40% at 80% 28%, rgba(242,90,31,0.42) 0%, transparent 70%),
-    radial-gradient(85% 50% at 50% 100%, rgba(242,90,31,0.55) 0%, transparent 60%),
-    radial-gradient(60% 35% at 50% 88%, rgba(196,69,16,0.40) 0%, transparent 65%),
+    radial-gradient(50% 35% at 78% 22%, rgba(255,142,69,0.65) 0%, rgba(255,165,112,0.40) 30%, rgba(255,208,168,0.20) 55%, transparent 78%),
     var(--gc-bg);
   z-index: 0;
   pointer-events: none;
-  animation: visBgShift 24s ease-in-out infinite alternate;
+  animation: visBgShift 30s ease-in-out infinite alternate;
 }
 
 .shell::after {
   content: "";
   position: absolute; inset: 0;
   background:
-    radial-gradient(40% 30% at 70% 70%, rgba(255,209,168,0.30) 0%, transparent 70%),
-    radial-gradient(35% 25% at 20% 80%, rgba(255,138,92,0.28) 0%, transparent 70%);
+    radial-gradient(40% 30% at 18% 88%, rgba(255,165,112,0.22) 0%, transparent 75%);
   z-index: 0;
   pointer-events: none;
-  animation: visBgShift 32s ease-in-out infinite alternate-reverse;
-  mix-blend-mode: screen;
+  animation: visBgShift 36s ease-in-out infinite alternate-reverse;
 }
 
 .shell > .scroll { position: relative; z-index: 1; }
