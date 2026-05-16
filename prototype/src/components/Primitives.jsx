@@ -138,40 +138,91 @@ export function Numeric({ value, unit, size = 20 }) {
   );
 }
 
-// ─── RingProgress ────────────────────────────────────────────────────────────
-export function RingProgress({ value, size = 108, stroke = 11, children }) {
+// ─── RingProgress (brand-ref: progressring_animation.png — "Ring Progress") ──
+// Travelling glow-head + faint track + soft outer drop-shadow.
+export function RingProgress({ value, size = 108, stroke = 11, children, showMirror = false }) {
+  const v = Math.min(100, Math.max(0, value));
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const offset = c * (1 - Math.min(100, Math.max(0, value)) / 100);
+  const offset = c * (1 - v / 100);
+
+  // Head position — angle starts at top (-π/2) and sweeps clockwise.
+  const angle = -Math.PI / 2 + (v / 100) * 2 * Math.PI;
+  const headX = size / 2 + r * Math.cos(angle);
+  const headY = size / 2 + r * Math.sin(angle);
+
+  // Unique gradient id per ring instance so multiple don't clash.
+  const gid = `vis-ring-${size}-${Math.round(v * 100)}`;
 
   return (
     <div className={s.ring} style={{ width: size, height: size }}>
       <svg width={size} height={size} className={s.ringSvg}>
-        <circle
-          cx={size / 2} cy={size / 2} r={r}
-          stroke="rgba(255,255,255,0.18)"
-          strokeWidth={stroke} fill="none"
-        />
         <defs>
-          <linearGradient id="gcRingGrad" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id={`${gid}-g`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%"   stopColor="#FFE3CC" />
             <stop offset="40%"  stopColor="#FFB07A" />
-            <stop offset="100%" stopColor="#F25A1F" />
+            <stop offset="100%" stopColor="#FF6A1B" />
           </linearGradient>
+          <radialGradient id={`${gid}-head`} cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%"   stopColor="#FFE3CC" />
+            <stop offset="55%"  stopColor="#FF8E45" />
+            <stop offset="100%" stopColor="#FF6A1B" />
+          </radialGradient>
         </defs>
+
+        {/* Faint track */}
         <circle
           cx={size / 2} cy={size / 2} r={r}
-          stroke="url(#gcRingGrad)" strokeWidth={stroke} fill="none"
+          stroke="rgba(255,165,112,0.18)"
+          strokeWidth={stroke} fill="none"
+        />
+
+        {/* Arc fill */}
+        <circle
+          cx={size / 2} cy={size / 2} r={r}
+          stroke={`url(#${gid}-g)`} strokeWidth={stroke} fill="none"
           strokeLinecap="round"
           strokeDasharray={c}
           strokeDashoffset={offset}
           style={{
-            transition: 'stroke-dashoffset 0.6s ease',
-            filter: 'drop-shadow(0 0 8px rgba(255,138,92,0.7))',
+            transition: 'stroke-dashoffset 700ms cubic-bezier(0.32, 0.72, 0, 1)',
+            filter: 'drop-shadow(0 0 10px rgba(255,142,69,0.55))',
           }}
         />
+
+        {/* Travelling glow head (counter-rotated so it stays a dot, not stretched) */}
+        {v > 0 && (
+          <g
+            className={s.ringHead}
+            style={{ transformOrigin: `${size / 2}px ${size / 2}px` }}
+            transform={`rotate(${(v / 100) * 360 - 90} ${size / 2} ${size / 2})`}
+          >
+            <circle
+              cx={size / 2 + r} cy={size / 2}
+              r={stroke * 0.7}
+              fill={`url(#${gid}-head)`}
+              filter="url(#vis-ring-glow)"
+            />
+          </g>
+        )}
+
+        {/* Reusable filter — registered once, but inlining keeps the component self-contained */}
+        <defs>
+          <filter id="vis-ring-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.2" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
       </svg>
       <div className={s.ringContent}>{children}</div>
+      {showMirror && (
+        <div className={s.ringMirror}>
+          <div className={s.ringMirrorFill} style={{ width: `${v}%` }}/>
+        </div>
+      )}
     </div>
   );
 }

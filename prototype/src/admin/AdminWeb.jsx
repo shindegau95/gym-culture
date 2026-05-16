@@ -132,19 +132,54 @@ function Card({ children, className, style }) {
 }
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
+const KPI_ICONS = {
+  'Total Members': (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
+  'Active PT Members': (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+  ),
+  'Monthly Revenue': (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 4h12M6 9h12M14 4c0 5-5 6-5 6l6 10"/>
+    </svg>
+  ),
+  'Trainers': (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6.5 6.5h11M6.5 17.5h11"/>
+      <rect x="3" y="9.5" width="3" height="5" rx="0.5"/>
+      <rect x="18" y="9.5" width="3" height="5" rx="0.5"/>
+      <path d="M6 12h12"/>
+    </svg>
+  ),
+};
+
 function KPICard({ label, value, sub, trend }) {
   const up = trend >= 0;
   return (
     <Card className={s.kpiCard}>
-      <div className={s.kpiLabel}>{label}</div>
-      <div className={s.kpiValue}>{value}</div>
-      <div className={s.kpiTrendRow}>
-        {trend !== 0 && (
-          <span className={`${s.trendPill} ${up ? s['trendPill--up'] : s['trendPill--down']}`}>
-            {up ? '↑' : '↓'} {Math.abs(trend)}%
-          </span>
-        )}
-        <span className={s.kpiSub}>{sub}</span>
+      <div className={s.kpiRow}>
+        <div className={s.kpiIcon}>{KPI_ICONS[label] || KPI_ICONS['Trainers']}</div>
+        <div className={s.kpiBody}>
+          <div className={s.kpiLabel}>{label}</div>
+          <div className={s.kpiValue}>{value}</div>
+          <div className={s.kpiTrendRow}>
+            {trend !== 0 && (
+              <span className={`${s.trendPill} ${up ? s['trendPill--up'] : s['trendPill--down']}`}>
+                {up ? '↑' : '↓'} {Math.abs(trend)}%
+              </span>
+            )}
+            <span className={s.kpiSub}>{sub}</span>
+          </div>
+        </div>
       </div>
     </Card>
   );
