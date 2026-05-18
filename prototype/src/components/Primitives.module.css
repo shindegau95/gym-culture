@@ -78,28 +78,20 @@
 /* ─── Card — liquid glass over page bg gradient ──────────────────────────── */
 .card {
   position: relative;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.02) 70%),
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  /* Reference shows solid surfaces, not glass gradients — flat fills only. */
+  background: var(--gc-bg-elevated);
   border-radius: 18px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.24),
-    inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(255,94,0,0.30);
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 18px 40px -22px rgba(0,0,0,0.45);
   margin-bottom: 8px;
 }
 
 [data-theme="light"] .card {
-  background:
-    linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
-    linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
+  background: var(--gc-bg-elevated);
   box-shadow:
-    inset 0 1.5px 0 rgba(255,243,232,0.96),
-    inset 0 0 0 0.5px rgba(255,94,0,0.06),
-    0 18px 40px -18px rgba(50,30,15,0.20),
-    0 4px 12px -6px rgba(50,30,15,0.10);
+    0 18px 40px -18px rgba(50,30,15,0.16),
+    0 4px 12px -6px rgba(50,30,15,0.08);
   border-radius: 22px;
 }
 
@@ -470,11 +462,16 @@
 }
 
 [data-theme="light"] .orbContactShadow {
+  /* Cast shadow below floating orb — neutral warm-dark (orange-tinted reads as glow, not shadow) */
+  width: 70%;
+  height: 16px;
+  margin-top: -6px;
   background: radial-gradient(ellipse at center,
-    rgba(255,140,60,0.28) 0%,
-    rgba(255,140,60,0.16) 30%,
-    rgba(255,140,60,0.06) 60%,
-    transparent 82%);
+    rgba(40,20,10,0.22) 0%,
+    rgba(40,20,10,0.12) 35%,
+    rgba(40,20,10,0.04) 65%,
+    transparent 85%);
+  filter: blur(9px);
 }
 
 @keyframes orbContactBreathe {
@@ -502,12 +499,13 @@
 }
 
 [data-theme="light"] .orbBloom {
+  /* Reference shows no bottom-pump glow under the orb — keep ambient very subtle */
   background:
-    radial-gradient(ellipse 70% 55% at 50% 100%,
-      rgba(255,140,60,0.42) 0%,
-      rgba(255,140,60,0.16) 32%,
+    radial-gradient(ellipse 80% 50% at 50% 100%,
+      rgba(255,140,60,0.14) 0%,
+      rgba(255,140,60,0.04) 40%,
       transparent 72%);
-  opacity: 0.62;
+  opacity: 0.45;
 }
 
 @keyframes orbBloomBreathe {
@@ -594,11 +592,11 @@
 }
 
 [data-theme="light"] .orbCore {
-  background: radial-gradient(ellipse 62% 42% at var(--orb-core-x, 50%) var(--orb-core-y, 88%),
-    rgba(255,210,140,calc(0.48 * var(--orb-core-i, 1))) 0%,
-    rgba(255,140,60,calc(0.26 * var(--orb-core-i, 1))) 25%,
-    rgba(255,140,60,calc(0.08 * var(--orb-core-i, 1))) 48%,
-    transparent 65%);
+  /* Subtle internal caustic — not a bottom dome glow */
+  background: radial-gradient(ellipse 52% 32% at var(--orb-core-x, 50%) var(--orb-core-y, 80%),
+    rgba(255,210,140,calc(0.22 * var(--orb-core-i, 1))) 0%,
+    rgba(255,140,60,calc(0.10 * var(--orb-core-i, 1))) 35%,
+    transparent 60%);
 }
 
 /* L5 — subsurface glow at liquid line, bleeds upward into the glass above.
@@ -621,13 +619,13 @@
 }
 
 [data-theme="light"] .orbSubsurface {
+  /* Just a faint shimmer at the liquid line — no bottom dome glow */
   background: radial-gradient(
-    ellipse 70% 30% at 50% var(--orb-liquid-y, 50%),
-    rgba(255,200,120,0.55) 0%,
-    rgba(255,140,60,0.32) 16%,
-    rgba(255,140,60,0.12) 38%,
-    transparent 62%);
-  filter: blur(5px);
+    ellipse 60% 18% at 50% var(--orb-liquid-y, 50%),
+    rgba(255,200,120,0.28) 0%,
+    rgba(255,140,60,0.10) 28%,
+    transparent 55%);
+  filter: blur(4px);
 }
 
 /* L6 — glass top sheen (very subtle — orb is mostly transparent above liquid).
@@ -654,14 +652,13 @@
 }
 
 [data-theme="light"] .orbDome {
-  /* Even fainter in light — the cream card already provides the "above liquid" tone */
+  /* Faint top-down sheen ONLY. No bottom amber-kiss — that creates a glowing-dome
+     effect at the orb floor (reference shows the bottom is the DARKEST part). */
   background: linear-gradient(180deg,
     rgba(255,250,240,0.30) 0%,
     rgba(255,235,210,0.10) 22%,
     transparent 55%);
-  box-shadow:
-    inset 0 -8px 18px rgba(255,140,60,0.12),
-    inset 0 0 10px rgba(60,30,15,0.06);
+  box-shadow: none;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -754,10 +751,10 @@
 }
 
 [data-theme="light"] .orbFresnel {
+  /* Top rim catches light (light source from above); no bottom amber-kiss */
   box-shadow:
-    inset 0 0 0 0.6px rgba(169,68,0,0.16),
-    inset 0 1.5px 0 rgba(255,250,240,0.65),
-    inset 0 -8px 14px rgba(255,140,60,0.10);
+    inset 0 0 0 0.6px rgba(60,30,15,0.12),
+    inset 0 1.5px 0 rgba(255,250,240,0.65);
 }
 
 .orbFillStrip {

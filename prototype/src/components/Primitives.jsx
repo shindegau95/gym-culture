@@ -482,14 +482,17 @@ export function OrbFill({ value = 0, size = 140, showStrip = true }) {
         <div className={s.orbLiquidClip} aria-hidden="true">
           <svg viewBox="0 0 100 100" className={s.orbLiquidSvg} preserveAspectRatio="none">
             <defs>
-              {/* Radial — center highlight → primary → deep → shadow (theme-flipping via --vis-amber-*) */}
-              <radialGradient id={`orbAmber-${reactKey}`} cx="50" cy="86" r="62" gradientUnits="userSpaceOnUse">
+              {/* Liquid fill — physically plausible: light enters from ABOVE.
+                  Bright at liquid surface (top), deepest amber at the floor.
+                  Linear top-to-bottom matches reference orb (and gravity).
+                  Theme-flipping via --vis-amber-*. */}
+              <linearGradient id={`orbAmber-${reactKey}`} x1="0.5" y1="0" x2="0.5" y2="1">
                 <stop offset="0%"   stopColor="var(--vis-amber-highlight)"/>
                 <stop offset="22%"  stopColor="var(--vis-amber-soft)"/>
-                <stop offset="48%"  stopColor="var(--vis-amber-primary)"/>
-                <stop offset="74%"  stopColor="var(--vis-amber-deep)"/>
+                <stop offset="55%"  stopColor="var(--vis-amber-primary)"/>
+                <stop offset="82%"  stopColor="var(--vis-amber-deep)"/>
                 <stop offset="100%" stopColor="var(--vis-amber-ember)"/>
-              </radialGradient>
+              </linearGradient>
               {/* Edge occlusion — theme-flipping (dark = brown depth, light = tangerine rim) */}
               <radialGradient id={`orbLiquidOcc-${reactKey}`} cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stopColor="rgba(0,0,0,0)"/>
