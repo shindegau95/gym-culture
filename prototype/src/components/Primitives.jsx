@@ -2,19 +2,21 @@ import { useEffect, useRef, useMemo } from 'react';
 import s from './Primitives.module.css';
 
 // ─── Liquid wave path builder ───────────────────────────────────────────────
-// Generates a cubic-bezier SVG path that curves naturally across the orb.
-// Sum of 3 non-commensurate sinusoids → quasi-periodic, never repeats cleanly.
-// `tilt` rotates the surface slightly (asymmetric gravity feel).
+// Reference is NOT an ocean wave (no traveling chop). It's the surface of a
+// swirled liquid in a cup: a single smooth S-curve — one cosine wavelength
+// across the orb, peak on one side / trough in middle / lower peak on the
+// other side. Slow phase drift rotates the swirl direction.
+// `tilt` adds the linear swirl-axis tilt (asymmetric peak heights).
 function buildWavePath(baseY, t, amp, tilt) {
   const pts = [];
-  for (let x = -30; x <= 130; x += 16) {
-    const phase = x / 28 + t;
+  const TAU_OVER_W = (Math.PI * 2) / 110; // ~1 full wavelength across orb
+  for (let x = -30; x <= 130; x += 8) {
+    const phase = (x - 50) * TAU_OVER_W + t;
     const y =
       baseY +
-      Math.sin(phase) * amp * 0.55 +
-      Math.sin(phase * 0.43 + t * 0.7) * amp * 0.35 +
-      Math.sin(phase * 2.1 + t * 1.2) * amp * 0.12 +
-      (x - 50) * tilt * 0.012;
+      Math.cos(phase) * amp * 0.95 +
+      Math.cos(phase * 0.5 + 1.2) * amp * 0.20 + // subtle asymmetry
+      (x - 50) * tilt * 0.014;
     pts.push([x, y]);
   }
   let d = `M ${pts[0][0]},${pts[0][1].toFixed(2)}`;
@@ -30,13 +32,14 @@ function buildWavePath(baseY, t, amp, tilt) {
 
 function buildMeniscusPath(baseY, t, amp, tilt) {
   const pts = [];
-  for (let x = -30; x <= 130; x += 16) {
-    const phase = x / 28 + t;
+  const TAU_OVER_W = (Math.PI * 2) / 110;
+  for (let x = -30; x <= 130; x += 8) {
+    const phase = (x - 50) * TAU_OVER_W + t;
     const y =
       baseY +
-      Math.sin(phase) * amp * 0.55 +
-      Math.sin(phase * 0.43 + t * 0.7) * amp * 0.35 +
-      (x - 50) * tilt * 0.012;
+      Math.cos(phase) * amp * 0.95 +
+      Math.cos(phase * 0.5 + 1.2) * amp * 0.20 +
+      (x - 50) * tilt * 0.014;
     pts.push([x, y]);
   }
   let d = `M ${pts[0][0]},${pts[0][1].toFixed(2)}`;
@@ -366,9 +369,9 @@ export function OrbFill({ value = 0, size = 140, showStrip = true }) {
   const refOrb = useRef(null);
 
   // Initial paths so first paint isn't blank
-  const initFront = buildWavePath(surfaceY, 0, 2.6, 0);
-  const initBack  = buildWavePath(surfaceY + 0.8, 1.5, 3.6, 0);
-  const initMen   = buildMeniscusPath(surfaceY, 0, 2.6, 0);
+  const initFront = buildWavePath(surfaceY, 0, 6.0, 0);
+  const initBack  = buildWavePath(surfaceY + 1.4, 1.5, 7.6, 0);
+  const initMen   = buildMeniscusPath(surfaceY, 0, 6.0, 0);
 
   // Energy scales with recovery — higher v = more vigorous fluid response
   const energy = 0.55 + 0.55 * (v / 100);
@@ -395,50 +398,39 @@ export function OrbFill({ value = 0, size = 140, showStrip = true }) {
       const t = (now - start) / 1000;
       const s = sim.current;
 
-      // Periodic random impulses — kick the spring like a real liquid disturbed
-      if (now >= s.nextImpulse) {
-        s.tiltImpulse  += (Math.random() - 0.5) * 3.2 * energy;
-        s.sloshImpulse += (Math.random() - 0.5) * 2.4 * energy;
-        s.levelImpulse += (Math.random() - 0.5) * 0.9 * energy;
-        s.nextImpulse = now + 500 + Math.random() * 1400;
-      }
-      // Impulses decay toward zero (damped energy dissipation)
-      s.tiltImpulse  *= Math.exp(-1.4 * dt);
-      s.sloshImpulse *= Math.exp(-1.4 * dt);
-      s.levelImpulse *= Math.exp(-2.2 * dt);
+      // Swirled-liquid dynamics — no random kicks (kicks read as ocean chop).
+      // Slow continuous drifts only; the spring just smooths it.
+      // Continuous quasi-periodic drift — slow frequencies, big swings.
+      const driftTilt  = energy * (2.6 * Math.sin(t * 0.18 + 0.7) + 1.1 * Math.sin(t * 0.39 + 1.4));
+      const driftSlosh = energy * (2.2 * Math.sin(t * 0.22)        + 1.0 * Math.sin(t * 0.47 + 0.7));
+      const driftLevel = energy * (0.70 * Math.sin(t * 0.15 + 0.3));
 
-      // Continuous quasi-periodic drift — sum of non-commensurate sines so
-      // motion never loops cleanly
-      const driftTilt  = energy * (1.6 * Math.sin(t * 0.42 + 0.7) + 0.7 * Math.sin(t * 0.91 + 1.4) + 0.35 * Math.sin(t * 1.73));
-      const driftSlosh = energy * (1.4 * Math.sin(t * 0.55)        + 0.8 * Math.sin(t * 1.17 + 0.7) + 0.30 * Math.sin(t * 2.03 + 0.2));
-      const driftLevel = energy * (0.45 * Math.sin(t * 0.38 + 0.3) + 0.25 * Math.sin(t * 0.81 + 1.1));
+      const tiltTarget  = driftTilt;
+      const sloshTarget = driftSlosh;
+      const levelTarget = driftLevel;
 
-      const tiltTarget  = driftTilt  + s.tiltImpulse;
-      const sloshTarget = driftSlosh + s.sloshImpulse;
-      const levelTarget = driftLevel + s.levelImpulse;
-
-      // Damped spring integrator (heavy molten amber — higher mass, lower damping)
-      // F = k(target - x) - d * v
-      const k = 24, d = 3.0;
+      // Soft, well-damped spring → smooth swirl, no oscillation overshoot.
+      const k = 6, d = 2.6;
       s.tiltVel  += (k * (tiltTarget  - s.tilt)  - d * s.tiltVel)  * dt;
       s.sloshVel += (k * (sloshTarget - s.slosh) - d * s.sloshVel) * dt;
-      // Level spring is heavier (slower, more inertia)
-      const kL = 14, dL = 2.4;
+      const kL = 4, dL = 2.0;
       s.levelVel += (kL * (levelTarget - s.level) - dL * s.levelVel) * dt;
       s.tilt  += s.tiltVel  * dt;
       s.slosh += s.sloshVel * dt;
       s.level += s.levelVel * dt;
 
-      const ampF = 2.6 + energy * 1.8;
-      const ampB = 3.6 + energy * 2.2;
+      // Amplitudes large enough that meniscus reads as a clean S-curve.
+      const ampF = 6.0 + energy * 2.4;
+      const ampB = 7.6 + energy * 2.8;
       const baseY = surfaceY + s.level;
-      // phaseShift = horizontal slosh — front and back wave drift in opposite phase
-      const phaseF =  s.slosh * 0.18;
-      const phaseB = -s.slosh * 0.22 + 1.5;
+      // Slosh shifts phase = the high side of the S rotates left/right (swirl).
+      const phaseF =  s.slosh * 0.28;
+      const phaseB = -s.slosh * 0.32 + 1.5;
 
-      const frontD = buildWavePath(baseY,                  t * 0.95 + phaseF, ampF,  s.tilt);
-      const backD  = buildWavePath(baseY + 0.9 + s.level * 0.4, t * 0.62 + phaseB, ampB, -s.tilt * 0.6);
-      const menD   = buildMeniscusPath(baseY,              t * 0.95 + phaseF, ampF,  s.tilt);
+      // Very slow phase drift on top of the swirl — surface gently rotates.
+      const frontD = buildWavePath(baseY,                  t * 0.22 + phaseF, ampF,  s.tilt);
+      const backD  = buildWavePath(baseY + 1.4 + s.level * 0.4, t * 0.14 + phaseB, ampB, -s.tilt * 0.6);
+      const menD   = buildMeniscusPath(baseY,              t * 0.22 + phaseF, ampF,  s.tilt);
 
       if (refFront.current) refFront.current.setAttribute('d', frontD);
       if (refOcc.current)   refOcc.current.setAttribute('d',   frontD);
