@@ -43,11 +43,13 @@ body {
   --vis-amber-soft:      #FFA366;
   --vis-amber-primary:   #E06313;
   --vis-amber-deep:      #FF5500;
-  --vis-amber-ember:     #D85F0A; /* dark tangerine, amber-yellow undertone — orb liquid floor (no brown) */
+  --vis-amber-ember:     #F26200; /* vibrant dark tangerine — orb liquid floor (no brown) */
   --vis-amber-shadow:    #C45100;
   --vis-amber-glow:      #FF6A00;
   --vis-cream:           #FFF3E8;
   --vis-smoke:           #EFE1D5;
+  --vis-orb-edge-soft:   rgba(242, 98, 0, 0.10); /* liquid-edge inner ring */
+  --vis-orb-edge-deep:   rgba(242, 98, 0, 0.30); /* liquid-edge rim */
 
   --gc-bg:           #F9F6F0;
   --gc-bg-elevated:  #FFFFFF;
@@ -111,6 +113,8 @@ body {
   --vis-amber-glow:      #FF6A00;
   --vis-cream:           #1A1310;
   --vis-smoke:           #2A1812;
+  --vis-orb-edge-soft:   rgba(0, 0, 0, 0.18);          /* liquid-edge inner ring (dark glass) */
+  --vis-orb-edge-deep:   rgba(110, 40, 0, 0.55);       /* liquid-edge rim (deep burnt — fine on dark) */
 
   --gc-bg:           #050505;
   --gc-bg-elevated:  #0E0E0E;

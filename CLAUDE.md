@@ -32,7 +32,7 @@ Canonical orange + neutral palette. Per-theme — never hard-code anchor hexes; 
 | ---------------------- | --------- | --------- | ------------------------ | ------------------------------------------------- |
 | Primary glowing orange | `#FF7A1A` | `#E06313` | `--vis-amber-primary`    | Main orb fill + CTA. Light is deeper for AA text. |
 | Deep emissive orange   | `#FF5E00` | `#FF5500` | `--vis-amber-deep`       | Inner glow / hotspots / liquid base.              |
-| Ember (dark tangerine) | `#D9590B` | `#D85F0A` | `--vis-amber-ember`      | Orb liquid floor / dome dark. Amber-yellow undertone — never brown. |
+| Ember (dark tangerine) | `#D9590B` | `#F26200` | `--vis-amber-ember`      | Orb liquid floor / dome dark. Vibrant dark tangerine — never brown. |
 | Soft warm orange       | `#FF9B4A` | `#FFA366` | `--vis-amber-soft`       | Gradient transitions.                             |
 | Highlight orange       | `#FFC27A` | `#FFE3C2` | `--vis-amber-highlight`  | Reflections / specular / glare.                   |
 | Burnt orange shadow    | `#A94400` | `#C45100` | `--vis-amber-shadow`     | Depth + lower orb shading.                        |

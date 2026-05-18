@@ -59,7 +59,7 @@ const PATHS = {
   check:     'M20 6 9 17l-5-5',
   plus:      'M12 5v14M5 12h14',
   ellipsis:  'M5 12h.01M12 12h.01M19 12h.01',
-  dumbbell:  'M2 12h20 M4 8h2v8H4z M7 10h2v4H7z M15 10h2v4h-2z M18 8h2v8h-2z',
+  dumbbell:  'M2 12h20 M4 10h2v4H4z M7 7h2v10H7z M15 7h2v10h-2z M18 10h2v4h-2z',
   sparkles:  'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3zM5 17l.75 2.25L8 20l-2.25.75L5 23l-.75-2.25L2 20l2.25-.75L5 17z',
   play:      'M5 3l14 9-14 9V3z',
   moon:      'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z',
@@ -75,7 +75,7 @@ const PATHS = {
   nutrition: 'M12 22V12M12 12C12 7 7 2 2 2c0 5 5 10 10 10zM12 12c0-5 5-10 10-10-5 0-10 5-10 10',
   profile:   'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
   home:      'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10',
-  workout:   'M2 12h20 M4 8h2v8H4z M7 10h2v4H7z M15 10h2v4h-2z M18 8h2v8h-2z',
+  workout:   'M2 12h20 M4 10h2v4H4z M7 7h2v10H7z M15 7h2v10h-2z M18 10h2v4h-2z',
   progress:  'M22 12h-4l-3 9L9 3l-3 9H2',
   close:     'M18 6 6 18M6 6l12 12',
   settings:  'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z',
@@ -490,12 +490,12 @@ export function OrbFill({ value = 0, size = 140, showStrip = true }) {
                 <stop offset="74%"  stopColor="var(--vis-amber-deep)"/>
                 <stop offset="100%" stopColor="var(--vis-amber-ember)"/>
               </radialGradient>
-              {/* Edge occlusion — dark ring where liquid meets sphere boundary */}
+              {/* Edge occlusion — theme-flipping (dark = brown depth, light = tangerine rim) */}
               <radialGradient id={`orbLiquidOcc-${reactKey}`} cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
                 <stop offset="0%"   stopColor="rgba(0,0,0,0)"/>
                 <stop offset="70%"  stopColor="rgba(0,0,0,0)"/>
-                <stop offset="92%"  stopColor="rgba(0,0,0,0.18)"/>
-                <stop offset="100%" stopColor="rgba(110,40,0,0.55)"/>
+                <stop offset="92%"  stopColor="var(--vis-orb-edge-soft)"/>
+                <stop offset="100%" stopColor="var(--vis-orb-edge-deep)"/>
               </radialGradient>
               {/* Meniscus — bright cream stroke softened to feel physically thick */}
               <linearGradient id={`orbMen-${reactKey}`} x1="0" y1="0" x2="0" y2="1">

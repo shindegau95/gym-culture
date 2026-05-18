@@ -8,7 +8,7 @@ const AMBER = {
     soft:      '#FFA366',
     primary:   '#E06313', // CTA + orb fill (deeper for contrast)
     deep:      '#FF5500',
-    ember:     '#D85F0A', // dark tangerine, amber-yellow undertone — orb liquid floor (no brown)
+    ember:     '#F26200', // vibrant dark tangerine — orb liquid floor (no brown)
     shadow:    '#C45100',
     glow:      '#FF6A00',
     cream:     '#FFF3E8',
