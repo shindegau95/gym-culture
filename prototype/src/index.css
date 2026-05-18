@@ -35,6 +35,19 @@ body {
   display: none;
 }
 
+/* ─── Orb fill (theme-independent) ───────────────────────────────────────── */
+/* Dark theme's warm honey-amber reads correctly in BOTH themes for the orb
+   liquid. Light-theme UI accent (--vis-amber-primary) stays deeper for AA
+   text contrast on cream bg, but the orb itself should not — it's a sphere,
+   not text. Decoupled so the orb feels golden/yellowish in both modes. */
+:root {
+  --vis-orb-fill-highlight: #FFC27A;
+  --vis-orb-fill-soft:      #FF9B4A;
+  --vis-orb-fill-primary:   #FF7A1A;
+  --vis-orb-fill-deep:      #FF5E00;
+  --vis-orb-fill-ember:     #D9590B;
+}
+
 /* ─── Design tokens — light (default) ────────────────────────────────────── */
 :root, [data-theme="light"] {
   /* Per-theme amber anchors (see CLAUDE.md Brand Palette).

@@ -484,14 +484,14 @@ export function OrbFill({ value = 0, size = 140, showStrip = true }) {
             <defs>
               {/* Liquid fill — physically plausible: light enters from ABOVE.
                   Bright at liquid surface (top), deepest amber at the floor.
-                  Linear top-to-bottom matches reference orb (and gravity).
-                  Theme-flipping via --vis-amber-*. */}
+                  Uses shared --vis-orb-fill-* (theme-independent) so the orb
+                  keeps its honey/yellow tone in light theme too. */}
               <linearGradient id={`orbAmber-${reactKey}`} x1="0.5" y1="0" x2="0.5" y2="1">
-                <stop offset="0%"   stopColor="var(--vis-amber-highlight)"/>
-                <stop offset="22%"  stopColor="var(--vis-amber-soft)"/>
-                <stop offset="55%"  stopColor="var(--vis-amber-primary)"/>
-                <stop offset="82%"  stopColor="var(--vis-amber-deep)"/>
-                <stop offset="100%" stopColor="var(--vis-amber-ember)"/>
+                <stop offset="0%"   stopColor="var(--vis-orb-fill-highlight)"/>
+                <stop offset="22%"  stopColor="var(--vis-orb-fill-soft)"/>
+                <stop offset="55%"  stopColor="var(--vis-orb-fill-primary)"/>
+                <stop offset="82%"  stopColor="var(--vis-orb-fill-deep)"/>
+                <stop offset="100%" stopColor="var(--vis-orb-fill-ember)"/>
               </linearGradient>
               {/* Edge occlusion — theme-flipping (dark = brown depth, light = tangerine rim) */}
               <radialGradient id={`orbLiquidOcc-${reactKey}`} cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
