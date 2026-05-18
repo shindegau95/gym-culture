@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar, TensionOrb, OrbFill, PulseProgressBar } from '../components/Primitives';
+import { Icon, Avatar, TopBar, IconBtn, Card, SectionLabel, Chip, Numeric, MuscleBar, BottomTabBar, ProgressBar, OrbFill, PulseProgressBar } from '../components/Primitives';
 import s from './ClientApp.module.css';
 
 // ─── Home ────────────────────────────────────────────────────────────────────
@@ -276,14 +276,13 @@ function ClientWorkout({ t, onStartWorkout }) {
     { d: 'Sat', label: 'Pull',          done: false, rest: false },
     { d: 'Sun', label: 'Rest',          done: false, rest: true  },
   ];
-  // state: rest / load / peak / recovered — drives brand TensionOrb visual
   const exercises = [
-    { name: 'Bench Press',       sets: 4, reps: '6–8',  weight: '90 kg', state: 'recovered' },
-    { name: 'Incline DB Press',  sets: 3, reps: '10',   weight: '24 kg', state: 'recovered' },
-    { name: 'Cable Fly',         sets: 3, reps: '12',   weight: '14 kg', state: 'load' },
-    { name: 'Close-Grip Bench',  sets: 3, reps: '8',    weight: '70 kg', state: 'peak' },
-    { name: 'Overhead Press',    sets: 3, reps: '8–10', weight: '50 kg', state: 'rest' },
-    { name: 'Tricep Pushdown',   sets: 3, reps: '12',   weight: '20 kg', state: 'rest' },
+    { name: 'Bench Press',       sets: 4, reps: '6–8',  weight: '90 kg' },
+    { name: 'Incline DB Press',  sets: 3, reps: '10',   weight: '24 kg' },
+    { name: 'Cable Fly',         sets: 3, reps: '12',   weight: '14 kg' },
+    { name: 'Close-Grip Bench',  sets: 3, reps: '8',    weight: '70 kg' },
+    { name: 'Overhead Press',    sets: 3, reps: '8–10', weight: '50 kg' },
+    { name: 'Tricep Pushdown',   sets: 3, reps: '12',   weight: '20 kg' },
   ];
   return (
     <div className={s.page}>
@@ -332,7 +331,7 @@ function ClientWorkout({ t, onStartWorkout }) {
           </div>
           {exercises.map((ex, i) => (
             <div key={i} className={s.tableRow}>
-              <div className={s.tableOrbCell}><TensionOrb state={ex.state} size={22}/></div>
+              <div className={s.tableDotCell}><span className={s.tableDot}/></div>
               <div className={s.tableExName}>{ex.name}</div>
               <div className={s.tableNum}>{ex.sets}</div>
               <div className={s.tableNum}>{ex.reps}</div>
@@ -351,9 +350,9 @@ function ClientWorkout({ t, onStartWorkout }) {
 // ─── Muscle Recovery Detail ──────────────────────────────────────────────────
 function RecoveryDetail({ t, onBack, startIdx = 0 }) {
   const FACTORS = [
-    { k: 'sleep',    l: 'Sleep',         color: '#FF7A1A' },
+    { k: 'sleep',    l: 'Sleep',         color: 'var(--vis-amber-primary)' },
     { k: 'nutrition',l: 'Nutrition',     color: '#FF6A3D' },
-    { k: 'training', l: 'Training load', color: '#FFC27A' },
+    { k: 'training', l: 'Training load', color: 'var(--vis-amber-highlight)' },
     { k: 'hydration',l: 'Hydration',     color: '#5BCB85' },
   ];
   const groups = [
@@ -445,8 +444,8 @@ function RecoveryDetail({ t, onBack, startIdx = 0 }) {
             <svg viewBox={`0 0 ${W} ${H}`} className={s.recoveryTrendSvg} preserveAspectRatio="none">
               <defs>
                 <linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#FF7A1A" stopOpacity="0.32"/>
-                  <stop offset="100%" stopColor="#FF7A1A" stopOpacity="0"/>
+                  <stop offset="0%" stopColor="var(--vis-amber-primary)" stopOpacity="0.32"/>
+                  <stop offset="100%" stopColor="var(--vis-amber-primary)" stopOpacity="0"/>
                 </linearGradient>
               </defs>
               {/* gridlines at 25/50/75/100 */}
@@ -455,12 +454,12 @@ function RecoveryDetail({ t, onBack, startIdx = 0 }) {
                   stroke="currentColor" strokeOpacity="0.08" strokeWidth="0.6" strokeDasharray="2 3"/>
               ))}
               <path d={areaD} fill="url(#trendArea)"/>
-              <path d={pathD} fill="none" stroke="#FF7A1A" strokeWidth="2"
+              <path d={pathD} fill="none" stroke="var(--vis-amber-primary)" strokeWidth="2"
                 strokeLinecap="round" strokeLinejoin="round"/>
               {points.map(([x, y], i) => (
                 <circle key={i} cx={x} cy={y} r={i === points.length - 1 ? 3.2 : 2}
-                  fill={i === points.length - 1 ? '#FFE0C6' : '#FF7A1A'}
-                  stroke="#FF5E00" strokeWidth={i === points.length - 1 ? 1.2 : 0}/>
+                  fill={i === points.length - 1 ? 'var(--vis-amber-highlight)' : 'var(--vis-amber-primary)'}
+                  stroke="var(--vis-amber-deep)" strokeWidth={i === points.length - 1 ? 1.2 : 0}/>
               ))}
             </svg>
           </div>

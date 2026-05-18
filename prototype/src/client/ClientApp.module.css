@@ -205,7 +205,7 @@
   border-radius: 16px;
   border: 0;
   cursor: pointer;
-  background: linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%);
+  background: linear-gradient(180deg, var(--vis-amber-primary) 0%, var(--vis-amber-primary) 55%, var(--vis-amber-deep) 100%);
   color: #fff;
   font-family: var(--vis-font-ui);
   font-size: 15px;
@@ -400,7 +400,7 @@
 .recoveryBarFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FFE0C6 0%, #FF9B4A 50%, #FF6A00 100%);
+  background: linear-gradient(90deg, var(--vis-amber-highlight) 0%, var(--vis-amber-soft) 50%, var(--vis-amber-glow) 100%);
   box-shadow:
     0 0 14px rgba(255,138,92,0.55),
     inset 0 1px 0 rgba(255,255,255,0.30);
@@ -679,6 +679,15 @@
 .restCard--resting {
   background: var(--gc-gradient);
   color: #fff;
+}
+
+/* Beat [data-theme="light"] .card specificity (0,2,0) — keep orange card readable in light theme */
+[data-theme="light"] .restCard.restCard--resting {
+  background: var(--gc-gradient);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.18),
+    0 18px 40px -18px rgba(169, 68, 0, 0.45);
 }
 
 .restRingWrap {
@@ -1056,7 +1065,7 @@
 /* ─── Workout: exercise table ───────────────────────────────────────────── */
 .tableHead {
   display: grid;
-  grid-template-columns: 30px 1fr 40px 48px 64px;
+  grid-template-columns: 18px 1fr 40px 48px 64px;
   gap: 6px;
   padding: 10px 14px 8px;
   border-bottom: 0.5px solid var(--gc-sep);
@@ -1073,7 +1082,7 @@
 
 .tableRow {
   display: grid;
-  grid-template-columns: 30px 1fr 40px 48px 64px;
+  grid-template-columns: 18px 1fr 40px 48px 64px;
   gap: 6px;
   padding: 12px 14px;
   border-bottom: 0.5px solid var(--gc-sep);
@@ -1619,10 +1628,18 @@
   font-weight: 500;
 }
 
-.tableOrbCell {
+.tableDotCell {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.tableDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--gc-accent);
+  opacity: 0.6;
 }
 
 /* Recovery — orb-fill layout (brand-ref/recovery_animation.png) */

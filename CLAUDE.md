@@ -26,28 +26,29 @@ Use them as the visual source of truth for layout, spacing, typography, orb stru
 
 ## Brand Palette
 
-Canonical orange + neutral palette. Use these hexes everywhere — no ad-hoc colors.
+Canonical orange + neutral palette. Per-theme — never hard-code anchor hexes; reference the CSS vars (`var(--vis-amber-primary)`, `var(--gc-bg-elevated)`, etc.) so theme flip works.
 
-| Usage                  | Hex       | Notes                       |
-| ---------------------- | --------- | --------------------------- |
-| Primary glowing orange | `#FF7A1A` | Main orb fill + CTA         |
-| Deep emissive orange   | `#FF5E00` | Inner glow / hotspots       |
-| Soft warm orange       | `#FF9B4A` | Gradient transitions        |
-| Highlight orange       | `#FFC27A` | Reflections/specular light  |
-| Burnt orange shadow    | `#A94400` | Depth + lower orb shading   |
-| Ambient glow orange    | `#FF6A00` | Outer bloom/glow            |
-| Warm cream (light UI)  | `#FFF3E8` | Light theme background tint |
-| Smoked glass brown     | `#2A1812` | Upper orb dark glass        |
-| Near-black background  | `#050505` | Main dark background        |
-| Card black             | `#0E0E0E` | Elevated surfaces           |
+| Usage                  | Dark hex  | Light hex | CSS var                  | Notes                                             |
+| ---------------------- | --------- | --------- | ------------------------ | ------------------------------------------------- |
+| Primary glowing orange | `#FF7A1A` | `#E06313` | `--vis-amber-primary`    | Main orb fill + CTA. Light is deeper for AA text. |
+| Deep emissive orange   | `#FF5E00` | `#FF5500` | `--vis-amber-deep`       | Inner glow / hotspots / liquid base.              |
+| Ember (dark tangerine) | `#D9590B` | `#D85F0A` | `--vis-amber-ember`      | Orb liquid floor / dome dark. Amber-yellow undertone — never brown. |
+| Soft warm orange       | `#FF9B4A` | `#FFA366` | `--vis-amber-soft`       | Gradient transitions.                             |
+| Highlight orange       | `#FFC27A` | `#FFE3C2` | `--vis-amber-highlight`  | Reflections / specular / glare.                   |
+| Burnt orange shadow    | `#A94400` | `#C45100` | `--vis-amber-shadow`     | Depth + lower orb shading.                        |
+| Ambient glow orange    | `#FF6A00` | `#FF6A00` | `--vis-amber-glow`       | Outer bloom — low opacity on light bg.            |
+| Warm cream / glass tint| `#1A1310` | `#FFF3E8` | `--vis-cream`            | Dark = warm-charcoal glass tint; light = page tint.|
+| Smoked glass brown     | `#2A1812` | `#EFE1D5` | `--vis-smoke`            | Upper orb dark glass overlay.                     |
+| Page background        | `#050505` | `#F9F6F0` | `--gc-bg`                | Main application background. Page bg is NEVER pure white. |
+| Elevated card surface  | `#0E0E0E` | `#FFFFFF` | `--gc-bg-elevated`       | Cards. Light theme cards MAY use pure `#FFFFFF` (only exception to no-white rule). |
 
-Source-of-truth tokens: `prototype/src/tokens.js` (`ORANGE` map) + CSS variables in `prototype/src/index.css`. When adding components, reference `var(--gc-accent)` / `var(--gc-bg-elevated)` / etc — never inline new hexes.
+Source-of-truth tokens: `prototype/src/tokens.js` (`TOKENS.light` / `TOKENS.dark`) + CSS variables in `prototype/src/index.css`. When adding components, reference `var(--gc-accent)` / `var(--gc-bg-elevated)` / `var(--vis-amber-*)` — never inline new hexes.
 
 ### Aesthetic rules (non-negotiable)
 
 - **Cinematic amber, not gaming neon.** The orange should read as molten amber + sunset emissive lighting. `#FF7A1A`, `#FF6A00`, `#FFC27A` do the heavy lifting. Avoid pure neon orange or oversaturated digital-orange.
 - **Physically plausible glow falloff.** Layer three drop-shadows in distance order: `0 0 20px rgba(255,106,0,0.35)`, `0 0 60px rgba(255,106,0,0.18)`, `0 0 120px rgba(255,122,26,0.12)`. The far halo must be larger AND fainter — don't stack equal-intensity shadows.
-- **Never use pure white `#FFFFFF` on light surfaces.** Use warm ivory (`#FFF6EA` / `#FFF3E8`) — warm whites with subtle orange/beige contamination. White-on-orange CTA text is the only exception, and even there prefer `#FFF6EA`.
+- **Never use pure white `#FFFFFF` for page background or large fills.** Page bg is warm ivory (`#F9F6F0` / `#FFF3E8`). Two narrow exceptions: (a) elevated **card surfaces** in light theme may use `#FFFFFF` for pop against the warm bg; (b) white-on-orange CTA text — even there prefer `#FFF6EA`.
 - **Shadows are peach-tinted, not gray.** In light theme, drop shadows are `rgba(169,68,0,0.X)` or `rgba(50,30,15,0.X)` — never neutral black. Backgrounds are beige-ambient (`#FFF3E8`), not stark white.
 
 ### Orb visual recipe

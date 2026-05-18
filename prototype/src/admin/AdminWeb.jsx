@@ -827,8 +827,8 @@ function ScoreRing({ label, value }) {
           />
           <defs>
             <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#FF9C66"/>
-              <stop offset="100%" stopColor="#FF6A00"/>
+              <stop offset="0%" stopColor="var(--vis-amber-soft)"/>
+              <stop offset="100%" stopColor="var(--vis-amber-glow)"/>
             </linearGradient>
           </defs>
         </svg>
@@ -895,7 +895,7 @@ function Trainers() {
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 function DashIcon({ active }) {
-  const c = active ? '#FF6A00' : 'currentColor';
+  const c = active ? 'var(--vis-amber-glow)' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 1 : 0.5}/>
     <rect x={11} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 0.6 : 0.3}/>
@@ -904,7 +904,7 @@ function DashIcon({ active }) {
   </svg>;
 }
 function MembersIcon({ active }) {
-  const c = active ? '#FF6A00' : 'currentColor';
+  const c = active ? 'var(--vis-amber-glow)' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <circle cx={7} cy={6} r={3.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 15c0-3 2.7-5 6-5s6 2 6 5" stroke={c} strokeWidth={1.5} strokeLinecap="round"/>
@@ -913,7 +913,7 @@ function MembersIcon({ active }) {
   </svg>;
 }
 function PayIcon({ active }) {
-  const c = active ? '#FF6A00' : 'currentColor';
+  const c = active ? 'var(--vis-amber-glow)' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={4} width={16} height={11} rx={2.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 8h16" stroke={c} strokeWidth={1.5}/>
@@ -921,7 +921,7 @@ function PayIcon({ active }) {
   </svg>;
 }
 function TrainerIcon({ active }) {
-  const c = active ? '#FF6A00' : 'currentColor';
+  const c = active ? 'var(--vis-amber-glow)' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <path d="M2 9h3l2-5 3 9 2-4h4" stroke={c} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
   </svg>;

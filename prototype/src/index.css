@@ -37,11 +37,22 @@ body {
 
 /* ─── Design tokens — light (default) ────────────────────────────────────── */
 :root, [data-theme="light"] {
-  /* Sampled from docs/brand-ref/light_ref.png — warm cream + tangerine sun-disc */
-  --gc-bg:           #F7F1E8;
-  --gc-bg-elevated:  #F5EBDD;
-  --gc-bg-grouped:   #EAE2D5;
-  --gc-bg-scrim:     rgba(242, 235, 224, 0.86);
+  /* Per-theme amber anchors (see CLAUDE.md Brand Palette).
+     Light hexes deeper for AA text contrast on warm cream bg. */
+  --vis-amber-highlight: #FFE3C2;
+  --vis-amber-soft:      #FFA366;
+  --vis-amber-primary:   #E06313;
+  --vis-amber-deep:      #FF5500;
+  --vis-amber-ember:     #D85F0A; /* dark tangerine, amber-yellow undertone — orb liquid floor (no brown) */
+  --vis-amber-shadow:    #C45100;
+  --vis-amber-glow:      #FF6A00;
+  --vis-cream:           #FFF3E8;
+  --vis-smoke:           #EFE1D5;
+
+  --gc-bg:           #F9F6F0;
+  --gc-bg-elevated:  #FFFFFF;
+  --gc-bg-grouped:   #F4EDDF;
+  --gc-bg-scrim:     rgba(249, 246, 240, 0.88);
 
   --gc-ink:          #1B1108;
   --gc-ink2:         #3A2A1F;
@@ -54,19 +65,19 @@ body {
   --gc-fill-tint:    rgba(120, 80, 50, 0.06);
   --gc-fill-tint2:   rgba(120, 80, 50, 0.03);
 
-  --gc-accent:       #FF7A1A;
-  --gc-accent-soft:  #FF9B4A;
+  --gc-accent:       var(--vis-amber-primary);
+  --gc-accent-soft:  var(--vis-amber-soft);
   --gc-accent-ink:   #FFF6EA;
-  --gc-accent-tint:  rgba(255, 122, 26, 0.10);
-  --gc-accent-ring:  rgba(255, 122, 26, 0.30);
-  --gc-gradient:     linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%);
-  --gc-gradient-soft:linear-gradient(135deg, rgba(255,155,74,0.10), rgba(255,122,26,0.10));
+  --gc-accent-tint:  rgba(224, 99, 19, 0.10);
+  --gc-accent-ring:  rgba(224, 99, 19, 0.30);
+  --gc-gradient:     linear-gradient(180deg, var(--vis-amber-primary) 0%, var(--vis-amber-primary) 55%, var(--vis-amber-deep) 100%);
+  --gc-gradient-soft:linear-gradient(135deg, rgba(255,163,102,0.12), rgba(224,99,19,0.12));
 
-  --vis-orb:         radial-gradient(circle at 32% 28%, #FFE0C6 0%, #FFC27A 22%, #FF9B4A 50%, #FF7A1A 78%, #A94400 100%);
-  --vis-glass-tint:  linear-gradient(135deg, rgba(255,220,196,0.40), rgba(255,155,74,0.18));
-  --vis-glass-edge:  rgba(255,243,232,0.85);
+  --vis-orb:         radial-gradient(circle at 32% 28%, var(--vis-amber-highlight) 0%, var(--vis-amber-highlight) 18%, var(--vis-amber-soft) 50%, var(--vis-amber-primary) 78%, var(--vis-amber-ember) 100%);
+  --vis-glass-tint:  linear-gradient(135deg, rgba(255,227,194,0.42), rgba(255,163,102,0.20));
+  --vis-glass-edge:  rgba(255,243,232,0.92);
   --vis-glass-shadow:0 18px 40px -18px rgba(50,30,15,0.22);
-  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF7A1A 0%, #FF9B4A 28%, #FFE0C6 55%, transparent 78%);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, var(--vis-amber-primary) 0%, var(--vis-amber-soft) 28%, var(--vis-amber-highlight) 55%, transparent 78%);
 
   --gc-good:         #3F9D5E;
   --gc-warn:         #C97B1B;
@@ -90,7 +101,17 @@ body {
 
 /* ─── Design tokens — dark ───────────────────────────────────────────────── */
 [data-theme="dark"] {
-  /* Same tangerine, on warm charcoal */
+  /* Per-theme amber anchors */
+  --vis-amber-highlight: #FFC27A;
+  --vis-amber-soft:      #FF9B4A;
+  --vis-amber-primary:   #FF7A1A;
+  --vis-amber-deep:      #FF5E00;
+  --vis-amber-ember:     #D9590B; /* dark tangerine, yellow undertone — orb liquid floor */
+  --vis-amber-shadow:    #A94400;
+  --vis-amber-glow:      #FF6A00;
+  --vis-cream:           #1A1310;
+  --vis-smoke:           #2A1812;
+
   --gc-bg:           #050505;
   --gc-bg-elevated:  #0E0E0E;
   --gc-bg-grouped:   #050505;
@@ -107,18 +128,19 @@ body {
   --gc-fill-tint:    rgba(255, 170, 110, 0.10);
   --gc-fill-tint2:   rgba(255, 170, 110, 0.05);
 
-  --gc-accent:       #FF7A1A;
-  --gc-accent-soft:  #FF9B4A;
+  --gc-accent:       var(--vis-amber-primary);
+  --gc-accent-soft:  var(--vis-amber-soft);
   --gc-accent-ink:   #050505;
   --gc-accent-tint:  rgba(255, 122, 26, 0.14);
   --gc-accent-ring:  rgba(255, 122, 26, 0.40);
-  --gc-gradient:     linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%);
+  --gc-gradient:     linear-gradient(180deg, var(--vis-amber-primary) 0%, var(--vis-amber-primary) 55%, var(--vis-amber-deep) 100%);
   --gc-gradient-soft:linear-gradient(135deg, rgba(255,155,74,0.16), rgba(255,94,0,0.20));
 
+  --vis-orb:         radial-gradient(circle at 32% 28%, var(--vis-amber-highlight) 0%, var(--vis-amber-highlight) 22%, var(--vis-amber-soft) 50%, var(--vis-amber-primary) 78%, var(--vis-amber-ember) 100%);
   --vis-glass-tint:  linear-gradient(135deg, rgba(255,155,74,0.14), rgba(169,68,0,0.18));
   --vis-glass-edge:  rgba(255,210,170,0.22);
   --vis-glass-shadow:0 24px 60px -20px rgba(169,68,0,0.55);
-  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, #FF7A1A 0%, #FF5E00 30%, rgba(169,68,0,0.55) 60%, transparent 80%);
+  --vis-page-grad:   radial-gradient(60% 70% at 78% 35%, var(--vis-amber-primary) 0%, var(--vis-amber-deep) 30%, rgba(169,68,0,0.55) 60%, transparent 80%);
 
   --gc-good:         #5BCB85;
   --gc-warn:         #F2A640;

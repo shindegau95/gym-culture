@@ -194,7 +194,7 @@
 .progressFill {
   height: 100%;
   background: linear-gradient(90deg,
-    #FFE0C6 0%, #FF9B4A 30%, #FF7A1A 60%, #FF9B4A 80%, #FFE0C6 100%);
+    var(--vis-amber-highlight) 0%, var(--vis-amber-soft) 30%, var(--vis-amber-primary) 60%, var(--vis-amber-soft) 80%, var(--vis-amber-highlight) 100%);
   background-size: 200% 100%;
   border-radius: 999px;
   transition: width 0.6s ease;
@@ -333,7 +333,7 @@
   position: absolute; inset: 0;
   border-radius: 50%;
   background: radial-gradient(circle at 32% 28%,
-    #FFE0C6 0%, #FFC27A 35%, #FF7A1A 70%, #A94400 100%);
+    var(--vis-amber-highlight) 0%, var(--vis-amber-highlight) 35%, var(--vis-amber-primary) 70%, var(--vis-amber-ember) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.35),
     0 4px 10px -2px rgba(255,94,0,0.55);
@@ -349,7 +349,7 @@
 .tensionOrb--load .tensionOrbCore {
   transform: scaleY(1.08) scaleX(0.92);
   background: radial-gradient(circle at 32% 24%,
-    #FFC27A 0%, #FF7A1A 40%, #FF5E00 75%, #A94400 100%);
+    var(--vis-amber-highlight) 0%, var(--vis-amber-primary) 40%, var(--vis-amber-deep) 75%, var(--vis-amber-ember) 100%);
   animation: visOrbLoadPulse 0.9s ease-in-out infinite;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.30),
@@ -363,7 +363,7 @@
 .tensionOrb--peak .tensionOrbCore {
   transform: scaleY(1.14) scaleX(0.88);
   background: radial-gradient(circle at 32% 22%,
-    #FF9B4A 0%, #FF5E00 40%, #A94400 75%, #2A0E04 100%);
+    var(--vis-amber-soft) 0%, var(--vis-amber-deep) 40%, var(--vis-amber-ember) 75%, var(--vis-amber-ember) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.18),
     0 8px 22px -2px rgba(106,32,8,0.85);
@@ -389,7 +389,7 @@
 .tensionOrb--recovered .tensionOrbCore {
   transform: scale(0.82);
   background: radial-gradient(circle at 32% 28%,
-    #FFE0C6 0%, #FF9B4A 50%, #FF5E00 100%);
+    var(--vis-amber-highlight) 0%, var(--vis-amber-soft) 50%, var(--vis-amber-deep) 100%);
   filter: brightness(0.95);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.35),
@@ -539,9 +539,10 @@
   background:
     radial-gradient(circle at 35% 28%, rgba(255,250,240,0.32) 0%, transparent 38%),
     radial-gradient(circle at 50% 50%, rgba(255,243,232,0.10) 0%, transparent 80%);
+  /* Neutral warm-dark insets — burnt orange (rgba(169,68,0,...)) read as brown on cream */
   box-shadow:
-    inset 0 0 0 0.5px rgba(169,68,0,0.10),
-    inset 0 -2px 8px rgba(169,68,0,0.10),
+    inset 0 0 0 0.5px rgba(60,30,15,0.10),
+    inset 0 -2px 8px rgba(60,30,15,0.10),
     inset 0 2px 4px rgba(255,250,240,0.50);
 }
 
@@ -661,7 +662,7 @@
     transparent 55%);
   box-shadow:
     inset 0 -8px 18px rgba(255,140,60,0.12),
-    inset 0 0 10px rgba(169,68,0,0.06);
+    inset 0 0 10px rgba(60,30,15,0.06);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -681,10 +682,11 @@
 }
 
 [data-theme="light"] .orbInner {
+  /* Neutral warm-dark vignette — burnt orange multiplied with cream bg produces brown */
   background:
     radial-gradient(circle at 50% 32%,
       transparent 0%, transparent 60%,
-      rgba(169,68,0,0.12) 88%, rgba(169,68,0,0.22) 100%);
+      rgba(60,30,15,0.10) 88%, rgba(60,30,15,0.18) 100%);
   mix-blend-mode: multiply;
 }
 
@@ -774,7 +776,7 @@
 .orbFillStripFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FF7A1A 0%, #FF9B4A 50%, #FFC27A 100%);
+  background: linear-gradient(90deg, var(--vis-amber-primary) 0%, var(--vis-amber-soft) 50%, var(--vis-amber-highlight) 100%);
   box-shadow: 0 0 8px rgba(255,142,69,0.65);
   transition: width 900ms cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -796,7 +798,7 @@
   background: linear-gradient(90deg,
     rgba(255,106,27,0.55) 0%,
     rgba(255,142,69,0.90) 60%,
-    #FF9B4A 100%);
+    var(--vis-amber-soft) 100%);
   box-shadow:
     0 0 14px rgba(255,142,69,0.55),
     inset 0 1px 0 rgba(255,255,255,0.25);
@@ -812,7 +814,7 @@
   height: 14px;
   border-radius: 50%;
   transform: translateY(-50%);
-  background: radial-gradient(circle, #FFE0C6 0%, #FF9B4A 55%, #FF7A1A 100%);
+  background: radial-gradient(circle, var(--vis-amber-highlight) 0%, var(--vis-amber-soft) 55%, var(--vis-amber-primary) 100%);
   box-shadow:
     0 0 8px  rgba(255,230,210,0.95),
     0 0 20px rgba(255,142,69,0.80),
@@ -843,7 +845,7 @@
   height: 12px;
   border-radius: 50%;
   transform: translateY(-50%);
-  background: radial-gradient(circle, #FFE0C6 0%, #FF9B4A 55%, #FF7A1A 100%);
+  background: radial-gradient(circle, var(--vis-amber-highlight) 0%, var(--vis-amber-soft) 55%, var(--vis-amber-primary) 100%);
   box-shadow:
     0 0 6px  rgba(255,230,210,0.95),
     0 0 16px rgba(255,142,69,0.80),
@@ -888,7 +890,7 @@
 .ringMirrorFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FF7A1A 0%, #FF9B4A 50%, #FFC27A 100%);
+  background: linear-gradient(90deg, var(--vis-amber-primary) 0%, var(--vis-amber-soft) 50%, var(--vis-amber-highlight) 100%);
   box-shadow: 0 0 6px rgba(255,142,69,0.65);
   transition: width 700ms cubic-bezier(0.32,0.72,0,1);
 }
