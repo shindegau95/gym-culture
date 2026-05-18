@@ -15,9 +15,88 @@ All skills must be invoked at the start of the task, not after. If a task touche
 
 - **`/caveman`** — invoke at the start of every session, no exceptions. Reduces token usage by ~75% by dropping filler words while preserving full technical accuracy.
 
+## UI Reference Images (MANDATORY)
+
+Whenever the user asks for any UI update, change, or new component, **first open and read** these reference images via the `Read` tool:
+
+- `docs/brand-ref/reference_light.png` — light theme canonical UI (home card, recovery orb, list cards, login screens)
+- `docs/brand-ref/reference_dark.png` — dark theme canonical UI (same screens)
+
+Use them as the visual source of truth for layout, spacing, typography, orb structure, card composition, and tone. Match against the corresponding theme. Never iterate on UI without first re-checking these references — your idea of "matches" drifts otherwise.
+
+## Brand Palette
+
+Canonical orange + neutral palette. Use these hexes everywhere — no ad-hoc colors.
+
+| Usage                  | Hex       | Notes                       |
+| ---------------------- | --------- | --------------------------- |
+| Primary glowing orange | `#FF7A1A` | Main orb fill + CTA         |
+| Deep emissive orange   | `#FF5E00` | Inner glow / hotspots       |
+| Soft warm orange       | `#FF9B4A` | Gradient transitions        |
+| Highlight orange       | `#FFC27A` | Reflections/specular light  |
+| Burnt orange shadow    | `#A94400` | Depth + lower orb shading   |
+| Ambient glow orange    | `#FF6A00` | Outer bloom/glow            |
+| Warm cream (light UI)  | `#FFF3E8` | Light theme background tint |
+| Smoked glass brown     | `#2A1812` | Upper orb dark glass        |
+| Near-black background  | `#050505` | Main dark background        |
+| Card black             | `#0E0E0E` | Elevated surfaces           |
+
+Source-of-truth tokens: `prototype/src/tokens.js` (`ORANGE` map) + CSS variables in `prototype/src/index.css`. When adding components, reference `var(--gc-accent)` / `var(--gc-bg-elevated)` / etc — never inline new hexes.
+
+### Aesthetic rules (non-negotiable)
+
+- **Cinematic amber, not gaming neon.** The orange should read as molten amber + sunset emissive lighting. `#FF7A1A`, `#FF6A00`, `#FFC27A` do the heavy lifting. Avoid pure neon orange or oversaturated digital-orange.
+- **Physically plausible glow falloff.** Layer three drop-shadows in distance order: `0 0 20px rgba(255,106,0,0.35)`, `0 0 60px rgba(255,106,0,0.18)`, `0 0 120px rgba(255,122,26,0.12)`. The far halo must be larger AND fainter — don't stack equal-intensity shadows.
+- **Never use pure white `#FFFFFF` on light surfaces.** Use warm ivory (`#FFF6EA` / `#FFF3E8`) — warm whites with subtle orange/beige contamination. White-on-orange CTA text is the only exception, and even there prefer `#FFF6EA`.
+- **Shadows are peach-tinted, not gray.** In light theme, drop shadows are `rgba(169,68,0,0.X)` or `rgba(50,30,15,0.X)` — never neutral black. Backgrounds are beige-ambient (`#FFF3E8`), not stark white.
+
+### Orb visual recipe
+
+The signature orb is built from layered gradients (see `OrbFill` in `prototype/src/components/Primitives.jsx`):
+
+```css
+/* Body — warm radial centered bottom-of-orb */
+background:
+  radial-gradient(circle at 35% 30%, #FFC27A 0%, transparent 18%),
+  radial-gradient(circle at 50% 80%, #FF7A1A 0%, #FF5E00 45%, #A94400 100%);
+
+/* Liquid fill — 4-stop cinematic amber */
+background: linear-gradient(180deg,
+  #FFB36B 0%, #FF8A2A 30%, #FF6A00 70%, #D94E00 100%);
+
+/* Smoked-glass top overlay (dark theme only) */
+background: linear-gradient(180deg,
+  rgba(255,255,255,0.16) 0%,
+  rgba(255,255,255,0.05) 20%,
+  rgba(42,24,18,0.82) 100%);
+backdrop-filter: blur(24px);
+
+/* Cinematic outer glow */
+box-shadow:
+  0 0 20px  rgba(255,106,0,0.35),
+  0 0 60px  rgba(255,106,0,0.18),
+  0 0 120px rgba(255,122,26,0.12);
+```
+
 ## Context7 (Library Docs)
 
 Always use the `context7` MCP tool when working with any library, framework, SDK, or API — even well-known ones (React Native, Expo, Spring Boot, Angular, Tailwind, etc.). Training data may be stale. Fetch current docs before writing library-specific code.
+
+## 21st-dev/magic (UI Components)
+
+Always use the `21st-dev/magic` MCP server for any UI work — new components, screens, layouts, or refinement of existing components. No exceptions.
+
+- `mcp__magic__21st_magic_component_builder` — generate a new component from intent
+- `mcp__magic__21st_magic_component_inspiration` — fetch design references before building
+- `mcp__magic__21st_magic_component_refiner` — improve/polish an existing component
+- `mcp__magic__logo_search` — fetch brand/company logos as JSX/TSX/SVG
+
+Workflow for any UI task:
+1. Call `21st_magic_component_inspiration` first to ground the design.
+2. Call `21st_magic_component_builder` (new) or `21st_magic_component_refiner` (existing) to produce the component.
+3. Adapt the output to the project's tokens (`var(--gc-*)`) and CSS-module conventions before committing.
+
+This applies to `prototype/`, `admin-web/`, `client-app/`, and `trainer-app/`.
 
 ---
 

@@ -161,7 +161,7 @@
     inset 0 1.5px 0 rgba(255,255,255,0.40),
     inset 0 -1px 0 rgba(255,255,255,0.08),
     inset 0 0 0 1px rgba(255,255,255,0.16),
-    0 24px 56px -22px rgba(196,69,16,0.55);
+    0 24px 56px -22px rgba(255,94,0,0.55);
 }
 
 .hero::after {
@@ -193,7 +193,7 @@
 .hero .heroEyebrow,
 .hero .heroStatLabel { color: rgba(255, 235, 215, 0.78); }
 .hero .heroName,
-.hero .heroStatVal  { color: #FFFFFF; }
+.hero .heroStatVal  { color: #FFF6EA; }
 .hero .heroPlan      { color: rgba(255, 235, 215, 0.85); }
 .hero .heroRingNextLabel,
 .hero .heroRingRestLabel { color: rgba(255, 235, 215, 0.85); }

@@ -1,23 +1,34 @@
-// Vis brand tokens — warm tangerine family, sampled from `docs/brand-ref/light_ref.png`.
-// Single hero "sun-disc" orange + soft cream surfaces in light; same orange shifts
-// to glow on warm charcoal in dark.
+// Vis brand palette — canonical tokens (see CLAUDE.md "Brand Palette").
+//   #FF7A1A primary glowing orange — main orb fill + CTA
+//   #FF5E00 deep emissive orange   — inner glow / hotspots
+//   #FF9B4A soft warm orange       — gradient transitions
+//   #FFC27A highlight orange       — reflections / specular
+//   #A94400 burnt orange shadow    — depth + lower orb shading
+//   #FF6A00 ambient glow orange    — outer bloom / glow
+//   #F7F1E8 warm cream             — light theme background tint
+//   #2A1812 smoked glass brown     — upper orb dark glass
+//   #050505 near-black background  — main dark background
+//   #0E0E0E card black             — elevated surfaces
 
 const ORANGE = {
-  blush:    '#FFDCC4',  // outer fade
-  peach:    '#FFB890',  // mid fade
-  apricot:  '#FF8A4D',  // soft accent
-  tangerine:'#FF5E1F',  // core — sampled from reference Start workout pill / TODAY'S SESSION eyebrow
-  rust:     '#D04510',
-  burnt:    '#8A2E08',
-  charcoal: '#1B0F08',
+  highlight: '#FFC27A',  // specular / reflections
+  blush:     '#FFE0C6',  // derived lighter cream-peach (outer fade)
+  peach:     '#FFC27A',  // alias of highlight
+  apricot:   '#FF9B4A',  // soft warm — gradient transitions
+  tangerine: '#FF7A1A',  // PRIMARY — main CTA + orb fill
+  glow:      '#FF6A00',  // ambient bloom / outer glow
+  rust:      '#FF5E00',  // deep emissive — inner glow / hotspots
+  burnt:     '#A94400',  // shadow / lower orb
+  smoked:    '#2A1812',  // upper orb dark glass (dark theme shell)
+  charcoal:  '#1B0F08',  // warm ink anchor
 };
 
-const ORB = 'radial-gradient(circle at 32% 28%, #FFDCC4 0%, #FF8A4D 38%, #FF5E1F 70%, #8A2E08 100%)';
+const ORB = 'radial-gradient(circle at 32% 28%, #FFE0C6 0%, #FFC27A 22%, #FF9B4A 50%, #FF7A1A 78%, #A94400 100%)';
 
 export const TOKENS = {
   light: {
-    bg:         '#F2EBE0',
-    bgElevated: '#FBF6EE',
+    bg:         '#F7F1E8',
+    bgElevated: '#F5EBDD',
     bgGrouped:  '#EAE2D5',
     bgScrim:    'rgba(242,235,224,0.86)',
 
@@ -33,23 +44,23 @@ export const TOKENS = {
 
     accent:     ORANGE.tangerine,
     accentSoft: ORANGE.apricot,
-    accentInk:  '#FFFFFF',
-    accentTint: 'rgba(255,94,31,0.10)',
-    accentRing: 'rgba(255,94,31,0.30)',
+    accentInk:  '#FFF6EA',
+    accentTint: 'rgba(255,122,26,0.10)',
+    accentRing: 'rgba(255,122,26,0.30)',
 
-    gradient:     'linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #E04A11 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,138,77,0.10), rgba(255,94,31,0.10))',
+    gradient:     'linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,155,74,0.10), rgba(255,122,26,0.10))',
     gradientOrb:  ORB,
-    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #FF8A4D 28%, #FFDCC4 55%, transparent 78%)',
+    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF7A1A 0%, #FF9B4A 28%, #FFE0C6 55%, transparent 78%)',
 
     good: '#3F9D5E',
     warn: '#C97B1B',
     bad:  '#B4350F',
   },
   dark: {
-    bg:         '#0F0A07',
-    bgElevated: '#1A1108',
-    bgGrouped:  '#0C0805',
+    bg:         '#050505',
+    bgElevated: '#0E0E0E',
+    bgGrouped:  '#050505',
     bgScrim:    'rgba(15,10,7,0.84)',
 
     ink:   '#FAF6F2',
@@ -64,14 +75,14 @@ export const TOKENS = {
 
     accent:     ORANGE.tangerine,
     accentSoft: ORANGE.apricot,
-    accentInk:  '#0F0A07',
-    accentTint: 'rgba(255,94,31,0.14)',
-    accentRing: 'rgba(255,94,31,0.40)',
+    accentInk:  '#050505',
+    accentTint: 'rgba(255,122,26,0.14)',
+    accentRing: 'rgba(255,122,26,0.40)',
 
-    gradient:     'linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #D04510 100%)',
-    gradientSoft: 'linear-gradient(135deg, rgba(255,138,77,0.16), rgba(208,69,16,0.20))',
+    gradient:     'linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%)',
+    gradientSoft: 'linear-gradient(135deg, rgba(255,155,74,0.16), rgba(255,94,0,0.20))',
     gradientOrb:  ORB,
-    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF5E1F 0%, #D04510 30%, rgba(138,46,8,0.55) 60%, transparent 80%)',
+    gradientPage: 'radial-gradient(60% 70% at 78% 35%, #FF7A1A 0%, #FF5E00 30%, rgba(169,68,0,0.55) 60%, transparent 80%)',
 
     good: '#5BCB85',
     warn: '#F2A640',

@@ -12,7 +12,7 @@
 
 /* Reference uses flat near-black (dark) / flat cream (light) — no whole-screen glow */
 [data-theme="dark"] .shell { background: #0A0604; }
-[data-theme="light"] .shell { background: #F4ECDF; }
+[data-theme="light"] .shell { background: #F7F1E8; }
 
 .shell > .scroll { position: relative; z-index: 1; }
 
@@ -79,10 +79,10 @@
 }
 
 [data-theme="dark"]  .hero { --hero-scrim: rgba(24,18,16,0.65); }
-[data-theme="light"] .hero { --hero-scrim: rgba(255,255,255,0.78); }
+[data-theme="light"] .hero { --hero-scrim: rgba(255,245,232,0.55); }
 
 [data-theme="dark"] .hero {
-  background: #181210;
+  background: #0E0E0E;
   box-shadow:
     inset 0 1px 0 rgba(255,210,170,0.06),
     inset 0 0 0 1px rgba(255,210,170,0.05),
@@ -91,10 +91,14 @@
 }
 
 [data-theme="light"] .hero {
-  background: #FFFFFF;
+  /* Warm cream→peach card surface (brand-ref reference_light.png).
+     Kept subtle so the orb on the right edge reads as a separate object. */
+  background:
+    radial-gradient(140% 100% at 105% -10%, rgba(255,200,160,0.22) 0%, transparent 55%),
+    linear-gradient(160deg, #F7F1E8 0%, #F5EBDD 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    inset 0 1.5px 0 rgba(255,243,232,0.96),
+    inset 0 0 0 0.5px rgba(255,94,0,0.06),
     0 14px 34px -22px rgba(50,30,15,0.18);
   color: #1B1108;
 }
@@ -173,7 +177,7 @@
   gap: 7px;
   padding: 4px 12px 4px 4px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.96);
+  background: rgba(255,243,232,0.96);
   border: 0;
   cursor: pointer;
   color: #1B1108;
@@ -201,7 +205,7 @@
   border-radius: 16px;
   border: 0;
   cursor: pointer;
-  background: linear-gradient(180deg, #FF7A2E 0%, #FF5E1F 55%, #E04A11 100%);
+  background: linear-gradient(180deg, #FF7A1A 0%, #FF7A1A 55%, #FF5E00 100%);
   color: #fff;
   font-family: var(--vis-font-ui);
   font-size: 15px;
@@ -214,7 +218,7 @@
   box-shadow:
     0 1px 0 rgba(255,255,255,0.30) inset,
     0 -1px 0 rgba(120,40,0,0.20) inset,
-    0 10px 22px -8px rgba(255,94,31,0.55);
+    0 10px 22px -8px rgba(255,122,26,0.55);
   transition: transform var(--vis-dur-micro) var(--vis-ease), filter var(--vis-dur-short) var(--vis-ease);
 }
 
@@ -247,7 +251,7 @@
 }
 
 [data-theme="dark"] .recoveryCard {
-  background: #181210;
+  background: #0E0E0E;
   box-shadow:
     inset 0 1px 0 rgba(255,210,170,0.06),
     inset 0 0 0 1px rgba(255,210,170,0.05),
@@ -255,10 +259,13 @@
 }
 
 [data-theme="light"] .recoveryCard {
-  background: #FFFFFF;
+  /* Warm cream→peach surface — orb anchored left, soft peach glow behind it */
+  background:
+    radial-gradient(110% 80% at 0% 100%, rgba(255,196,150,0.50) 0%, rgba(255,224,196,0.18) 40%, transparent 72%),
+    linear-gradient(160deg, #F7F1E8 0%, #F5EBDD 100%);
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 0 0 0.5px rgba(60,40,28,0.06),
+    inset 0 1.5px 0 rgba(255,243,232,0.96),
+    inset 0 0 0 0.5px rgba(255,94,0,0.06),
     0 14px 34px -22px rgba(50,30,15,0.18);
 }
 
@@ -337,6 +344,12 @@
 .recoveryStrain[data-strain="moderate"] { background: rgba(255,180,80,0.22); color: #FFE6BC; }
 .recoveryStrain[data-strain="high"]     { background: rgba(255,120,80,0.22); color: #FFD2BD; }
 
+/* Light theme: pale-on-pale fails on cream cards. Use darker text + saturated bg. */
+[data-theme="light"] .recoveryStrain[data-strain="low"]      { background: rgba(63,157,94,0.18);  color: #1F6E45; }
+[data-theme="light"] .recoveryStrain[data-strain="moderate"] { background: rgba(201,123,27,0.18); color: #8A4F0C; }
+[data-theme="light"] .recoveryStrain[data-strain="high"]     { background: rgba(180,53,15,0.18);  color: #8E2A0A; }
+[data-theme="light"] .recoveryStrain                         { background: rgba(60,40,28,0.08);   color: #3A2A1F; }
+
 .recoveryStrainDot {
   width: 6px; height: 6px; border-radius: 50%;
   background: currentColor;
@@ -362,7 +375,7 @@
   font-family: var(--vis-font-display);
   font-size: 24px;
   font-weight: 500;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,243,232,0.65);
   margin-right: 10px;
 }
 
@@ -370,7 +383,7 @@
   font-family: var(--vis-font-ui);
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,243,232,0.65);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -387,7 +400,7 @@
 .recoveryBarFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FFD1A8 0%, #FF8A5C 50%, #F25A1F 100%);
+  background: linear-gradient(90deg, #FFE0C6 0%, #FF9B4A 50%, #FF6A00 100%);
   box-shadow:
     0 0 14px rgba(255,138,92,0.55),
     inset 0 1px 0 rgba(255,255,255,0.30);
@@ -465,8 +478,8 @@
 .recoveryDot--active {
   width: 22px;
   border-radius: 4px;
-  background: #fff;
-  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+  background: var(--gc-accent);
+  box-shadow: 0 0 10px rgba(255,122,26,0.55);
 }
 
 .muscleStack {
@@ -1825,7 +1838,7 @@
 }
 
 [data-theme="dark"] .recoveryDetailCard {
-  background: #181210;
+  background: #0E0E0E;
   box-shadow:
     inset 0 1px 0 rgba(255,210,170,0.06),
     inset 0 0 0 1px rgba(255,210,170,0.05),
@@ -1834,7 +1847,7 @@
 }
 
 [data-theme="light"] .recoveryDetailCard {
-  background: #FFFFFF;
+  background: #FFF6EA;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,1),
     inset 0 0 0 0.5px rgba(60,40,28,0.06),
@@ -1899,7 +1912,7 @@
 }
 
 [data-theme="dark"] .recoveryTrendCard {
-  background: #181210;
+  background: #0E0E0E;
   box-shadow:
     inset 0 1px 0 rgba(255,210,170,0.06),
     inset 0 0 0 1px rgba(255,210,170,0.05),
@@ -1907,7 +1920,7 @@
 }
 
 [data-theme="light"] .recoveryTrendCard {
-  background: #FFFFFF;
+  background: #FFF6EA;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,1),
     inset 0 0 0 0.5px rgba(60,40,28,0.06),
@@ -1971,7 +1984,7 @@
 }
 
 [data-theme="dark"] .recoveryFactorsCard {
-  background: #181210;
+  background: #0E0E0E;
   box-shadow:
     inset 0 1px 0 rgba(255,210,170,0.06),
     inset 0 0 0 1px rgba(255,210,170,0.05),
@@ -1979,7 +1992,7 @@
 }
 
 [data-theme="light"] .recoveryFactorsCard {
-  background: #FFFFFF;
+  background: #FFF6EA;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,1),
     inset 0 0 0 0.5px rgba(60,40,28,0.06),

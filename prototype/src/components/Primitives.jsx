@@ -1,4 +1,53 @@
+import { useEffect, useRef, useMemo } from 'react';
 import s from './Primitives.module.css';
+
+// ─── Liquid wave path builder ───────────────────────────────────────────────
+// Generates a cubic-bezier SVG path that curves naturally across the orb.
+// Sum of 3 non-commensurate sinusoids → quasi-periodic, never repeats cleanly.
+// `tilt` rotates the surface slightly (asymmetric gravity feel).
+function buildWavePath(baseY, t, amp, tilt) {
+  const pts = [];
+  for (let x = -30; x <= 130; x += 16) {
+    const phase = x / 28 + t;
+    const y =
+      baseY +
+      Math.sin(phase) * amp * 0.55 +
+      Math.sin(phase * 0.43 + t * 0.7) * amp * 0.35 +
+      Math.sin(phase * 2.1 + t * 1.2) * amp * 0.12 +
+      (x - 50) * tilt * 0.012;
+    pts.push([x, y]);
+  }
+  let d = `M ${pts[0][0]},${pts[0][1].toFixed(2)}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1];
+    const [x1, y1] = pts[i];
+    const dx = x1 - x0;
+    d += ` C ${(x0 + dx * 0.4).toFixed(2)},${y0.toFixed(2)} ${(x1 - dx * 0.4).toFixed(2)},${y1.toFixed(2)} ${x1.toFixed(2)},${y1.toFixed(2)}`;
+  }
+  d += ' L 130,120 L -30,120 Z';
+  return d;
+}
+
+function buildMeniscusPath(baseY, t, amp, tilt) {
+  const pts = [];
+  for (let x = -30; x <= 130; x += 16) {
+    const phase = x / 28 + t;
+    const y =
+      baseY +
+      Math.sin(phase) * amp * 0.55 +
+      Math.sin(phase * 0.43 + t * 0.7) * amp * 0.35 +
+      (x - 50) * tilt * 0.012;
+    pts.push([x, y]);
+  }
+  let d = `M ${pts[0][0]},${pts[0][1].toFixed(2)}`;
+  for (let i = 1; i < pts.length; i++) {
+    const [x0, y0] = pts[i - 1];
+    const [x1, y1] = pts[i];
+    const dx = x1 - x0;
+    d += ` C ${(x0 + dx * 0.4).toFixed(2)},${y0.toFixed(2)} ${(x1 - dx * 0.4).toFixed(2)},${y1.toFixed(2)} ${x1.toFixed(2)},${y1.toFixed(2)}`;
+  }
+  return d;
+}
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
 const PATHS = {
@@ -159,14 +208,14 @@ export function RingProgress({ value, size = 108, stroke = 11, children, showMir
       <svg width={size} height={size} className={s.ringSvg}>
         <defs>
           <linearGradient id={`${gid}-g`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%"   stopColor="#FFDCC4" />
-            <stop offset="40%"  stopColor="#FFB07A" />
-            <stop offset="100%" stopColor="#FF5E1F" />
+            <stop offset="0%"   stopColor="#FFE0C6" />
+            <stop offset="40%"  stopColor="#FFC27A" />
+            <stop offset="100%" stopColor="#FF7A1A" />
           </linearGradient>
           <radialGradient id={`${gid}-head`} cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%"   stopColor="#FFDCC4" />
-            <stop offset="55%"  stopColor="#FF8A4D" />
-            <stop offset="100%" stopColor="#FF5E1F" />
+            <stop offset="0%"   stopColor="#FFE0C6" />
+            <stop offset="55%"  stopColor="#FF9B4A" />
+            <stop offset="100%" stopColor="#FF7A1A" />
           </radialGradient>
         </defs>
 
@@ -287,111 +336,215 @@ export function TensionOrb({ state = 'rest', size = 28 }) {
   );
 }
 
-// ─── OrbFill — glossy 3D liquid sphere (brand-ref: reference_dark.png / reference_light.png)
-// Reference: dark warm-charcoal shell, tangerine liquid filling from bottom,
-// strong cream specular highlight top-left, soft cast shadow under.
+// ─── OrbFill — molten-amber-in-smoked-glass sphere ──────────────────────────
+// Layered physical render (see CLAUDE.md "Orb visual recipe").
+// Liquid surface is JS-driven: bezier path rebuilt every frame from a sum of
+// non-commensurate sinusoids + asymmetric tilt → quasi-periodic, never loops.
+// Light & dark themes both show liquid; theme only swaps body/dome colors.
+//
+// Layers (low→high z):
+//   1 atmospheric bloom (huge blurred amber halo behind)
+//   2 body radial (warm sphere base + peach hotspot)
+//   3 liquid bezier wave (back + front + meniscus stroke) — JS-animated
+//   4 emissive core (bright amber glow at bottom of liquid)
+//   5 subsurface glow (amber bleed at liquid line into glass above)
+//   6 smoked-glass dome (dark brown top / cream ivory in light)
+//   7 inner-shadow vignette (sphericality)
+//   8 specular reflections (big soft top-left + tiny crisp hotspot)
+//   + outer cinematic 3-layer box-shadow glow on container
 export function OrbFill({ value = 0, size = 140, showStrip = true }) {
   const v = Math.max(0, Math.min(100, value));
-  // Liquid surface Y (SVG coords, viewBox 0–120) — inverted: 0%→120, 100%→0
-  const surfaceY = 120 - (v * 1.20);
-  const reactKey = `orb-${size}-${Math.round(v * 100)}`;
+  const surfaceY = 100 - v; // SVG units (viewBox 0–100)
+  const reactKey = useMemo(() => `orb-${Math.random().toString(36).slice(2, 9)}`, []);
+
+  const refFront = useRef(null);
+  const refBack = useRef(null);
+  const refOcc = useRef(null);
+  const refMen = useRef(null);
+  const refSubsurface = useRef(null);
+  const refCore = useRef(null);
+  const refOrb = useRef(null);
+
+  // Initial paths so first paint isn't blank
+  const initFront = buildWavePath(surfaceY, 0, 2.6, 0);
+  const initBack  = buildWavePath(surfaceY + 0.8, 1.5, 3.6, 0);
+  const initMen   = buildMeniscusPath(surfaceY, 0, 2.6, 0);
+
+  // Energy scales with recovery — higher v = more vigorous fluid response
+  const energy = 0.55 + 0.55 * (v / 100);
+
+  // Mutable physics state — refs (NOT React state) so 60fps integration
+  // doesn't trigger re-renders.
+  const sim = useRef({
+    tilt: 0, tiltVel: 0, tiltImpulse: 0,
+    slosh: 0, sloshVel: 0, sloshImpulse: 0,
+    level: 0, levelVel: 0, levelImpulse: 0,
+    lastT: 0,
+    nextImpulse: 0,
+  });
+
+  useEffect(() => {
+    let raf;
+    const start = performance.now();
+    sim.current.lastT = start;
+    sim.current.nextImpulse = start + 700 + Math.random() * 1200;
+
+    const tick = (now) => {
+      const dt = Math.min(0.05, (now - sim.current.lastT) / 1000);
+      sim.current.lastT = now;
+      const t = (now - start) / 1000;
+      const s = sim.current;
+
+      // Periodic random impulses — kick the spring like a real liquid disturbed
+      if (now >= s.nextImpulse) {
+        s.tiltImpulse  += (Math.random() - 0.5) * 3.2 * energy;
+        s.sloshImpulse += (Math.random() - 0.5) * 2.4 * energy;
+        s.levelImpulse += (Math.random() - 0.5) * 0.9 * energy;
+        s.nextImpulse = now + 500 + Math.random() * 1400;
+      }
+      // Impulses decay toward zero (damped energy dissipation)
+      s.tiltImpulse  *= Math.exp(-1.4 * dt);
+      s.sloshImpulse *= Math.exp(-1.4 * dt);
+      s.levelImpulse *= Math.exp(-2.2 * dt);
+
+      // Continuous quasi-periodic drift — sum of non-commensurate sines so
+      // motion never loops cleanly
+      const driftTilt  = energy * (1.6 * Math.sin(t * 0.42 + 0.7) + 0.7 * Math.sin(t * 0.91 + 1.4) + 0.35 * Math.sin(t * 1.73));
+      const driftSlosh = energy * (1.4 * Math.sin(t * 0.55)        + 0.8 * Math.sin(t * 1.17 + 0.7) + 0.30 * Math.sin(t * 2.03 + 0.2));
+      const driftLevel = energy * (0.45 * Math.sin(t * 0.38 + 0.3) + 0.25 * Math.sin(t * 0.81 + 1.1));
+
+      const tiltTarget  = driftTilt  + s.tiltImpulse;
+      const sloshTarget = driftSlosh + s.sloshImpulse;
+      const levelTarget = driftLevel + s.levelImpulse;
+
+      // Damped spring integrator (heavy molten amber — higher mass, lower damping)
+      // F = k(target - x) - d * v
+      const k = 24, d = 3.0;
+      s.tiltVel  += (k * (tiltTarget  - s.tilt)  - d * s.tiltVel)  * dt;
+      s.sloshVel += (k * (sloshTarget - s.slosh) - d * s.sloshVel) * dt;
+      // Level spring is heavier (slower, more inertia)
+      const kL = 14, dL = 2.4;
+      s.levelVel += (kL * (levelTarget - s.level) - dL * s.levelVel) * dt;
+      s.tilt  += s.tiltVel  * dt;
+      s.slosh += s.sloshVel * dt;
+      s.level += s.levelVel * dt;
+
+      const ampF = 2.6 + energy * 1.8;
+      const ampB = 3.6 + energy * 2.2;
+      const baseY = surfaceY + s.level;
+      // phaseShift = horizontal slosh — front and back wave drift in opposite phase
+      const phaseF =  s.slosh * 0.18;
+      const phaseB = -s.slosh * 0.22 + 1.5;
+
+      const frontD = buildWavePath(baseY,                  t * 0.95 + phaseF, ampF,  s.tilt);
+      const backD  = buildWavePath(baseY + 0.9 + s.level * 0.4, t * 0.62 + phaseB, ampB, -s.tilt * 0.6);
+      const menD   = buildMeniscusPath(baseY,              t * 0.95 + phaseF, ampF,  s.tilt);
+
+      if (refFront.current) refFront.current.setAttribute('d', frontD);
+      if (refOcc.current)   refOcc.current.setAttribute('d',   frontD);
+      if (refBack.current)  refBack.current.setAttribute('d',  backD);
+      if (refMen.current)   refMen.current.setAttribute('d',   menD);
+
+      if (refSubsurface.current) {
+        refSubsurface.current.style.setProperty('--orb-liquid-y', `${baseY}%`);
+      }
+
+      // Caustic drift — bright core inside liquid drifts horizontally,
+      // pulses asymmetrically. Visible light "moving" inside the orb.
+      if (refCore.current) {
+        const cx = 50 + s.slosh * 0.55 + Math.sin(t * 0.31) * 3.5;
+        const cy = 88 + s.tilt * 0.35;
+        const intensity = 0.85 + 0.18 * Math.sin(t * 0.73 + 1.1);
+        refCore.current.style.setProperty('--orb-core-x', `${cx}%`);
+        refCore.current.style.setProperty('--orb-core-y', `${cy}%`);
+        refCore.current.style.setProperty('--orb-core-i', intensity.toFixed(3));
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [surfaceY, energy]);
+
   return (
-    <div className={s.orbFill} style={{ width: size, height: size }}>
-      <svg viewBox="0 0 120 120" className={s.orbFillSvg} aria-hidden="true">
-        <defs>
-          <clipPath id={`orbClip-${reactKey}`}><circle cx="60" cy="60" r="56"/></clipPath>
+    <div className={s.orbFill}>
+      <div ref={refOrb} className={s.orb} style={{ width: size, height: size }}>
+        {/* L1 — atmospheric bloom */}
+        <div className={s.orbBloom} aria-hidden="true"/>
 
-          {/* Shell — warm near-black with subtle radial shading */}
-          <radialGradient id={`orbShell-${reactKey}`} cx="0.35" cy="0.30" r="0.85">
-            <stop offset="0%"   stopColor="#3A2418"/>
-            <stop offset="55%"  stopColor="#1A0F0A"/>
-            <stop offset="100%" stopColor="#0A0604"/>
-          </radialGradient>
+        {/* L2 — glass shell tint (very subtle — orb is TRANSPARENT, shows card behind) */}
+        <div className={s.orbGlassTint} aria-hidden="true"/>
 
-          {/* Liquid — flat tangerine; brightness constant regardless of fill level */}
-          <linearGradient id={`orbLiquid-${reactKey}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#FF6E2A"/>
-            <stop offset="100%" stopColor="#FF5E1F"/>
-          </linearGradient>
+        {/* L3 — liquid (bezier wave, JS-animated).
+            Volumetric radial gradient: bright amber core at bottom-center →
+            burnt deep amber at edges → dark rim. Models gravity (densest at base)
+            and sphere occlusion (darkest where liquid meets glass curvature). */}
+        <div className={s.orbLiquidClip} aria-hidden="true">
+          <svg viewBox="0 0 100 100" className={s.orbLiquidSvg} preserveAspectRatio="none">
+            <defs>
+              {/* Radial — center bright #FFC27A, mid #FF7A1A, deep #FF5E00, dark edge #A94400 */}
+              <radialGradient id={`orbAmber-${reactKey}`} cx="50" cy="86" r="62" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stopColor="#FFC27A"/>
+                <stop offset="22%"  stopColor="#FF8A2A"/>
+                <stop offset="48%"  stopColor="#FF7A1A"/>
+                <stop offset="74%"  stopColor="#FF5E00"/>
+                <stop offset="100%" stopColor="#A94400"/>
+              </radialGradient>
+              {/* Edge occlusion — dark ring where liquid meets sphere boundary */}
+              <radialGradient id={`orbLiquidOcc-${reactKey}`} cx="50" cy="50" r="50" gradientUnits="userSpaceOnUse">
+                <stop offset="0%"   stopColor="rgba(0,0,0,0)"/>
+                <stop offset="70%"  stopColor="rgba(0,0,0,0)"/>
+                <stop offset="92%"  stopColor="rgba(0,0,0,0.18)"/>
+                <stop offset="100%" stopColor="rgba(110,40,0,0.55)"/>
+              </radialGradient>
+              {/* Meniscus — bright cream stroke softened to feel physically thick */}
+              <linearGradient id={`orbMen-${reactKey}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stopColor="rgba(255,236,210,0.92)"/>
+                <stop offset="100%" stopColor="rgba(255,236,210,0)"/>
+              </linearGradient>
+            </defs>
+            <path ref={refBack}  className={s.orbWaveBack}  d={initBack}  fill={`url(#orbAmber-${reactKey})`} opacity="0.7"/>
+            <path ref={refFront} className={s.orbWaveFront} d={initFront} fill={`url(#orbAmber-${reactKey})`}/>
+            {/* Edge occlusion — same wave shape, darker fill near sphere edge */}
+            <path ref={refOcc} d={initFront} fill={`url(#orbLiquidOcc-${reactKey})`}/>
+            <path ref={refMen}   className={s.orbMeniscusPath} d={initMen} stroke={`url(#orbMen-${reactKey})`} strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+          </svg>
+        </div>
 
-          {/* Liquid surface meniscus — slight brighter band at the top edge */}
-          <linearGradient id={`orbMeniscus-${reactKey}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="rgba(255,225,200,0.85)"/>
-            <stop offset="100%" stopColor="rgba(255,225,200,0)"/>
-          </linearGradient>
+        {/* L4 — emissive core (bottom of liquid glows volumetrically; drifts) */}
+        <div
+          ref={refCore}
+          className={s.orbCore}
+          style={{ '--orb-core-x': '50%', '--orb-core-y': '88%', '--orb-core-i': 1 }}
+          aria-hidden="true"
+        />
 
-          {/* Big specular highlight — cream sheen top-left */}
-          <radialGradient id={`orbHi-${reactKey}`} cx="0.35" cy="0.25" r="0.45">
-            <stop offset="0%"   stopColor="rgba(255,240,225,0.85)"/>
-            <stop offset="55%"  stopColor="rgba(255,225,200,0.30)"/>
-            <stop offset="100%" stopColor="rgba(255,225,200,0)"/>
-          </radialGradient>
+        {/* L5 — subsurface glow at liquid line, bleeds upward */}
+        <div
+          ref={refSubsurface}
+          className={s.orbSubsurface}
+          style={{ '--orb-liquid-y': `${surfaceY}%` }}
+          aria-hidden="true"
+        />
 
-          {/* Inner shadow ring — darkens the sphere edge from inside */}
-          <radialGradient id={`orbInner-${reactKey}`} cx="0.5" cy="0.5" r="0.5">
-            <stop offset="70%"  stopColor="rgba(0,0,0,0)"/>
-            <stop offset="100%" stopColor="rgba(0,0,0,0.55)"/>
-          </radialGradient>
+        {/* L6 — smoked-glass dome (theme-aware) */}
+        <div className={s.orbDome} aria-hidden="true"/>
 
-          {/* Soft rim — warm amber pinprick along bottom-right curvature */}
-          <radialGradient id={`orbRim-${reactKey}`} cx="0.65" cy="0.75" r="0.55">
-            <stop offset="0%"   stopColor="rgba(0,0,0,0)"/>
-            <stop offset="80%"  stopColor="rgba(0,0,0,0)"/>
-            <stop offset="100%" stopColor="rgba(255,170,110,0.35)"/>
-          </radialGradient>
-        </defs>
+        {/* L7 — inner shadow vignette */}
+        <div className={s.orbInner} aria-hidden="true"/>
 
-        {/* Soft cast shadow under the orb */}
-        <ellipse cx="60" cy="114" rx="34" ry="4" fill="rgba(0,0,0,0.45)" filter="blur(3px)"/>
+        {/* L8 — specular reflections */}
+        <div className={s.orbHiMain} aria-hidden="true"/>
+        <div className={s.orbHiSpark} aria-hidden="true"/>
 
-        {/* Shell body */}
-        <circle cx="60" cy="60" r="56" fill={`url(#orbShell-${reactKey})`}/>
+        {/* L9 — fresnel rim (top bright, fades around) */}
+        <div className={s.orbFresnel} aria-hidden="true"/>
+      </div>
 
-        {/* Liquid + meniscus clipped to sphere */}
-        <g clipPath={`url(#orbClip-${reactKey})`}>
-          <g className={s.orbWaveGroup} style={{ transform: `translateY(${surfaceY}px)` }}>
-            <path
-              className={s.orbWaveBack}
-              d="M-60,4 Q-30,-1 0,3 T60,3 T120,3 T180,3 L180,120 L-60,120 Z"
-              fill={`url(#orbLiquid-${reactKey})`}
-              opacity="0.55"
-            />
-            <path
-              className={s.orbWave}
-              d="M-60,0 Q-30,-3 0,0 T60,0 T120,0 T180,0 L180,120 L-60,120 Z"
-              fill={`url(#orbLiquid-${reactKey})`}
-            />
-            {/* Surface meniscus — bright band at top of liquid */}
-            <path
-              d="M-60,-1 Q-30,-4 0,-1 T60,-1 T120,-1 T180,-1 L180,3 L-60,3 Z"
-              fill={`url(#orbMeniscus-${reactKey})`}
-              opacity="0.85"
-            />
-          </g>
-        </g>
+      {/* Bottom contact shadow — replaces uniform outer halo. Light from the
+          liquid scatters DOWN onto the card surface, not as a uniform ring. */}
+      <div className={s.orbContactShadow} aria-hidden="true"/>
 
-        {/* Inner shadow ring (gives 3D sphericality) */}
-        <circle cx="60" cy="60" r="56" fill={`url(#orbInner-${reactKey})`} pointerEvents="none"/>
-
-        {/* Rim ambient (warm pinprick) */}
-        <circle cx="60" cy="60" r="56" fill={`url(#orbRim-${reactKey})`} pointerEvents="none"/>
-
-        {/* Big top-left specular highlight (cream sheen) */}
-        <ellipse cx="44" cy="32" rx="26" ry="14"
-          fill={`url(#orbHi-${reactKey})`}
-          transform="rotate(-28 44 32)"
-          pointerEvents="none"/>
-
-        {/* Tiny crisp highlight dot — adds glass-like sparkle */}
-        <ellipse cx="40" cy="26" rx="6" ry="2.5"
-          fill="rgba(255,250,245,0.75)"
-          transform="rotate(-28 40 26)"
-          pointerEvents="none"/>
-
-        {/* Rim edge — thin warm outline */}
-        <circle cx="60" cy="60" r="56" fill="none"
-          stroke="rgba(255,170,110,0.18)" strokeWidth="0.4"/>
-      </svg>
       {showStrip && (
         <div className={s.orbFillStrip}>
           <div className={s.orbFillStripFill} style={{ width: `${v}%` }}/>

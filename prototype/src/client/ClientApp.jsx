@@ -38,7 +38,7 @@ function ClientHome({ t, onStartWorkout, onViewCoach, onViewRecovery }) {
                 <span className={s.heroNumber}>6<span className={s.heroNumberUnit}>exercises</span></span>
                 <span className={s.heroNumber}>55<span className={s.heroNumberUnit}>min</span></span>
                 <button onClick={onViewCoach} className={s.heroCoachBtn}>
-                  <Avatar initials="RK" size={20} t={t} color="rgba(255,94,31,0.85)"/>
+                  <Avatar initials="RK" size={20} t={t} color="rgba(255,122,26,0.85)"/>
                   <span className={s.heroCoachLabel}>Coach Rohan</span>
                 </button>
               </div>
@@ -351,9 +351,9 @@ function ClientWorkout({ t, onStartWorkout }) {
 // ─── Muscle Recovery Detail ──────────────────────────────────────────────────
 function RecoveryDetail({ t, onBack, startIdx = 0 }) {
   const FACTORS = [
-    { k: 'sleep',    l: 'Sleep',         color: '#FF5E1F' },
+    { k: 'sleep',    l: 'Sleep',         color: '#FF7A1A' },
     { k: 'nutrition',l: 'Nutrition',     color: '#FF6A3D' },
-    { k: 'training', l: 'Training load', color: '#FFB07A' },
+    { k: 'training', l: 'Training load', color: '#FFC27A' },
     { k: 'hydration',l: 'Hydration',     color: '#5BCB85' },
   ];
   const groups = [
@@ -445,8 +445,8 @@ function RecoveryDetail({ t, onBack, startIdx = 0 }) {
             <svg viewBox={`0 0 ${W} ${H}`} className={s.recoveryTrendSvg} preserveAspectRatio="none">
               <defs>
                 <linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#FF5E1F" stopOpacity="0.32"/>
-                  <stop offset="100%" stopColor="#FF5E1F" stopOpacity="0"/>
+                  <stop offset="0%" stopColor="#FF7A1A" stopOpacity="0.32"/>
+                  <stop offset="100%" stopColor="#FF7A1A" stopOpacity="0"/>
                 </linearGradient>
               </defs>
               {/* gridlines at 25/50/75/100 */}
@@ -455,12 +455,12 @@ function RecoveryDetail({ t, onBack, startIdx = 0 }) {
                   stroke="currentColor" strokeOpacity="0.08" strokeWidth="0.6" strokeDasharray="2 3"/>
               ))}
               <path d={areaD} fill="url(#trendArea)"/>
-              <path d={pathD} fill="none" stroke="#FF5E1F" strokeWidth="2"
+              <path d={pathD} fill="none" stroke="#FF7A1A" strokeWidth="2"
                 strokeLinecap="round" strokeLinejoin="round"/>
               {points.map(([x, y], i) => (
                 <circle key={i} cx={x} cy={y} r={i === points.length - 1 ? 3.2 : 2}
-                  fill={i === points.length - 1 ? '#FFDCC4' : '#FF5E1F'}
-                  stroke="#E04A11" strokeWidth={i === points.length - 1 ? 1.2 : 0}/>
+                  fill={i === points.length - 1 ? '#FFE0C6' : '#FF7A1A'}
+                  stroke="#FF5E00" strokeWidth={i === points.length - 1 ? 1.2 : 0}/>
               ))}
             </svg>
           </div>

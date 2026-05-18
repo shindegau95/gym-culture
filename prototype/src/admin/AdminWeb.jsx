@@ -73,8 +73,8 @@ function Sidebar({ active, onNav }) {
 // ─── BrandColorPicker — Owner-only tenant accent override (mock) ─────────────
 // Maps to backend GymBrand.primary_color column (see spec §5).
 const BRAND_PRESETS = [
-  { id: 'vis',     label: 'Vis',     accent: '#F25A1F', soft: '#FF8A5C', deep: '#8A2E08', light: { accent: '#F25A1F' }, dark: { accent: '#FF6A2C' } },
-  { id: 'iron',    label: 'Iron',    accent: '#B43F00', soft: '#FF7A30', deep: '#5A1F00', light: { accent: '#B43F00' }, dark: { accent: '#E25510' } },
+  { id: 'vis',     label: 'Vis',     accent: '#FF6A00', soft: '#FF9B4A', deep: '#A94400', light: { accent: '#FF6A00' }, dark: { accent: '#FF6A00' } },
+  { id: 'iron',    label: 'Iron',    accent: '#A94400', soft: '#FF7A30', deep: '#5A1F00', light: { accent: '#A94400' }, dark: { accent: '#E25510' } },
   { id: 'amber',   label: 'Amber',   accent: '#E08A00', soft: '#FFB855', deep: '#7A4400', light: { accent: '#C97500' }, dark: { accent: '#FFA033' } },
   { id: 'crimson', label: 'Crimson', accent: '#C92330', soft: '#FF6878', deep: '#6A0E15', light: { accent: '#C92330' }, dark: { accent: '#FF4054' } },
 ];
@@ -266,7 +266,7 @@ function RecentActivity() {
   );
 }
 
-const BRANCH_COLORS = ['#FF6A2C', '#FFB13D', '#22A06B', '#5B8DEF'];
+const BRANCH_COLORS = ['#FF6A00', '#FFB13D', '#22A06B', '#5B8DEF'];
 const MONTHS = ['Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
 
 const BRANCHES = [
@@ -828,7 +828,7 @@ function ScoreRing({ label, value }) {
           <defs>
             <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#FF9C66"/>
-              <stop offset="100%" stopColor="#FF6A2C"/>
+              <stop offset="100%" stopColor="#FF6A00"/>
             </linearGradient>
           </defs>
         </svg>
@@ -895,7 +895,7 @@ function Trainers() {
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 function DashIcon({ active }) {
-  const c = active ? '#FF6A2C' : 'currentColor';
+  const c = active ? '#FF6A00' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 1 : 0.5}/>
     <rect x={11} y={1} width={6} height={6} rx={2} fill={c} opacity={active ? 0.6 : 0.3}/>
@@ -904,7 +904,7 @@ function DashIcon({ active }) {
   </svg>;
 }
 function MembersIcon({ active }) {
-  const c = active ? '#FF6A2C' : 'currentColor';
+  const c = active ? '#FF6A00' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <circle cx={7} cy={6} r={3.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 15c0-3 2.7-5 6-5s6 2 6 5" stroke={c} strokeWidth={1.5} strokeLinecap="round"/>
@@ -913,7 +913,7 @@ function MembersIcon({ active }) {
   </svg>;
 }
 function PayIcon({ active }) {
-  const c = active ? '#FF6A2C' : 'currentColor';
+  const c = active ? '#FF6A00' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <rect x={1} y={4} width={16} height={11} rx={2.5} stroke={c} strokeWidth={1.5}/>
     <path d="M1 8h16" stroke={c} strokeWidth={1.5}/>
@@ -921,7 +921,7 @@ function PayIcon({ active }) {
   </svg>;
 }
 function TrainerIcon({ active }) {
-  const c = active ? '#FF6A2C' : 'currentColor';
+  const c = active ? '#FF6A00' : 'currentColor';
   return <svg width={18} height={18} viewBox="0 0 18 18" fill="none">
     <path d="M2 9h3l2-5 3 9 2-4h4" stroke={c} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"/>
   </svg>;

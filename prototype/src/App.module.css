@@ -11,7 +11,7 @@
 }
 
 [data-theme="dark"].shell  { background: #0A0604; }
-[data-theme="light"].shell { background: #F4ECDF; }
+[data-theme="light"].shell { background: #F7F1E8; }
 
 .nav {
   width: 100%;
@@ -110,7 +110,7 @@
 
 .switchBtn--active {
   background: var(--gc-gradient);
-  color: #FFFFFF;
+  color: #FFF6EA;
   font-weight: 600;
   box-shadow:
     0 6px 18px -6px rgba(242,90,31,0.55),

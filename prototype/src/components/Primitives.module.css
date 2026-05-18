@@ -87,7 +87,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.24),
     inset 0 0 0 1px rgba(255,255,255,0.10),
-    0 18px 40px -22px rgba(196,69,16,0.30);
+    0 18px 40px -22px rgba(255,94,0,0.30);
   margin-bottom: 8px;
 }
 
@@ -96,8 +96,8 @@
     linear-gradient(180deg, rgba(255,253,250,0.72) 0%, rgba(255,250,242,0.48) 70%),
     linear-gradient(180deg, rgba(255,250,242,0.34), rgba(255,250,242,0.20));
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.96),
-    inset 0 0 0 0.5px rgba(196,69,16,0.06),
+    inset 0 1.5px 0 rgba(255,243,232,0.96),
+    inset 0 0 0 0.5px rgba(255,94,0,0.06),
     0 18px 40px -18px rgba(50,30,15,0.20),
     0 4px 12px -6px rgba(50,30,15,0.10);
   border-radius: 22px;
@@ -194,7 +194,7 @@
 .progressFill {
   height: 100%;
   background: linear-gradient(90deg,
-    #FFD1A8 0%, #FF8A4D 30%, #FF5E1F 60%, #FF8A4D 80%, #FFD1A8 100%);
+    #FFE0C6 0%, #FF9B4A 30%, #FF7A1A 60%, #FF9B4A 80%, #FFE0C6 100%);
   background-size: 200% 100%;
   border-radius: 999px;
   transition: width 0.6s ease;
@@ -210,7 +210,7 @@
   position: absolute; inset: 0;
   background: linear-gradient(110deg,
     transparent 0%, transparent 35%,
-    rgba(255,255,255,0.55) 50%,
+    rgba(255,243,232,0.55) 50%,
     transparent 65%, transparent 100%);
   background-size: 220% 100%;
   animation: visShimmer 3.5s linear infinite;
@@ -270,14 +270,14 @@
   z-index: 2;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%),
-    linear-gradient(180deg, rgba(255,209,168,0.10), rgba(138,46,8,0.16));
+    linear-gradient(180deg, rgba(255,209,168,0.10), rgba(169,68,0,0.16));
   backdrop-filter: blur(40px) saturate(220%);
   -webkit-backdrop-filter: blur(40px) saturate(220%);
   border-top: 0.5px solid rgba(255,255,255,0.22);
   box-shadow:
     inset 0 1.5px 0 rgba(255,255,255,0.30),
     inset 0 -1px 0 rgba(255,255,255,0.06),
-    0 -10px 30px -8px rgba(196,69,16,0.20);
+    0 -10px 30px -8px rgba(255,94,0,0.20);
   display: flex;
   padding-bottom: 20px;
   padding-top: 10px;
@@ -285,13 +285,13 @@
 
 [data-theme="light"] .tabBar {
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.70) 0%, rgba(255,255,255,0.40) 50%),
+    linear-gradient(180deg, rgba(255,243,232,0.70) 0%, rgba(255,255,255,0.40) 50%),
     linear-gradient(180deg, rgba(255,209,168,0.35), rgba(255,138,92,0.25));
-  border-top: 0.5px solid rgba(196,69,16,0.16);
+  border-top: 0.5px solid rgba(255,94,0,0.16);
   box-shadow:
-    inset 0 1.5px 0 rgba(255,255,255,0.95),
+    inset 0 1.5px 0 rgba(255,243,232,0.95),
     inset 0 -1px 0 rgba(255,255,255,0.40),
-    0 -10px 30px -8px rgba(196,69,16,0.18);
+    0 -10px 30px -8px rgba(255,94,0,0.18);
 }
 
 .tabBtn {
@@ -333,10 +333,10 @@
   position: absolute; inset: 0;
   border-radius: 50%;
   background: radial-gradient(circle at 32% 28%,
-    #FFDCC4 0%, #FFB890 35%, #FF5E1F 70%, #8A2E08 100%);
+    #FFE0C6 0%, #FFC27A 35%, #FF7A1A 70%, #A94400 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.35),
-    0 4px 10px -2px rgba(196,69,16,0.55);
+    0 4px 10px -2px rgba(255,94,0,0.55);
 }
 
 /* At rest: smooth, gentle breathing */
@@ -349,11 +349,11 @@
 .tensionOrb--load .tensionOrbCore {
   transform: scaleY(1.08) scaleX(0.92);
   background: radial-gradient(circle at 32% 24%,
-    #FFB890 0%, #FF5E1F 40%, #C44510 75%, #6B2008 100%);
+    #FFC27A 0%, #FF7A1A 40%, #FF5E00 75%, #A94400 100%);
   animation: visOrbLoadPulse 0.9s ease-in-out infinite;
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.30),
-    0 6px 18px -2px rgba(196,69,16,0.75);
+    0 6px 18px -2px rgba(255,94,0,0.75);
 }
 
 /* Peak tension: darkest, vertical stress lines, micro-shake */
@@ -363,7 +363,7 @@
 .tensionOrb--peak .tensionOrbCore {
   transform: scaleY(1.14) scaleX(0.88);
   background: radial-gradient(circle at 32% 22%,
-    #FF8A4D 0%, #C44510 40%, #6B2008 75%, #2A0E04 100%);
+    #FF9B4A 0%, #FF5E00 40%, #A94400 75%, #2A0E04 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.18),
     0 8px 22px -2px rgba(106,32,8,0.85);
@@ -389,7 +389,7 @@
 .tensionOrb--recovered .tensionOrbCore {
   transform: scale(0.82);
   background: radial-gradient(circle at 32% 28%,
-    #FFDCC4 0%, #FF8A4D 50%, #C44510 100%);
+    #FFE0C6 0%, #FF9B4A 50%, #FF5E00 100%);
   filter: brightness(0.95);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.35),
@@ -417,7 +417,7 @@
   100% { transform: translate(0, 0); }
 }
 
-/* ─── OrbFill — liquid sphere (brand-ref/recovery_animation.png) ─────────── */
+/* ─── OrbFill — layered molten-amber-in-smoked-glass sphere ──────────────── */
 .orbFill {
   position: relative;
   display: inline-flex;
@@ -426,41 +426,339 @@
   gap: 10px;
 }
 
-.orbFillSvg {
+/* Container — circular, hosts absolutely-positioned render layers.
+   No uniform halo box-shadow — light pools DOWNWARD via .orbContactShadow.
+   isolation:isolate scopes mix-blend-mode children to this stack only. */
+.orb {
+  position: relative;
+  border-radius: 50%;
+  isolation: isolate;
+  /* Subtle bottom-weighted ambient — light scatters down, not uniform halo */
+  box-shadow:
+    0 14px 22px -4px rgba(255,106,0,0.18),
+    0 32px 50px -10px rgba(255,106,0,0.10);
+  animation: orbFloat 7.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+[data-theme="light"] .orb {
+  box-shadow:
+    0 14px 22px -4px rgba(255,140,60,0.14),
+    0 30px 50px -10px rgba(255,140,60,0.08);
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
+/* Contact shadow — soft ellipse directly under orb. Models warm light from
+   the liquid scattering down onto the card surface (not a halo). */
+.orbContactShadow {
+  width: 76%;
+  height: 14px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(255,106,0,0.38) 0%,
+    rgba(255,106,0,0.22) 28%,
+    rgba(255,106,0,0.08) 58%,
+    transparent 82%);
+  filter: blur(7px);
+  pointer-events: none;
+  align-self: center;
+  animation: orbContactBreathe 6.5s ease-in-out infinite;
+}
+
+[data-theme="light"] .orbContactShadow {
+  background: radial-gradient(ellipse at center,
+    rgba(255,140,60,0.28) 0%,
+    rgba(255,140,60,0.16) 30%,
+    rgba(255,140,60,0.06) 60%,
+    transparent 82%);
+}
+
+@keyframes orbContactBreathe {
+  0%, 100% { opacity: 0.85; transform: scaleX(1); }
+  50%      { opacity: 1.00; transform: scaleX(1.04); }
+}
+
+/* L1 — atmospheric diffusion (warm light pooling BELOW + AROUND lower liquid mass).
+   No uniform halo — concentrated at bottom, sparse at top. */
+.orbBloom {
+  position: absolute;
+  inset: -10% -14% -34% -14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%,
+      rgba(255,106,0,0.55) 0%,
+      rgba(255,122,26,0.22) 28%,
+      rgba(255,122,26,0.06) 56%,
+      transparent 78%);
+  filter: blur(22px);
+  opacity: 0.65;
+  pointer-events: none;
+  z-index: 0;
+  animation: orbBloomBreathe 6.5s ease-in-out infinite;
+}
+
+[data-theme="light"] .orbBloom {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%,
+      rgba(255,140,60,0.42) 0%,
+      rgba(255,140,60,0.16) 32%,
+      transparent 72%);
+  opacity: 0.62;
+}
+
+@keyframes orbBloomBreathe {
+  0%, 100% { opacity: 0.58; transform: scale(1);    }
+  50%      { opacity: 0.78; transform: scale(1.05); }
+}
+
+/* L2 — glass shell tint. Orb body itself is TRANSPARENT (shows card behind).
+   This layer only adds a barely-there uniform tint + faint rim so the sphere
+   reads as a glass container rather than empty space. Mirrors reference_dark /
+   reference_light — the orb is a clear glass globe with amber liquid inside. */
+.orbGlassTint {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,236,210,0.10) 0%, transparent 32%),
+    radial-gradient(circle at 50% 50%, rgba(42,24,18,0.10) 0%, rgba(42,24,18,0.04) 60%, transparent 90%);
+  /* Glass rim — subtle outer edge so the sphere boundary is visible */
+  box-shadow:
+    inset 0 0 0 0.5px rgba(255,210,170,0.10),
+    inset 0 -2px 8px rgba(42,24,18,0.18),
+    inset 0 2px 4px rgba(255,243,232,0.06);
+  z-index: 1;
+  pointer-events: none;
+}
+
+[data-theme="light"] .orbGlassTint {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,250,240,0.32) 0%, transparent 38%),
+    radial-gradient(circle at 50% 50%, rgba(255,243,232,0.10) 0%, transparent 80%);
+  box-shadow:
+    inset 0 0 0 0.5px rgba(169,68,0,0.10),
+    inset 0 -2px 8px rgba(169,68,0,0.10),
+    inset 0 2px 4px rgba(255,250,240,0.50);
+}
+
+/* L3 — liquid clip (circle mask; SVG draws bezier wave inside).
+   Visible in BOTH themes so liquid level reads as the primary recovery metric. */
+.orbLiquidClip {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+  /* Inner amber glow emitted by the liquid path itself */
+  filter:
+    drop-shadow(0 0 6px  rgba(255,106,0,0.65))
+    drop-shadow(0 0 14px rgba(255,122,26,0.40));
+}
+
+[data-theme="light"] .orbLiquidClip {
+  /* Softer emissive glow in light theme — keeps liquid distinct from cream glass */
+  filter:
+    drop-shadow(0 0 5px  rgba(255,106,0,0.45))
+    drop-shadow(0 0 12px rgba(255,140,60,0.28));
+}
+
+.orbLiquidSvg {
   display: block;
   width: 100%;
   height: 100%;
-  filter:
-    drop-shadow(0 18px 32px rgba(196,69,16,0.40))
-    drop-shadow(0 0 24px rgba(255,142,69,0.22));
-  animation: visBreathe 5s var(--vis-ease) infinite;
 }
 
-[data-theme="light"] .orbFillSvg {
-  filter:
-    drop-shadow(0 14px 28px rgba(196,69,16,0.22))
-    drop-shadow(0 0 16px rgba(255,142,69,0.18));
+/* Meniscus stroke gets a soft blur — boundary feels physically thick, not graphic */
+.orbMeniscusPath { filter: blur(0.6px); opacity: 0.85; }
+
+/* L4 — emissive core (volumetric glow inside liquid, DRIFTS via CSS vars
+   set by JS each frame — caustic-style internal light movement). */
+.orbCore {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(ellipse 62% 42% at var(--orb-core-x, 50%) var(--orb-core-y, 88%),
+    rgba(255,210,140,calc(0.62 * var(--orb-core-i, 1))) 0%,
+    rgba(255,106,0,calc(0.38 * var(--orb-core-i, 1))) 22%,
+    rgba(255,122,26,calc(0.14 * var(--orb-core-i, 1))) 45%,
+    transparent 68%);
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  z-index: 3;
+  pointer-events: none;
 }
 
-.orbWaveGroup {
-  transition: transform 900ms cubic-bezier(0.32, 0.72, 0, 1);
-  will-change: transform;
+[data-theme="light"] .orbCore {
+  background: radial-gradient(ellipse 62% 42% at var(--orb-core-x, 50%) var(--orb-core-y, 88%),
+    rgba(255,210,140,calc(0.48 * var(--orb-core-i, 1))) 0%,
+    rgba(255,140,60,calc(0.26 * var(--orb-core-i, 1))) 25%,
+    rgba(255,140,60,calc(0.08 * var(--orb-core-i, 1))) 48%,
+    transparent 65%);
 }
 
-.orbWave {
-  animation: visOrbWave 3.2s ease-in-out infinite;
-  transform-origin: center;
+/* L5 — subsurface glow at liquid line, bleeds upward into the glass above.
+   `--orb-liquid-y` is set per-frame in JS to track the wave surface. */
+.orbSubsurface {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse 75% 32% at 50% var(--orb-liquid-y, 50%),
+    rgba(255,200,120,0.75) 0%,
+    rgba(255,106,0,0.45) 14%,
+    rgba(255,122,26,0.20) 30%,
+    rgba(255,122,26,0.06) 52%,
+    transparent 72%);
+  filter: blur(6px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 4;
 }
 
-.orbWaveBack {
-  animation: visOrbWave 4.6s ease-in-out infinite reverse;
-  transform-origin: center;
+[data-theme="light"] .orbSubsurface {
+  background: radial-gradient(
+    ellipse 70% 30% at 50% var(--orb-liquid-y, 50%),
+    rgba(255,200,120,0.55) 0%,
+    rgba(255,140,60,0.32) 16%,
+    rgba(255,140,60,0.12) 38%,
+    transparent 62%);
+  filter: blur(5px);
 }
 
-@keyframes visOrbWave {
-  0%   { transform: translateX(0); }
-  50%  { transform: translateX(-30px); }
-  100% { transform: translateX(0); }
+/* L6 — glass top sheen (very subtle — orb is mostly transparent above liquid).
+   Just a faint top-down tint that suggests glass material catching light, plus
+   a thin sheen band at the top. No heavy dome. */
+.orbDome {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(180deg,
+    rgba(255,243,232,0.14) 0%,
+    rgba(255,235,210,0.05) 14%,
+    rgba(42,24,18,0.12) 38%,
+    rgba(42,24,18,0.04) 60%,
+    transparent 78%);
+  /* Subtle fresnel — bottom amber-kiss helps liquid feel contained */
+  box-shadow:
+    inset 0 -8px 18px rgba(255,106,0,0.16),
+    inset 0 0 12px rgba(0,0,0,0.20);
+  backdrop-filter: blur(0.6px) saturate(108%);
+  -webkit-backdrop-filter: blur(0.6px) saturate(108%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+[data-theme="light"] .orbDome {
+  /* Even fainter in light — the cream card already provides the "above liquid" tone */
+  background: linear-gradient(180deg,
+    rgba(255,250,240,0.30) 0%,
+    rgba(255,235,210,0.10) 22%,
+    transparent 55%);
+  box-shadow:
+    inset 0 -8px 18px rgba(255,140,60,0.12),
+    inset 0 0 10px rgba(169,68,0,0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* L7 — inner shadowing (spherical vignette — darker upper interior, soft edges) */
+.orbInner {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 30%,
+      transparent 0%, transparent 55%,
+      rgba(0,0,0,0.20) 88%, rgba(0,0,0,0.42) 100%);
+  z-index: 6;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+[data-theme="light"] .orbInner {
+  background:
+    radial-gradient(circle at 50% 32%,
+      transparent 0%, transparent 60%,
+      rgba(169,68,0,0.12) 88%, rgba(169,68,0,0.22) 100%);
+  mix-blend-mode: multiply;
+}
+
+/* L8a — big top-left specular reflection (large, soft, blurred) */
+.orbHiMain {
+  position: absolute;
+  top: 8%;
+  left: 18%;
+  width: 46%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 40% 40%,
+    rgba(255,250,240,0.55) 0%,
+    rgba(255,236,210,0.22) 35%,
+    rgba(255,236,210,0.06) 65%,
+    transparent 85%);
+  filter: blur(4px);
+  transform: rotate(-28deg);
+  z-index: 7;
+  pointer-events: none;
+}
+
+[data-theme="light"] .orbHiMain {
+  background: radial-gradient(ellipse at 40% 40%,
+    rgba(255,250,240,0.85) 0%,
+    rgba(255,236,210,0.42) 35%,
+    rgba(255,236,210,0.10) 65%,
+    transparent 85%);
+}
+
+/* L8b — tiny sharp specular hotspot (the "lens flare" sparkle) */
+.orbHiSpark {
+  position: absolute;
+  top: 14%;
+  left: 28%;
+  width: 12%;
+  height: 5%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse,
+    rgba(255,252,246,0.85) 0%,
+    rgba(255,242,224,0.45) 40%,
+    transparent 75%);
+  filter: blur(1.2px);
+  transform: rotate(-28deg);
+  z-index: 8;
+  pointer-events: none;
+}
+
+[data-theme="light"] .orbHiSpark {
+  background: radial-gradient(ellipse,
+    rgba(255,252,246,0.92) 0%,
+    rgba(255,242,224,0.55) 40%,
+    transparent 75%);
+}
+
+/* L9 — fresnel rim. Glass catches light at grazing angles → brightest along
+   top + sides, fades at bottom. Thin ring traces sphere boundary. */
+.orbFresnel {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow:
+    inset 0 0 0 0.6px rgba(255,210,170,0.22),
+    inset 0 1.5px 0 rgba(255,243,232,0.32),
+    inset 0 -8px 14px rgba(255,106,0,0.10);
+  z-index: 9;
+  pointer-events: none;
+}
+
+[data-theme="light"] .orbFresnel {
+  box-shadow:
+    inset 0 0 0 0.6px rgba(169,68,0,0.16),
+    inset 0 1.5px 0 rgba(255,250,240,0.65),
+    inset 0 -8px 14px rgba(255,140,60,0.10);
 }
 
 .orbFillStrip {
@@ -476,7 +774,7 @@
 .orbFillStripFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FF5E1F 0%, #FF8A4D 50%, #FFB890 100%);
+  background: linear-gradient(90deg, #FF7A1A 0%, #FF9B4A 50%, #FFC27A 100%);
   box-shadow: 0 0 8px rgba(255,142,69,0.65);
   transition: width 900ms cubic-bezier(0.32, 0.72, 0, 1);
 }
@@ -498,7 +796,7 @@
   background: linear-gradient(90deg,
     rgba(255,106,27,0.55) 0%,
     rgba(255,142,69,0.90) 60%,
-    #FF8A4D 100%);
+    #FF9B4A 100%);
   box-shadow:
     0 0 14px rgba(255,142,69,0.55),
     inset 0 1px 0 rgba(255,255,255,0.25);
@@ -514,7 +812,7 @@
   height: 14px;
   border-radius: 50%;
   transform: translateY(-50%);
-  background: radial-gradient(circle, #FFDCC4 0%, #FF8A4D 55%, #FF5E1F 100%);
+  background: radial-gradient(circle, #FFE0C6 0%, #FF9B4A 55%, #FF7A1A 100%);
   box-shadow:
     0 0 8px  rgba(255,230,210,0.95),
     0 0 20px rgba(255,142,69,0.80),
@@ -545,7 +843,7 @@
   height: 12px;
   border-radius: 50%;
   transform: translateY(-50%);
-  background: radial-gradient(circle, #FFDCC4 0%, #FF8A4D 55%, #FF5E1F 100%);
+  background: radial-gradient(circle, #FFE0C6 0%, #FF9B4A 55%, #FF7A1A 100%);
   box-shadow:
     0 0 6px  rgba(255,230,210,0.95),
     0 0 16px rgba(255,142,69,0.80),
@@ -590,7 +888,7 @@
 .ringMirrorFill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #FF5E1F 0%, #FF8A4D 50%, #FFB890 100%);
+  background: linear-gradient(90deg, #FF7A1A 0%, #FF9B4A 50%, #FFC27A 100%);
   box-shadow: 0 0 6px rgba(255,142,69,0.65);
   transition: width 700ms cubic-bezier(0.32,0.72,0,1);
 }
